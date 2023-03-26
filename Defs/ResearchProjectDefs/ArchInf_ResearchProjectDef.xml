@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Defs>
+    <ResearchProjectDef ParentName="ShipResearchProjectBase">
+        <defName>ArchInf_Research_I</defName>
+        <label>Archotech infusions</label>
+        <description>Research to rule them all</description>
+        <requiredResearchBuilding>HiTechResearchBench</requiredResearchBuilding>
+        <baseCost>5000</baseCost>
+        <techLevel>Spacer</techLevel>
+        <requiredResearchFacilities>
+            <li>MultiAnalyzer</li>
+        </requiredResearchFacilities>
+    </ResearchProjectDef>
+</Defs>

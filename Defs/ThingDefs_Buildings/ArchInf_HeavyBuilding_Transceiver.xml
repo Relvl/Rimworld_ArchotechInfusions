@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+    <ThingDef ParentName="ArchInf_HeavyBuilding_Base">
+        <defName>ArchInf_HeavyBuilding_Transceiver</defName>
+        <label>archotech transceiver</label>
+        <description>Allow to communicate with Archotech infrastructure</description>
+        <thingClass>ArchotechInfusions.building.ArchInf_Transceiver_Building</thingClass>
+        <costStuffCount>115</costStuffCount>
+        <costList>
+            <ComponentIndustrial>20</ComponentIndustrial>
+            <Plasteel>50</Plasteel>
+        </costList>
+        <thingCategories>
+            <li>BuildingsMisc</li>
+        </thingCategories>
+        <statBases>
+            <MaxHitPoints>1500</MaxHitPoints>
+            <WorkToBuild>10000</WorkToBuild>
+            <Mass>3000</Mass>
+        </statBases>
+        <graphicData>
+            <texPath>ArchotechInfusions/Things/Buildings/ArchInf_Transceiver</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <drawSize>(3,6.6875)</drawSize>
+            <damageData>
+                <cornerTL>Damage/Corner</cornerTL>
+                <cornerTR>Damage/Corner</cornerTR>
+                <cornerBL>Damage/Corner</cornerBL>
+                <cornerBR>Damage/Corner</cornerBR>
+            </damageData>
+        </graphicData>
+        <fillPercent>1</fillPercent>
+        <size>(3,3)</size>
+        <castEdgeShadows>True</castEdgeShadows>
+        <building>
+            <soundAmbient>WeatherAffecter_Ambience</soundAmbient>
+        </building>
+        <placeWorkers>
+            <li>PlaceWorker_NotUnderRoof</li>
+        </placeWorkers>
+        <comps>
+            <li Class="ArchotechInfusions.grid.GridMemberCompProps">
+                <GridType>ArchInfGrid</GridType>
+            </li>
+        </comps>
+    </ThingDef>
+</Defs>

@@ -7,7 +7,7 @@
         <ProjectGuid>{54722C0E-26E2-40C2-885E-002679C252BD}</ProjectGuid>
         <OutputType>Library</OutputType>
         <AppDesignerFolder>Properties</AppDesignerFolder>
-        <RootNamespace>ArchotecInfusions</RootNamespace>
+        <RootNamespace>ArchotechInfusions</RootNamespace>
         <AssemblyName>ArchotechInfusions</AssemblyName>
         <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
@@ -45,18 +45,36 @@
           <HintPath>..\..\..\RimWorldWin64_Data\Managed\UnityEngine.dll</HintPath>
           <Private>False</Private>
         </Reference>
+        <Reference Include="UnityEngine.CoreModule">
+          <HintPath>..\..\..\RimWorldWin64_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+        </Reference>
     </ItemGroup>
     <ItemGroup>
         <Compile Include="ArchotechInfusionsMod.cs" />
+        <Compile Include="building\ArchInf_Accumulator_Building.cs" />
+        <Compile Include="building\ArchInf_Loom_Building.cs" />
+        <Compile Include="building\ArchInf_Container_Building.cs" />
+        <Compile Include="building\ArchInf_Database_Building.cs" />
+        <Compile Include="building\ArchInf_Decoder_Building.cs" />
+        <Compile Include="building\ArchInf_IOPort_Building.cs" />
+        <Compile Include="building\ArchInf_KeyGenerator_Building.cs" />
+        <Compile Include="building\ArchInf_Printer_Building.cs" />
+        <Compile Include="building\ArchInf_Repair_Building.cs" />
+        <Compile Include="building\ArchInf_Transceiver_Building.cs" />
+        <Compile Include="building\proto\AddInf_Building.cs" />
+        <Compile Include="grid\Grid.cs" />
+        <Compile Include="grid\GridBuildingSectionLayer.cs" />
+        <Compile Include="grid\GridExtensions.cs" />
+        <Compile Include="grid\GridLinkedOverlay.cs" />
+        <Compile Include="grid\GridMapComponent.cs" />
+        <Compile Include="grid\GridMemberComp.cs" />
+        <Compile Include="grid\GridMemberCompProps.cs" />
+        <Compile Include="grid\GridOverlaySectionLayer.cs" />
+        <Compile Include="grid\GridVisibility.cs" />
+        <Compile Include="place_worker\PlaceWorkerLoom.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
     <ItemGroup>
-      <Folder Include="..\Assemblies">
-        <Link>_mod_links\Assemblies</Link>
-      </Folder>
-      <Folder Include="..\Defs">
-        <Link>_mod_links\Defs</Link>
-      </Folder>
       <Folder Include="..\Languages\English">
         <Link>_mod_links\Languages\English</Link>
       </Folder>
@@ -68,8 +86,68 @@
       <Content Include="..\.gitignore">
         <Link>_mod_links\.gitignore</Link>
       </Content>
+      <Content Include="..\About\About.xml">
+        <Link>_mod_links\About\About.xml</Link>
+      </Content>
       <Content Include="..\About\README.MD">
         <Link>_mod_links\About\README.MD</Link>
+      </Content>
+      <Content Include="..\Assemblies\ArchotechInfusions.dll">
+        <Link>_mod_links\Assemblies\ArchotechInfusions.dll</Link>
+      </Content>
+      <Content Include="..\Assemblies\ArchotechInfusions.pdb">
+        <Link>_mod_links\Assemblies\ArchotechInfusions.pdb</Link>
+      </Content>
+      <Content Include="..\Defs\Misc\Designations\ArchInf_DesignationCategories.xml">
+        <Link>_mod_links\Defs\Misc\Designations\ArchInf_DesignationCategories.xml</Link>
+      </Content>
+      <Content Include="..\Defs\ResearchProjectDefs\ArchInf_ResearchProjectDef.xml">
+        <Link>_mod_links\Defs\ResearchProjectDefs\ArchInf_ResearchProjectDef.xml</Link>
+      </Content>
+      <Content Include="..\Defs\ThingCategoryDefs\ArchInf_ThingCategoryDef.xml">
+        <Link>_mod_links\Defs\ThingCategoryDefs\ArchInf_ThingCategoryDef.xml</Link>
+      </Content>
+      <Content Include="..\Defs\ThingDefs_Buildings\ArchInf_Building_Loom.xml">
+        <Link>_mod_links\Defs\ThingDefs_Buildings\ArchInf_Building_Loom.xml</Link>
+      </Content>
+      <Content Include="..\Defs\ThingDefs_Buildings\ArchInf_HeavyBuilding_Accumulator.xml">
+        <Link>_mod_links\Defs\ThingDefs_Buildings\ArchInf_HeavyBuilding_Accumulator.xml</Link>
+      </Content>
+      <Content Include="..\Defs\ThingDefs_Buildings\ArchInf_HeavyBuilding_Transceiver.xml">
+        <Link>_mod_links\Defs\ThingDefs_Buildings\ArchInf_HeavyBuilding_Transceiver.xml</Link>
+      </Content>
+      <Content Include="..\Defs\ThingDefs_Buildings\base\ArchInf_Building_Base.xml">
+        <Link>_mod_links\Defs\ThingDefs_Buildings\base\ArchInf_Building_Base.xml</Link>
+      </Content>
+      <Content Include="..\Defs\ThingDefs_Buildings\base\ArchInf_HeavyBuilding_Base.xml">
+        <Link>_mod_links\Defs\ThingDefs_Buildings\base\ArchInf_HeavyBuilding_Base.xml</Link>
+      </Content>
+      <Content Include="..\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Accumulator_east.png">
+        <Link>_mod_links\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Accumulator_east.png</Link>
+      </Content>
+      <Content Include="..\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Accumulator_north.png">
+        <Link>_mod_links\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Accumulator_north.png</Link>
+      </Content>
+      <Content Include="..\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Loom_Atlas.png">
+        <Link>_mod_links\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Loom_Atlas.png</Link>
+      </Content>
+      <Content Include="..\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Loom_AtlasBP.png">
+        <Link>_mod_links\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Loom_AtlasBP.png</Link>
+      </Content>
+      <Content Include="..\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Transceiver.png">
+        <Link>_mod_links\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Transceiver.png</Link>
+      </Content>
+      <Content Include="..\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Transceiver_Preview.png">
+        <Link>_mod_links\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Transceiver_Preview.png</Link>
+      </Content>
+      <Content Include="..\Textures\ArchotechInfusions\Things\GridOverlay_Atlas.png">
+        <Link>_mod_links\Textures\ArchotechInfusions\Things\GridOverlay_Atlas.png</Link>
+      </Content>
+      <Content Include="..\Textures\ArchotechInfusions\UI\Loom_Atlas.png">
+        <Link>_mod_links\Textures\ArchotechInfusions\UI\Loom_Atlas.png</Link>
+      </Content>
+      <Content Include="..\Textures\ArchotechInfusions\UI\voltage.png">
+        <Link>_mod_links\Textures\ArchotechInfusions\UI\voltage.png</Link>
       </Content>
       <Content Include="_mod_links\_README.MD" />
     </ItemGroup>

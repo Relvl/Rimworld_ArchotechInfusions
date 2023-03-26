@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+    <ThingDef Name="ArchInf_HeavyBuilding_Base" ParentName="ArchInf_Building_Base" Abstract="true">
+        <leaveResourcesWhenKilled>true</leaveResourcesWhenKilled>
+        <passability>PassThroughOnly</passability>
+        <pathCost>150</pathCost>
+        <altitudeLayer>Building</altitudeLayer>
+        <canOverlapZones>false</canOverlapZones>
+        <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+        <blockWind>true</blockWind>
+        <blockLight>true</blockLight>
+        <minifiedDef>MinifiedThing</minifiedDef>
+
+        <statBases>
+            <SellPriceFactor>0.70</SellPriceFactor>
+            <Flammability>0</Flammability>
+            <Beauty>-15</Beauty>
+        </statBases>
+
+        <building>
+            <destroySound>BuildingDestroyed_Metal_Big</destroySound>
+        </building>
+    </ThingDef>
+</Defs>

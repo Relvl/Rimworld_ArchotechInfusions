@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Defs>
+    <DesignationCategoryDef>
+        <defName>ArchInf_Designation</defName>
+        <label>Archotech Infusions</label>
+        <description>Things for equipment improvements</description>
+        <order>10</order>
+        <specialDesignatorClasses>
+            <li>Designator_Cancel</li>
+            <li>Designator_Deconstruct</li>
+        </specialDesignatorClasses>
+    </DesignationCategoryDef>
+</Defs>

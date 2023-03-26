@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+    <ThingDef Name="ArchInf_Building_Base" ParentName="BuildingBase" Abstract="true">
+        <category>Building</category>
+        <designationCategory>ArchInf_Designation</designationCategory>
+        <thingClass>Building</thingClass>
+        <drawerType>MapMeshOnly</drawerType>
+        <selectable>true</selectable>
+        <repairEffect>ConstructMetal</repairEffect>
+        <filthLeaving>Filth_RubbleBuilding</filthLeaving>
+        <tickerType>Normal</tickerType>
+        <constructionSkillPrerequisite>15</constructionSkillPrerequisite>
+        <soundImpactDefault>BulletImpact_Metal</soundImpactDefault>
+        <stuffCategories>
+            <li>StrongMetallic</li>
+        </stuffCategories>
+    </ThingDef>
+</Defs>
