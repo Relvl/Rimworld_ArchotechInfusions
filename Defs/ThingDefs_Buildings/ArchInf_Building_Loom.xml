@@ -8,11 +8,7 @@
 
         <graphicData>
             <texPath>ArchotechInfusions/Things/Buildings/ArchInf_Loom_Atlas</texPath>
-            <graphicClass>Graphic_Single</graphicClass>
-            <linkType>Basic</linkType>
-            <linkFlags>
-                <li>Custom8</li>
-            </linkFlags>
+            <graphicClass>ArchotechInfusions.grid.GridLinkGraphic</graphicClass>
             <damageData>
                 <rect>(0,0.35,1,0.3)</rect>
             </damageData>

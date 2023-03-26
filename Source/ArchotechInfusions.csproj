@@ -63,9 +63,9 @@
         <Compile Include="building\ArchInf_Transceiver_Building.cs" />
         <Compile Include="building\proto\AddInf_Building.cs" />
         <Compile Include="grid\Grid.cs" />
-        <Compile Include="grid\GridBuildingSectionLayer.cs" />
         <Compile Include="grid\GridExtensions.cs" />
         <Compile Include="grid\GridLinkedOverlay.cs" />
+        <Compile Include="grid\GridLinkGraphic.cs" />
         <Compile Include="grid\GridMapComponent.cs" />
         <Compile Include="grid\GridMemberComp.cs" />
         <Compile Include="grid\GridMemberCompProps.cs" />
