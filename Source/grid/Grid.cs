@@ -6,13 +6,15 @@ namespace ArchotechInfusions.grid;
 public class Grid
 {
     public readonly Guid Guid;
-    public readonly GridMapComponent Comp;
-    public List<GridMemberComp> Members = new();
+    public readonly GridMapComponent MapComponent;
+    public readonly string GridType;
+    public readonly List<GridMemberComp> Members = new();
 
-    public Grid(GridMapComponent comp)
+    public Grid(GridMapComponent mapComponent, string gridType)
     {
         Guid = Guid.NewGuid();
-        Comp = comp;
+        MapComponent = mapComponent;
+        GridType = gridType;
     }
 
     public void OnTick()
@@ -22,5 +24,6 @@ public class Grid
     public void AddMember(GridMemberComp member)
     {
         member.Grid = this;
+        Members.Add(member);
     }
 }

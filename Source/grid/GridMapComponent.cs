@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ArchotechInfusions.grid.graphic;
 using UnityEngine;
 using Verse;
 
@@ -12,7 +13,7 @@ namespace ArchotechInfusions.grid;
 public class GridMapComponent : MapComponent
 {
     // todo def-generated
-    private static readonly GridLinkedOverlay Overlay = new(
+    private static readonly GraphicGridOverlay Overlay = new(
         GraphicDatabase.Get<Graphic_Single>( //
             "ArchotechInfusions/Things/GridOverlay_Atlas",
             ShaderDatabase.MetaOverlay,
@@ -20,6 +21,8 @@ public class GridMapComponent : MapComponent
             new Color32(159, 217, 60, 190)
         )
     );
+
+    public static Grid DebudGrid;
 
     private static (int, GridMapComponent) _cachedGridComponent = (-1, null);
 
@@ -38,7 +41,6 @@ public class GridMapComponent : MapComponent
     /// </summary>
     public override void FinalizeInit()
     {
-        Log.Warning("ArchInf: FinalizeInit");
         RebuildGrids();
     }
 
@@ -47,7 +49,6 @@ public class GridMapComponent : MapComponent
     /// </summary>
     public override void MapGenerated()
     {
-        Log.Warning("ArchInf: MapGenerated");
         RebuildGrids();
     }
 
@@ -56,15 +57,12 @@ public class GridMapComponent : MapComponent
     /// </summary>
     public override void MapRemoved()
     {
-        Log.Warning("ArchInf: map removed");
         _cachedGridComponent = (-1, null);
         base.MapRemoved();
     }
 
     public void Register(GridMemberComp member, bool respawningAfterLoad)
     {
-        Log.Warning($"ArchInf: Register: {member.parent.ThingID} (grid type: {member.Props.GridType})");
-
         try
         {
             foreach (var c in member.parent.OccupiedRect()) _registeredMembers.Add(c, member);
@@ -86,7 +84,6 @@ public class GridMapComponent : MapComponent
 
     public void Unregister(GridMemberComp member)
     {
-        Log.Warning($"ArchInf: Unregister: {member.parent.Label}");
         foreach (var c in member.parent.OccupiedRect()) _registeredMembers.Remove(c);
         RebuildGrids();
     }
@@ -106,7 +103,6 @@ public class GridMapComponent : MapComponent
             if (initial is null) break;
             initial.Grid = InitializeGrid(initial);
             _grids.Add(initial.Grid);
-            if (Prefs.DevMode) Log.Message($"ArchInf: deflating initial grid {initial.Grid.Guid} from member {initial.parent.ThingID}");
 
             bool PassCheck(IntVec3 c)
             {
@@ -118,7 +114,6 @@ public class GridMapComponent : MapComponent
                 if (another.Grid != null) return another.Grid == initial.Grid;
                 // Добавляем его к той же сети
                 initial.Grid.AddMember(another);
-                if (Prefs.DevMode) Log.Message($"ArchInf: added another member to grid {initial.Grid.Guid} = {another.parent.ThingID}");
                 return true;
             }
 
@@ -130,7 +125,7 @@ public class GridMapComponent : MapComponent
 
     private Grid InitializeGrid(GridMemberComp member)
     {
-        var grid = new Grid(this);
+        var grid = new Grid(this, member.Props.GridType);
         grid.AddMember(member);
         return grid;
     }
@@ -141,7 +136,9 @@ public class GridMapComponent : MapComponent
     {
         if (_registeredMembers.ContainsKey(c))
         {
-            Overlay.Print(layer, _registeredMembers[c].parent, 0.0f);
+            var comp = _registeredMembers[c];
+            if (DebudGrid is not null && comp.Grid.Guid != DebudGrid.Guid) return;
+            Overlay.Print(layer, comp.parent, 0.0f);
         }
     }
 

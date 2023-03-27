@@ -1,17 +1,20 @@
 using UnityEngine;
 using Verse;
 
-namespace ArchotechInfusions.grid;
+namespace ArchotechInfusions.grid.graphic;
 
-public class GridLinkedOverlay : Graphic_Linked
+public class GraphicGridOverlay : Graphic_Linked
 {
-    public GridLinkedOverlay(Graphic subGraphic) : base(subGraphic)
+    public GraphicGridOverlay(Graphic subGraphic) : base(subGraphic)
     {
     }
 
     public override bool ShouldLinkWith(IntVec3 c, Thing parent)
     {
-        return c.InBounds(parent.Map) && parent.Map.LightGrid().IsSameGrid(c, parent.TryGetComp<GridMemberComp>());
+        if (!c.InBounds(parent.Map)) return false;
+        var comp = parent.TryGetComp<GridMemberComp>();
+        if (comp is null) return false;
+        return parent.Map.LightGrid().IsSameGrid(c, parent.TryGetComp<GridMemberComp>());
     }
 
     public override void Print(SectionLayer layer, Thing parent, float extraRotation)

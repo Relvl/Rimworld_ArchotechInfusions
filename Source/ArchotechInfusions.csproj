@@ -33,20 +33,27 @@
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
     <ItemGroup>
+        <Reference Include="0Harmony, Version=2.2.2.0, Culture=neutral, processorArchitecture=MSIL">
+          <HintPath>..\packages\Lib.Harmony.2.2.2\lib\net472\0Harmony.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
         <Reference Include="Assembly-CSharp">
           <HintPath>..\..\..\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
           <Private>False</Private>
         </Reference>
         <Reference Include="System" />
         <Reference Include="System.Core" />
-        <Reference Include="System.Data" />
-        <Reference Include="System.Xml" />
         <Reference Include="UnityEngine">
           <HintPath>..\..\..\RimWorldWin64_Data\Managed\UnityEngine.dll</HintPath>
           <Private>False</Private>
         </Reference>
         <Reference Include="UnityEngine.CoreModule">
           <HintPath>..\..\..\RimWorldWin64_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="UnityEngine.IMGUIModule">
+          <HintPath>..\..\..\RimWorldWin64_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
+          <Private>False</Private>
         </Reference>
     </ItemGroup>
     <ItemGroup>
@@ -62,15 +69,20 @@
         <Compile Include="building\ArchInf_Repair_Building.cs" />
         <Compile Include="building\ArchInf_Transceiver_Building.cs" />
         <Compile Include="building\proto\AddInf_Building.cs" />
+        <Compile Include="building\proto\ArchInf_BuildingLink.cs" />
+        <Compile Include="grid\graphic\GraphicGridLink.cs" />
+        <Compile Include="grid\graphic\GraphicLinkedMoreLayers.cs" />
+        <Compile Include="grid\graphic\GridInfoWindow.cs" />
+        <Compile Include="grid\graphic\GraphicGridOverlay.cs" />
+        <Compile Include="grid\graphic\SectionLayerGridOverlay.cs" />
+        <Compile Include="grid\graphic\GridVisibility.cs" />
+        <Compile Include="grid\graphic\SectionLayerGridRender.cs" />
         <Compile Include="grid\Grid.cs" />
         <Compile Include="grid\GridExtensions.cs" />
-        <Compile Include="grid\GridLinkedOverlay.cs" />
-        <Compile Include="grid\GridLinkGraphic.cs" />
         <Compile Include="grid\GridMapComponent.cs" />
         <Compile Include="grid\GridMemberComp.cs" />
         <Compile Include="grid\GridMemberCompProps.cs" />
-        <Compile Include="grid\GridOverlaySectionLayer.cs" />
-        <Compile Include="grid\GridVisibility.cs" />
+        <Compile Include="grid\harmony\Patch_GraphicUtility_WrapLinked.cs" />
         <Compile Include="place_worker\PlaceWorkerLoom.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
@@ -150,6 +162,9 @@
         <Link>_mod_links\Textures\ArchotechInfusions\UI\voltage.png</Link>
       </Content>
       <Content Include="_mod_links\_README.MD" />
+    </ItemGroup>
+    <ItemGroup>
+      <None Include="packages.config" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,4 +1,4 @@
-namespace ArchotechInfusions.grid;
+namespace ArchotechInfusions.grid.graphic;
 
 public enum GridVisibility
 {

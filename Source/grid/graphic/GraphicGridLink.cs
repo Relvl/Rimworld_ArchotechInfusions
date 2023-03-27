@@ -1,42 +1,41 @@
+using ArchotechInfusions.building.proto;
 using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace ArchotechInfusions.grid;
+namespace ArchotechInfusions.grid.graphic;
 
-// ReSharper disable once UnusedType.Global reflective: Verse.GraphicDatabase:GetInner[T]
-public class GridLinkGraphic : Graphic_Linked
+public class GraphicGridLink : GraphicLinkedMoreLayers
 {
     private static readonly Vector2 Size = new(1f, 1f);
 
-    public override void Init(GraphicRequest req)
+    public GraphicGridLink(Graphic subGraphic) : base(subGraphic)
     {
-        subGraphic = GraphicDatabase.Get<Graphic_Single>(req.graphicData.texPath, ShaderDatabase.Transparent);
-        data = subGraphic.data;
     }
 
     public override Graphic GetColoredVersion(Shader newShader, Color newColor, Color newColorTwo)
     {
-        return new GridLinkGraphic { subGraphic = subGraphic.GetColoredVersion(newShader, newColor, newColorTwo), data = data };
+        return new GraphicGridLink(subGraphic) { data = data };
     }
 
     public override bool ShouldLinkWith(IntVec3 c, Thing parent)
     {
         if (!c.InBounds(parent.Map)) return false;
-        if (!parent.Map.LightGrid().ShouldConnect(c, parent.TryGetComp<GridMemberComp>())) return false;
+        var parentComp = parent.TryGetComp<GridMemberComp>();
+        if (!parent.Map.LightGrid().ShouldConnect(c, parentComp)) return false;
         return true;
     }
 
-    public override void Print(SectionLayer layer, Thing thing, float extraRotation)
+    public void PrintLinkable(SectionLayer layer, ArchInf_BuildingLink thing)
     {
         var position = thing.Position;
         var comp = thing.TryGetComp<GridMemberComp>();
         if (comp.Props.Visibility == GridVisibility.Never) return;
         if (comp.Props.Visibility == GridVisibility.HideUnderTiling && position.GetTerrain(thing.Map).layerable) return;
 
-        Printer_Plane.PrintPlane(layer, thing.TrueCenter(), Size, LinkedDrawMatFrom(thing, thing.Position), extraRotation);
+        Printer_Plane.PrintPlane(layer, thing.TrueCenter(), Size, LinkedDrawMatFrom(thing, thing.Position));
 
-        // todo Print extenders
+        // Print extenders
         for (var index = 0; index < 4; ++index)
         {
             var sideCell = position + GenAdj.CardinalDirections[index];

@@ -7,8 +7,13 @@
         <thingClass>ArchotechInfusions.building.ArchInf_Loom_Building</thingClass>
 
         <graphicData>
+            <graphicClass>Graphic_Single</graphicClass>
             <texPath>ArchotechInfusions/Things/Buildings/ArchInf_Loom_Atlas</texPath>
-            <graphicClass>ArchotechInfusions.grid.GridLinkGraphic</graphicClass>
+            <linkType>Basic</linkType>
+            <linkFlags>
+                <li>Custom10</li>
+                <li>Custom1</li>
+            </linkFlags>
             <damageData>
                 <rect>(0,0.35,1,0.3)</rect>
             </damageData>
@@ -19,6 +24,7 @@
             <isInert>true</isInert>
             <isEdifice>false</isEdifice>
             <blueprintGraphicData>
+                <graphicClass>ArchotechInfusions.grid.graphic.GraphicLinkedMoreLayers</graphicClass>
                 <texPath>ArchotechInfusions/Things/Buildings/ArchInf_Loom_AtlasBP</texPath>
             </blueprintGraphicData>
         </building>
@@ -47,6 +53,63 @@
         <comps>
             <li Class="ArchotechInfusions.grid.GridMemberCompProps">
                 <GridType>ArchInfGrid</GridType>
+            </li>
+        </comps>
+    </ThingDef>
+
+    <ThingDef ParentName="ArchInf_Building_Base">
+        <defName>ArchInf_Building_Loom_Another</defName>
+        <label>network loom another</label>
+        <description>Lom to loom another</description>
+        <thingClass>ArchotechInfusions.building.ArchInf_Loom_Building</thingClass>
+
+        <graphicData>
+            <graphicClass>Graphic_Single</graphicClass>
+            <texPath>ArchotechInfusions/Things/Buildings/ArchInf_Loom_Atlas</texPath>
+            <linkType>Basic</linkType>
+            <linkFlags>
+                <li>Custom10</li>
+                <li>Custom3</li>
+            </linkFlags>
+            <damageData>
+                <rect>(0,0.35,1,0.3)</rect>
+            </damageData>
+        </graphicData>
+        <uiIconPath>ArchotechInfusions/UI/Loom_Atlas</uiIconPath>
+
+        <building>
+            <isInert>true</isInert>
+            <isEdifice>false</isEdifice>
+            <blueprintGraphicData>
+                <graphicClass>ArchotechInfusions.grid.graphic.GraphicLinkedMoreLayers</graphicClass>
+                <texPath>ArchotechInfusions/Things/Buildings/ArchInf_Loom_AtlasBP</texPath>
+            </blueprintGraphicData>
+        </building>
+
+        <altitudeLayer>Conduits</altitudeLayer>
+        <passability>Standable</passability>
+        <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+        <clearBuildingArea>false</clearBuildingArea>
+
+        <statBases>
+            <MaxHitPoints>80</MaxHitPoints>
+            <WorkToBuild>175</WorkToBuild>
+            <Beauty>-2</Beauty>
+        </statBases>
+
+        <placingDraggableDimensions>1</placingDraggableDimensions>
+
+        <costStuffCount>10</costStuffCount>
+
+        <rotatable>false</rotatable>
+        <neverMultiSelect>true</neverMultiSelect>
+        <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+        <placeWorkers>
+            <li>ArchotechInfusions.place_worker.PlaceWorkerLoom</li>
+        </placeWorkers>
+        <comps>
+            <li Class="ArchotechInfusions.grid.GridMemberCompProps">
+                <GridType>ArchInfGridAnother</GridType>
             </li>
         </comps>
     </ThingDef>

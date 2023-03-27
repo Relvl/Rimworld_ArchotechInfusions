@@ -1,5 +1,6 @@
+using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
+using ArchotechInfusions.grid.graphic;
 using Verse;
 
 namespace ArchotechInfusions.grid;
@@ -7,16 +8,6 @@ namespace ArchotechInfusions.grid;
 [StaticConstructorOnStartup]
 public class GridMemberComp : ThingComp
 {
-    // todo def-generated
-    private static readonly GridLinkedOverlay Overlay = new(
-        GraphicDatabase.Get<Graphic_Single>( //
-            "ArchotechInfusions/Things/GridOverlay_Atlas",
-            ShaderDatabase.MetaOverlay,
-            Vector2.one,
-            new Color32(159, 217, 60, 190)
-        )
-    );
-
     public Grid Grid { get; set; }
 
     public GridMemberCompProps Props => (GridMemberCompProps)props;
@@ -44,5 +35,19 @@ public class GridMemberComp : ThingComp
         base.PostDeSpawn(map);
     }
 
-    public void PrintForGrid(SectionLayer layer) => Overlay.Print(layer, parent, 0.0f);
+    public override IEnumerable<Gizmo> CompGetGizmosExtra()
+    {
+        if (DebugSettings.ShowDevGizmos)
+        {
+            yield return new Command_Action()
+            {
+                defaultLabel = "DEV: show grid info",
+                action = () =>
+                {
+                    Find.WindowStack.TryRemove(typeof(GridInfoWindow));
+                    Find.WindowStack.Add(new GridInfoWindow(this));
+                }
+            };
+        }
+    }
 }
