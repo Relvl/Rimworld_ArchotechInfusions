@@ -39,7 +39,7 @@ public class GridMemberComp : ThingComp
     {
         if (DebugSettings.ShowDevGizmos)
         {
-            yield return new Command_Action()
+            yield return new Command_Action
             {
                 defaultLabel = "DEV: show grid info",
                 action = () =>

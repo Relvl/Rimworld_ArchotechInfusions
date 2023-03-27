@@ -37,21 +37,18 @@
             <soundAmbient>WeatherAffecter_Ambience</soundAmbient>
         </building>
         <comps>
-            <!--            <li Class="CompProperties_Battery">-->
-            <!--                <compClass>EnhancedBattery.CompChargeBackBatteryPrototype</compClass>-->
-            <!--                <storedEnergyMax>800</storedEnergyMax>-->
-            <!--                <efficiency>0.5</efficiency>-->
-            <!--                <shortCircuitInRain>true</shortCircuitInRain>-->
-            <!--                <transmitsPower>true</transmitsPower>-->
-            <!--            </li>-->
-            <!--            <li Class="CompProperties_Power">-->
-            <!--                <compClass>EnhancedBattery.CompChargeBackPowerPlantPrototype</compClass>-->
-            <!--                <basePowerConsumption>-200</basePowerConsumption>-->
-            <!--                <transmitsPower>true</transmitsPower>-->
-            <!--            </li>-->
-
+            <li Class="CompProperties_Power">
+                <compClass>CompPowerTrader</compClass>
+                <transmitsPower>true</transmitsPower>
+                <basePowerConsumption>1000</basePowerConsumption>
+                <idlePowerDraw>5</idlePowerDraw>
+                <shortCircuitInRain>true</shortCircuitInRain>
+            </li>
             <li Class="ArchotechInfusions.grid.GridMemberCompProps">
                 <GridType>ArchInfGrid</GridType>
+            </li>
+            <li Class="ArchotechInfusions.comps.CompPropsAccumulator">
+                <MaxStored>20000</MaxStored>
             </li>
             <li Class="CompProperties_Breakdownable"/>
             <li Class="CompProperties_Flickable"/>

@@ -42,6 +42,20 @@
             <li Class="ArchotechInfusions.grid.GridMemberCompProps">
                 <GridType>ArchInfGrid</GridType>
             </li>
+            <li Class="CompProperties_Breakdownable"/>
+            <li Class="CompProperties_Flickable"/>
+            <li Class="CompProperties_Power">
+                <compClass>CompPowerTrader</compClass>
+                <transmitsPower>true</transmitsPower>
+                <basePowerConsumption>100</basePowerConsumption>
+            </li>
+            <li Class="ArchotechInfusions.comps.CompPropsTransceiver">
+                <RechargeTicks>360</RechargeTicks>
+                <TransceiveTicks>360</TransceiveTicks>
+                <ReceiveTicks>10000</ReceiveTicks>
+                <TranscieveConsumption>5000</TranscieveConsumption>
+                <ReceiveConsumption>1000</ReceiveConsumption>
+            </li>
         </comps>
     </ThingDef>
 </Defs>

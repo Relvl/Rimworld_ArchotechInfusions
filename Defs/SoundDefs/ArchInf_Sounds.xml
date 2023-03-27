@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Defs>
+    <SoundDef>
+        <defName>ArchInfTransceiverStart</defName>
+        <context>MapOnly</context>
+        <eventNames/>
+        <subSounds>
+            <li>
+                <grains>
+                    <li Class="AudioGrain_Clip">
+                        <clipPath>TransceiverStart</clipPath>
+                    </li>
+                </grains>
+                <volumeRange>
+                    <min>150</min>
+                    <max>180</max>
+                </volumeRange>
+                <pitchRange>
+                    <min>0.9</min>
+                    <max>1.1</max>
+                </pitchRange>
+                <distRange>
+                    <min>0</min>
+                    <max>70</max>
+                </distRange>
+                <sustainLoop>False</sustainLoop>
+            </li>
+        </subSounds>
+    </SoundDef>
+    <SoundDef>
+        <defName>ArchInfTransceiverReceive</defName>
+        <context>MapOnly</context>
+        <eventNames/>
+        <subSounds>
+            <li>
+                <grains>
+                    <li Class="AudioGrain_Clip">
+                        <clipPath>TransceiverReceive</clipPath>
+                    </li>
+                </grains>
+                <volumeRange>
+                    <min>100</min>
+                    <max>120</max>
+                </volumeRange>
+                <pitchRange>
+                    <min>0.95</min>
+                    <max>1.05</max>
+                </pitchRange>
+                <distRange>
+                    <min>0</min>
+                    <max>70</max>
+                </distRange>
+                <sustainLoop>False</sustainLoop>
+            </li>
+        </subSounds>
+    </SoundDef>
+    <SoundDef>
+        <defName>ArchInfTransceiverRecharge</defName>
+        <context>MapOnly</context>
+        <eventNames/>
+        <subSounds>
+            <li>
+                <grains>
+                    <li Class="AudioGrain_Clip">
+                        <clipPath>TransceiverRecharge</clipPath>
+                    </li>
+                </grains>
+                <volumeRange>
+                    <min>100</min>
+                    <max>120</max>
+                </volumeRange>
+                <pitchRange>
+                    <min>0.95</min>
+                    <max>1.05</max>
+                </pitchRange>
+                <distRange>
+                    <min>0</min>
+                    <max>70</max>
+                </distRange>
+                <sustainLoop>False</sustainLoop>
+            </li>
+        </subSounds>
+    </SoundDef>
+
+</Defs>

@@ -57,6 +57,7 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="ArchInfSoundDefOf.cs" />
         <Compile Include="ArchotechInfusionsMod.cs" />
         <Compile Include="building\ArchInf_Accumulator_Building.cs" />
         <Compile Include="building\ArchInf_Loom_Building.cs" />
@@ -70,6 +71,10 @@
         <Compile Include="building\ArchInf_Transceiver_Building.cs" />
         <Compile Include="building\proto\AddInf_Building.cs" />
         <Compile Include="building\proto\ArchInf_BuildingLink.cs" />
+        <Compile Include="comps\CompAccumulator.cs" />
+        <Compile Include="comps\CompPropsAccumulator.cs" />
+        <Compile Include="comps\CompPropsTransceiver.cs" />
+        <Compile Include="comps\CompTransceiver.cs" />
         <Compile Include="grid\graphic\GraphicGridLink.cs" />
         <Compile Include="grid\graphic\GraphicLinkedMoreLayers.cs" />
         <Compile Include="grid\graphic\GridInfoWindow.cs" />
@@ -116,6 +121,9 @@
       <Content Include="..\Defs\ResearchProjectDefs\ArchInf_ResearchProjectDef.xml">
         <Link>_mod_links\Defs\ResearchProjectDefs\ArchInf_ResearchProjectDef.xml</Link>
       </Content>
+      <Content Include="..\Defs\SoundDefs\ArchInf_Sounds.xml">
+        <Link>_mod_links\Defs\SoundDefs\ArchInf_Sounds.xml</Link>
+      </Content>
       <Content Include="..\Defs\ThingCategoryDefs\ArchInf_ThingCategoryDef.xml">
         <Link>_mod_links\Defs\ThingCategoryDefs\ArchInf_ThingCategoryDef.xml</Link>
       </Content>
@@ -133,6 +141,15 @@
       </Content>
       <Content Include="..\Defs\ThingDefs_Buildings\base\ArchInf_HeavyBuilding_Base.xml">
         <Link>_mod_links\Defs\ThingDefs_Buildings\base\ArchInf_HeavyBuilding_Base.xml</Link>
+      </Content>
+      <Content Include="..\Sounds\TransceiverReceive.ogg">
+        <Link>_mod_links\Sounds\TransceiverReceive.ogg</Link>
+      </Content>
+      <Content Include="..\Sounds\TransceiverRecharge.ogg">
+        <Link>_mod_links\Sounds\TransceiverRecharge.ogg</Link>
+      </Content>
+      <Content Include="..\Sounds\TransceiverStart.ogg">
+        <Link>_mod_links\Sounds\TransceiverStart.ogg</Link>
       </Content>
       <Content Include="..\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Accumulator_east.png">
         <Link>_mod_links\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Accumulator_east.png</Link>
