@@ -49,7 +49,7 @@
                 <transmitsPower>true</transmitsPower>
                 <basePowerConsumption>100</basePowerConsumption>
             </li>
-            <li Class="ArchotechInfusions.comps.CompPropsTransceiver">
+            <li Class="ArchotechInfusions.comps.CompProps_Transceiver">
                 <RechargeTicks>360</RechargeTicks>
                 <TransceiveTicks>360</TransceiveTicks>
                 <ReceiveTicks>10000</ReceiveTicks>

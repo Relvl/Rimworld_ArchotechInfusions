@@ -46,7 +46,7 @@
                 <basePowerConsumption>1500</basePowerConsumption>
                 <idlePowerDraw>100</idlePowerDraw>
             </li>
-            <li Class="ArchotechInfusions.comps.CompPropsDecoder">
+            <li Class="ArchotechInfusions.comps.CompProps_Decoder">
                 <StartupTicks>5000</StartupTicks>
                 <DecodeTicks>
                     <min>1000</min>

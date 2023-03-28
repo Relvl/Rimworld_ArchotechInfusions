@@ -72,13 +72,11 @@
         <Compile Include="building\proto\AddInf_Building.cs" />
         <Compile Include="building\proto\ArchInf_BuildingLink.cs" />
         <Compile Include="comps\CompAccumulator.cs" />
-        <Compile Include="comps\CompTest.cs" />
-        <Compile Include="comps\ProgressCompBase.cs" />
-        <Compile Include="comps\CompDecoder.cs" />
+        <Compile Include="comps\CompBase_Stageable.cs" />
+        <Compile Include="comps\Comp_Decoder.cs" />
+        <Compile Include="comps\Comp_Transceiver.cs" />
         <Compile Include="comps\CompPropsAccumulator.cs" />
-        <Compile Include="comps\CompPropsDecoder.cs" />
-        <Compile Include="comps\CompPropsTransceiver.cs" />
-        <Compile Include="comps\CompTransceiver.cs" />
+        <Compile Include="Extensions.cs" />
         <Compile Include="grid\graphic\GraphicGridLink.cs" />
         <Compile Include="grid\graphic\GraphicLinkedMoreLayers.cs" />
         <Compile Include="grid\graphic\GridInfoWindow.cs" />
