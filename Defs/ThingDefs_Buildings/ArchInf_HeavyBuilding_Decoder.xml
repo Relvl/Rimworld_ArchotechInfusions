@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Defs>
+
+    <ThingDef ParentName="ArchInf_HeavyBuilding_Base">
+        <defName>ArchInf_HeavyBuilding_Decoder</defName>
+        <label>archotech decoder</label>
+        <description>Allow to decode Archotech data packet</description>
+        <thingClass>ArchotechInfusions.building.ArchInf_Decoder_Building</thingClass>
+        <costStuffCount>115</costStuffCount>
+        <costList>
+            <ComponentIndustrial>20</ComponentIndustrial>
+            <Plasteel>50</Plasteel>
+        </costList>
+        <thingCategories>
+            <li>BuildingsMisc</li>
+        </thingCategories>
+        <statBases>
+            <MaxHitPoints>150</MaxHitPoints>
+            <WorkToBuild>1000</WorkToBuild>
+            <Mass>400</Mass>
+        </statBases>
+        <graphicData>
+            <texPath>ArchotechInfusions/Things/Buildings/ArchInf_Decoder</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <drawSize>3</drawSize>
+            <damageData>
+                <cornerTL>Damage/Corner</cornerTL>
+                <cornerTR>Damage/Corner</cornerTR>
+                <cornerBL>Damage/Corner</cornerBL>
+                <cornerBR>Damage/Corner</cornerBR>
+            </damageData>
+        </graphicData>
+        <rotatable>false</rotatable>
+        <fillPercent>1</fillPercent>
+        <size>(3,3)</size>
+        <castEdgeShadows>True</castEdgeShadows>
+        <comps>
+            <li Class="ArchotechInfusions.grid.GridMemberCompProps">
+                <GridType>ArchInfGrid</GridType>
+            </li>
+            <li Class="CompProperties_Breakdownable"/>
+            <li Class="CompProperties_Flickable"/>
+            <li Class="CompProperties_Power">
+                <compClass>CompPowerTrader</compClass>
+                <transmitsPower>true</transmitsPower>
+                <basePowerConsumption>1500</basePowerConsumption>
+                <idlePowerDraw>100</idlePowerDraw>
+            </li>
+            <li Class="ArchotechInfusions.comps.CompPropsDecoder">
+                <StartupTicks>5000</StartupTicks>
+                <DecodeTicks>
+                    <min>1000</min>
+                    <max>6000</max>
+                </DecodeTicks>
+            </li>
+        </comps>
+    </ThingDef>
+
+</Defs>

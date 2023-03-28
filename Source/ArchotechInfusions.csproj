@@ -72,7 +72,11 @@
         <Compile Include="building\proto\AddInf_Building.cs" />
         <Compile Include="building\proto\ArchInf_BuildingLink.cs" />
         <Compile Include="comps\CompAccumulator.cs" />
+        <Compile Include="comps\CompTest.cs" />
+        <Compile Include="comps\ProgressCompBase.cs" />
+        <Compile Include="comps\CompDecoder.cs" />
         <Compile Include="comps\CompPropsAccumulator.cs" />
+        <Compile Include="comps\CompPropsDecoder.cs" />
         <Compile Include="comps\CompPropsTransceiver.cs" />
         <Compile Include="comps\CompTransceiver.cs" />
         <Compile Include="grid\graphic\GraphicGridLink.cs" />
@@ -88,7 +92,6 @@
         <Compile Include="grid\GridMemberComp.cs" />
         <Compile Include="grid\GridMemberCompProps.cs" />
         <Compile Include="grid\harmony\Patch_GraphicUtility_WrapLinked.cs" />
-        <Compile Include="place_worker\PlaceWorkerLoom.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
     <ItemGroup>
@@ -133,6 +136,9 @@
       <Content Include="..\Defs\ThingDefs_Buildings\ArchInf_HeavyBuilding_Accumulator.xml">
         <Link>_mod_links\Defs\ThingDefs_Buildings\ArchInf_HeavyBuilding_Accumulator.xml</Link>
       </Content>
+      <Content Include="..\Defs\ThingDefs_Buildings\ArchInf_HeavyBuilding_Decoder.xml">
+        <Link>_mod_links\Defs\ThingDefs_Buildings\ArchInf_HeavyBuilding_Decoder.xml</Link>
+      </Content>
       <Content Include="..\Defs\ThingDefs_Buildings\ArchInf_HeavyBuilding_Transceiver.xml">
         <Link>_mod_links\Defs\ThingDefs_Buildings\ArchInf_HeavyBuilding_Transceiver.xml</Link>
       </Content>
@@ -168,6 +174,9 @@
       </Content>
       <Content Include="..\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Transceiver_Preview.png">
         <Link>_mod_links\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Transceiver_Preview.png</Link>
+      </Content>
+      <Content Include="..\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Decoder.png">
+        <Link>_mod_links\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Decoder.png</Link>
       </Content>
       <Content Include="..\Textures\ArchotechInfusions\Things\GridOverlay_Atlas.png">
         <Link>_mod_links\Textures\ArchotechInfusions\Things\GridOverlay_Atlas.png</Link>

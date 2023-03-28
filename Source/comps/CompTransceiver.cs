@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ArchotechInfusions.grid;
 using RimWorld;
 using Verse;
 using Verse.Sound;
@@ -19,45 +17,24 @@ namespace ArchotechInfusions.comps;
 ///
 /// Каждый рар тик, если State != Idle проверяется состояние батарей, дешифраторов, и авторежим.
 /// </summary>
-public class CompTransceiver : ThingComp
+public class CompTransceiver : ProgressCompBase
 {
-    private CompPowerTrader _power;
-    private GridMemberComp _member;
-
     private bool _autostart;
     private TransceiverState _state;
-    private int _progress;
-    private bool _mute;
 
     public CompPropsTransceiver Props => props as CompPropsTransceiver;
-
-    public CompPowerTrader Power => _power ??= parent.TryGetComp<CompPowerTrader>();
-    public GridMemberComp Member => _member ??= parent.TryGetComp<GridMemberComp>();
 
     public TransceiverState State
     {
         get => _state;
-        set
-        {
-            _state = value;
-            Log.Message($"Transceiver state changed to: {value}");
-        }
-    }
-
-    public override void PostSpawnSetup(bool respawningAfterLoad)
-    {
-        base.PostSpawnSetup(respawningAfterLoad);
-        if (Power is null) throw new Exception("ArchInf: CompTransceiver can't work without CompPowerTrader");
-        if (Member is null) throw new Exception("ArchInf: CompTransceiver can't work without GridMemberComp");
+        set => _state = value;
     }
 
     public override void PostExposeData()
     {
         base.PostExposeData();
         Scribe_Values.Look(ref _state, "state");
-        Scribe_Values.Look(ref _progress, "progress");
         Scribe_Values.Look(ref _autostart, "autostart");
-        Scribe_Values.Look(ref _mute, "mute");
     }
 
     public override void ReceiveCompSignal(string signal)
@@ -99,7 +76,7 @@ public class CompTransceiver : ThingComp
 
     private void Stop(string message = default)
     {
-        _progress = 0;
+        Progress = 0;
         State = TransceiverState.Idle;
         if (message != default)
         {
@@ -110,9 +87,9 @@ public class CompTransceiver : ThingComp
     private void StartStage(TransceiverState newState)
     {
         State = newState;
-        _progress = 0;
+        Progress = 0;
 
-        if (!_mute)
+        if (!Mute)
             switch (newState)
             {
                 case TransceiverState.Recharging:
@@ -138,7 +115,7 @@ public class CompTransceiver : ThingComp
         switch (State)
         {
             case TransceiverState.Recharging:
-                if (_progress >= Props.RechargeTicks)
+                if (Progress >= Props.RechargeTicks)
                 {
                     StartStage(TransceiverState.Transceive);
                     return;
@@ -158,27 +135,27 @@ public class CompTransceiver : ThingComp
                     return;
                 }
 
-                _progress++;
+                Progress++;
                 break;
 
             case TransceiverState.Transceive:
-                if (_progress >= Props.TransceiveTicks)
+                if (Progress >= Props.TransceiveTicks)
                 {
                     StartStage(TransceiverState.Receive);
                     return;
                 }
 
-                _progress++;
+                Progress++;
                 break;
 
             case TransceiverState.Receive:
-                if (_progress >= Props.ReceiveTicks)
+                if (Progress >= Props.ReceiveTicks)
                 {
                     Final();
                     return;
                 }
 
-                _progress++;
+                Progress++;
                 break;
         }
 
@@ -190,11 +167,11 @@ public class CompTransceiver : ThingComp
         switch (State)
         {
             case TransceiverState.Recharging:
-                return _progress / Props.RechargeTicks;
+                return Progress / Props.RechargeTicks;
             case TransceiverState.Transceive:
-                return _progress / Props.TransceiveTicks;
+                return Progress / Props.TransceiveTicks;
             case TransceiverState.Receive:
-                return _progress / Props.ReceiveTicks;
+                return Progress / Props.ReceiveTicks;
         }
 
         return 0;
@@ -217,11 +194,8 @@ public class CompTransceiver : ThingComp
             defaultLabel = _autostart ? "Stop autostart" : "Autostart", //
             action = () => _autostart = !_autostart,
         };
-        yield return new Command_Action
-        {
-            defaultLabel = _mute ? "Unmute" : "Mute", //
-            action = () => _mute = !_mute,
-        };
+        
+        foreach (var gizmo in base.CompGetGizmosExtra()) yield return gizmo;
     }
 
     public override string CompInspectStringExtra()

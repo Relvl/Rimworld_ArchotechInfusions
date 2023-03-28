@@ -47,9 +47,6 @@
         <rotatable>false</rotatable>
         <neverMultiSelect>true</neverMultiSelect>
         <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
-        <placeWorkers>
-            <li>ArchotechInfusions.place_worker.PlaceWorkerLoom</li>
-        </placeWorkers>
         <comps>
             <li Class="ArchotechInfusions.grid.GridMemberCompProps">
                 <GridType>ArchInfGrid</GridType>
