@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using RimWorld;
 using Verse;
 using Verse.Sound;
@@ -176,6 +177,7 @@ public class Comp_Transceiver : CompBase_Stageable<Comp_Transceiver>
 
     private class StageReceive : State
     {
+        private bool _showNeedDecoder;
         public override string Label => "Receiving".Translate();
 
         public StageReceive(int ticks) : base(ticks)
@@ -183,6 +185,19 @@ public class Comp_Transceiver : CompBase_Stageable<Comp_Transceiver>
         }
 
         public override void OnFirstTick(Comp_Transceiver owner) => ArchInfSoundDefOf.ArchInfTransceiverReceive.PlayOneShot(owner.parent);
-        public override void OnProgressComplete(Comp_Transceiver owner) => owner.FinalAction();
+
+        public override void OnProgressComplete(Comp_Transceiver owner) => _showNeedDecoder = !owner.FinalAction();
+
+        public override bool CompInspectStringExtra(StringBuilder sb, Comp_Transceiver owner)
+        {
+            base.CompInspectStringExtra(sb, owner);
+            if (_showNeedDecoder)
+            {
+                sb.AppendLine("Waiting for free decoder...");
+                return false;
+            }
+
+            return true;
+        }
     }
 }

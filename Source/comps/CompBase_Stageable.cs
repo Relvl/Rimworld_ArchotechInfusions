@@ -130,9 +130,11 @@ public abstract class CompBase_Stageable<T> : ThingComp
         var sb = new StringBuilder();
         if (Power.PowerOn && CurrentState != Idle)
         {
-            sb.AppendLine($"State: {CurrentState.Label}");
-            sb.AppendLine($"Progress: {((float)progress / CurrentState.Ticks * 100f):0.}%");
-            CurrentState.CompInspectStringExtra(sb, (T)(object)this);
+            var canContinue = CurrentState.CompInspectStringExtra(sb, (T)(object)this);
+            if (canContinue)
+            {
+                sb.AppendLine($"Progress: {((float)progress / CurrentState.Ticks * 100f):0.}%");
+            }
         }
 
         return sb.TrimEnd().ToString();
@@ -165,8 +167,10 @@ public abstract class CompBase_Stageable<T> : ThingComp
             Scribe_Values.Look(ref Ticks, "ticks");
         }
 
-        public virtual void CompInspectStringExtra(StringBuilder sb, T owner)
+        public virtual bool CompInspectStringExtra(StringBuilder sb, T owner)
         {
+            sb.AppendLine($"State: {Label}");
+            return true;
         }
     }
 

@@ -115,12 +115,15 @@ public class Comp_Decoder : CompBase_Stageable<Comp_Decoder>
             owner.CurrentState = new StateDecode(owner.Props.DecodeTicks.RandomInRange);
         }
 
-        public override void CompInspectStringExtra(StringBuilder sb, Comp_Decoder owner)
+        public override bool CompInspectStringExtra(StringBuilder sb, Comp_Decoder owner)
         {
+            base.CompInspectStringExtra(sb, owner);
             if (owner._backupState != default)
             {
                 sb.AppendLine($"Stored decode progress: {owner._backupProgress / (float)owner._backupState.Ticks * 100f:0.}%");
             }
+
+            return true;
         }
     }
 
