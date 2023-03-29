@@ -6,26 +6,23 @@ using Verse;
 
 namespace ArchotechInfusions.comps;
 
-public class CompAccumulator : ThingComp
+// ReSharper disable UnassignedField.Global, InconsistentNaming, ClassNeverInstantiated.Global -- comp reflective
+public class CompProps_Accumulator : CompProperties
+{
+    public float MaxStored;
+
+    public CompProps_Accumulator() => compClass = typeof(Comp_Accumulator);
+}
+
+public class Comp_Accumulator : CompBase_Membered<CompProps_Accumulator>
 {
     private float _stored;
     private float _storedLastTick;
-    private CompPowerTrader _power;
-
-    public CompPropsAccumulator Props => props as CompPropsAccumulator;
 
     public float Stored
     {
         get => _stored;
-        set => _stored = Math.Max(0, Math.Min(value, Props.MaxStored));
-    }
-
-    public CompPowerTrader CompPowerTrader => _power ??= parent.TryGetComp<CompPowerTrader>();
-
-    public override void PostSpawnSetup(bool respawningAfterLoad)
-    {
-        base.PostSpawnSetup(respawningAfterLoad);
-        if (CompPowerTrader is null) throw new Exception("ArchInf: CompAccumulator can't worl without CompPowerTrader");
+        private set => _stored = Math.Max(0, Math.Min(value, Props.MaxStored));
     }
 
     public override void PostExposeData()
@@ -43,16 +40,16 @@ public class CompAccumulator : ThingComp
     {
         _storedLastTick = Stored;
 
-        if (CompPowerTrader.PowerOn)
+        if (Power.PowerOn)
         {
             if (IsFull)
             {
-                CompPowerTrader.PowerOutput = -CompPowerTrader.Props.idlePowerDraw;
+                Power.PowerOutput = -Power.Props.idlePowerDraw;
             }
             else
             {
-                CompPowerTrader.PowerOutput = -CompPowerTrader.Props.PowerConsumption;
-                Stored -= CompPowerTrader.PowerOutput * CompPower.WattsToWattDaysPerTick * 10;
+                Power.PowerOutput = -Power.Props.PowerConsumption;
+                Stored -= Power.PowerOutput * CompPower.WattsToWattDaysPerTick * 10;
             }
         }
 
@@ -77,7 +74,7 @@ public class CompAccumulator : ThingComp
     public override string CompInspectStringExtra()
     {
         var sb = new StringBuilder();
-        if (DebugSettings.ShowDevGizmos) sb.AppendLine($"Diff: {(Stored - _storedLastTick) * CompPower.WattsToWattDaysPerTick * 10:+0.;0;-0.}");
+        if (DebugSettings.ShowDevGizmos) sb.AppendLine($"Diff: {(Stored - _storedLastTick) * CompPower.WattsToWattDaysPerTick:+0.##;0;-0.##}");
         sb.Append($"Stored: {Stored:0.} / {Props.MaxStored:0.}");
         return sb.ToString();
     }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text;
 using RimWorld;
@@ -14,13 +15,11 @@ public class CompProps_Decoder : CompProperties
     public CompProps_Decoder() => compClass = typeof(Comp_Decoder);
 }
 
-public class Comp_Decoder : CompBase_Stageable<Comp_Decoder>
+public class Comp_Decoder : CompBase_Stageable<Comp_Decoder, CompProps_Decoder>
 {
     private State _backupState;
     private int _backupProgress;
     private State _startup;
-
-    private CompProps_Decoder Props => props as CompProps_Decoder;
 
     public override void PostExposeData()
     {
@@ -65,6 +64,10 @@ public class Comp_Decoder : CompBase_Stageable<Comp_Decoder>
         CurrentState = new StateDecode(Props.DecodeTicks.RandomInRange);
 
         return true;
+    }
+
+    public void SetupKey(Guid key)
+    {
     }
 
     public override bool FinalAction()

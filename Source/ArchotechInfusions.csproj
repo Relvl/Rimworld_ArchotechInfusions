@@ -57,7 +57,7 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="ArchInfSoundDefOf.cs" />
+        <Compile Include="ArchInfDefOf.cs" />
         <Compile Include="ArchotechInfusionsMod.cs" />
         <Compile Include="building\ArchInf_Accumulator_Building.cs" />
         <Compile Include="building\ArchInf_Loom_Building.cs" />
@@ -71,11 +71,12 @@
         <Compile Include="building\ArchInf_Transceiver_Building.cs" />
         <Compile Include="building\proto\AddInf_Building.cs" />
         <Compile Include="building\proto\ArchInf_BuildingLink.cs" />
-        <Compile Include="comps\CompAccumulator.cs" />
+        <Compile Include="comps\Comp_Accumulator.cs" />
+        <Compile Include="comps\CompBase_Membered.cs" />
         <Compile Include="comps\CompBase_Stageable.cs" />
         <Compile Include="comps\Comp_Decoder.cs" />
+        <Compile Include="comps\Comp_KeyGenerator.cs" />
         <Compile Include="comps\Comp_Transceiver.cs" />
-        <Compile Include="comps\CompPropsAccumulator.cs" />
         <Compile Include="Extensions.cs" />
         <Compile Include="grid\graphic\GraphicGridLink.cs" />
         <Compile Include="grid\graphic\GraphicLinkedMoreLayers.cs" />
@@ -90,6 +91,8 @@
         <Compile Include="grid\GridMemberComp.cs" />
         <Compile Include="grid\GridMemberCompProps.cs" />
         <Compile Include="grid\harmony\Patch_GraphicUtility_WrapLinked.cs" />
+        <Compile Include="jobs\JobDriver_GenerateKey.cs" />
+        <Compile Include="jobs\WorkGiver_GenerateKey.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
     <ItemGroup>
@@ -116,6 +119,9 @@
       <Content Include="..\Assemblies\ArchotechInfusions.pdb">
         <Link>_mod_links\Assemblies\ArchotechInfusions.pdb</Link>
       </Content>
+      <Content Include="..\Defs\JobDefs\ArchInf_JobDef_GenerateKey.xml">
+        <Link>_mod_links\Defs\JobDefs\ArchInf_JobDef_GenerateKey.xml</Link>
+      </Content>
       <Content Include="..\Defs\Misc\Designations\ArchInf_DesignationCategories.xml">
         <Link>_mod_links\Defs\Misc\Designations\ArchInf_DesignationCategories.xml</Link>
       </Content>
@@ -127,6 +133,9 @@
       </Content>
       <Content Include="..\Defs\ThingCategoryDefs\ArchInf_ThingCategoryDef.xml">
         <Link>_mod_links\Defs\ThingCategoryDefs\ArchInf_ThingCategoryDef.xml</Link>
+      </Content>
+      <Content Include="..\Defs\ThingDefs_Buildings\ArchInf_Building_KeyGenerator.xml">
+        <Link>_mod_links\Defs\ThingDefs_Buildings\ArchInf_Building_KeyGenerator.xml</Link>
       </Content>
       <Content Include="..\Defs\ThingDefs_Buildings\ArchInf_Building_Loom.xml">
         <Link>_mod_links\Defs\ThingDefs_Buildings\ArchInf_Building_Loom.xml</Link>
@@ -145,6 +154,9 @@
       </Content>
       <Content Include="..\Defs\ThingDefs_Buildings\base\ArchInf_HeavyBuilding_Base.xml">
         <Link>_mod_links\Defs\ThingDefs_Buildings\base\ArchInf_HeavyBuilding_Base.xml</Link>
+      </Content>
+      <Content Include="..\Defs\WorkGiverDefs\ArchInf_WorkGiverDef_GenerateKey.xml">
+        <Link>_mod_links\Defs\WorkGiverDefs\ArchInf_WorkGiverDef_GenerateKey.xml</Link>
       </Content>
       <Content Include="..\Sounds\TransceiverReceive.ogg">
         <Link>_mod_links\Sounds\TransceiverReceive.ogg</Link>
@@ -175,6 +187,15 @@
       </Content>
       <Content Include="..\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Decoder.png">
         <Link>_mod_links\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Decoder.png</Link>
+      </Content>
+      <Content Include="..\Textures\ArchotechInfusions\Things\Buildings\ArchInf_KeyGenerator_east.png">
+        <Link>_mod_links\Textures\ArchotechInfusions\Things\Buildings\ArchInf_KeyGenerator_east.png</Link>
+      </Content>
+      <Content Include="..\Textures\ArchotechInfusions\Things\Buildings\ArchInf_KeyGenerator_north.png">
+        <Link>_mod_links\Textures\ArchotechInfusions\Things\Buildings\ArchInf_KeyGenerator_north.png</Link>
+      </Content>
+      <Content Include="..\Textures\ArchotechInfusions\Things\Buildings\ArchInf_KeyGenerator_south.png">
+        <Link>_mod_links\Textures\ArchotechInfusions\Things\Buildings\ArchInf_KeyGenerator_south.png</Link>
       </Content>
       <Content Include="..\Textures\ArchotechInfusions\Things\GridOverlay_Atlas.png">
         <Link>_mod_links\Textures\ArchotechInfusions\Things\GridOverlay_Atlas.png</Link>

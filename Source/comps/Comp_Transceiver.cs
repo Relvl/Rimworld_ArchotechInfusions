@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,16 +22,16 @@ public class CompProps_Transceiver : CompProperties
     public CompProps_Transceiver() => compClass = typeof(Comp_Transceiver);
 }
 
-public class Comp_Transceiver : CompBase_Stageable<Comp_Transceiver>
+public class Comp_Transceiver : CompBase_Stageable<Comp_Transceiver, CompProps_Transceiver>
 {
     private bool _autostart;
-
-    private CompProps_Transceiver Props => props as CompProps_Transceiver;
+    private Guid _key;
 
     public override void PostExposeData()
     {
         base.PostExposeData();
         Scribe_Values.Look(ref _autostart, "autostart");
+        Scribe_Values.Look(ref _key, "key");
     }
 
     public override void ReceiveCompSignal(string signal)
@@ -60,9 +61,10 @@ public class Comp_Transceiver : CompBase_Stageable<Comp_Transceiver>
         if (CurrentState != Idle) return Message($"{parent.LabelCap} is busy", silent);
         if (!Power.PowerOn) return Message($"{parent.LabelCap} is out of power", silent);
 
-        // todo check key generated
+        var keyGenerators = Member.Grid.GetComps<Comp_KeyGenerator>();
+        if (keyGenerators.Count == 0) return Message("Grid has no key generator", silent);
 
-        var accumulators = Member.Grid.GetComps<CompAccumulator>();
+        var accumulators = Member.Grid.GetComps<Comp_Accumulator>();
         if (accumulators.Count == 0) return Message("Grid has no accumulator", silent);
 
         var totalStored = accumulators.Sum(a => a.Stored);
@@ -77,7 +79,10 @@ public class Comp_Transceiver : CompBase_Stageable<Comp_Transceiver>
         var acceptanceReport = CanStart(silent);
         if (!acceptanceReport) return acceptanceReport;
 
-        // todo reserve the key
+        var keyGenerators = Member.Grid.GetComps<Comp_KeyGenerator>();
+        var key = keyGenerators.FirstOrDefault(g => g.HasFreeKey())?.ConsumeKey();
+        if (key == default) return Message("Grid has no generated keys", silent);
+
         CurrentState = new StageRecharge(Props.RechargeTicks);
 
         return true;
@@ -89,7 +94,8 @@ public class Comp_Transceiver : CompBase_Stageable<Comp_Transceiver>
         if (decoder != default)
         {
             if (DebugSettings.ShowDevGizmos) Messages.Message("DEV: receive done - go decode!", parent, MessageTypeDefOf.PositiveEvent);
-            decoder.StartAction(true);
+            if (decoder.StartAction(true)) decoder.SetupKey(_key);
+            _key = default;
             CurrentState = Idle;
             return true;
         }
@@ -99,7 +105,7 @@ public class Comp_Transceiver : CompBase_Stageable<Comp_Transceiver>
 
     protected override void StopAction(string reason = default)
     {
-        // todo! release reserved key
+        _key = default;
         base.StopAction(reason);
     }
 
@@ -116,7 +122,7 @@ public class Comp_Transceiver : CompBase_Stageable<Comp_Transceiver>
                 {
                     Find.WindowStack.Add(
                         Dialog_MessageBox.CreateConfirmation( //
-                            "Really want to stop process? All data and energy will be lost!",
+                            "Really want to stop process? The key, all data and energy will be lost!",
                             () => StopAction(),
                             true,
                             "Stop"
@@ -146,7 +152,7 @@ public class Comp_Transceiver : CompBase_Stageable<Comp_Transceiver>
 
         public override void OnCompTick(Comp_Transceiver owner)
         {
-            var accumulators = owner.Member.Grid.GetComps<CompAccumulator>();
+            var accumulators = owner.Member.Grid.GetComps<Comp_Accumulator>();
             var totalNeeded = (float)(owner.Props.TranscieveConsumption + owner.Props.ReceiveConsumption) / owner.Props.RechargeTicks;
             foreach (var accumulator in accumulators)
             {

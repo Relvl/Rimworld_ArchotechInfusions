@@ -48,7 +48,7 @@
             <li Class="ArchotechInfusions.grid.GridMemberCompProps">
                 <GridType>ArchInfGrid</GridType>
             </li>
-            <li Class="ArchotechInfusions.comps.CompPropsAccumulator">
+            <li Class="ArchotechInfusions.comps.CompProps_Accumulator">
                 <MaxStored>20000</MaxStored>
             </li>
             <li Class="CompProperties_Breakdownable"/>

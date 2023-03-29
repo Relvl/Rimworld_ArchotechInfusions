@@ -1,6 +1,5 @@
 using ArchotechInfusions.building.proto;
 using ArchotechInfusions.comps;
-using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -15,9 +14,9 @@ public class ArchInf_Accumulator_Building : AddInf_Building
     private static readonly Material BarFilledMat = SolidColorMaterials.SimpleSolidColorMaterial(new Color(0.2f, 0.85f, 0.85f));
     private static readonly Material BarUnfilledMat = SolidColorMaterials.SimpleSolidColorMaterial(new Color(0.3f, 0.3f, 0.3f));
 
-    private CompAccumulator _comp;
+    private Comp_Accumulator _comp;
 
-    private CompAccumulator Comp => _comp ??= GetComp<CompAccumulator>();
+    private Comp_Accumulator Comp => _comp ??= GetComp<Comp_Accumulator>();
 
     public override void Draw()
     {

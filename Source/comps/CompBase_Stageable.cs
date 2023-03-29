@@ -7,17 +7,13 @@ using Verse;
 namespace ArchotechInfusions.comps;
 
 // ReSharper disable once InconsistentNaming
-public abstract class CompBase_Stageable<T> : ThingComp
+public abstract class CompBase_Stageable<T, TP> : CompBase_Membered<TP> where TP : CompProperties
 {
     protected static readonly StateIdle Idle = new();
 
-    private CompPowerTrader _power;
-    private GridMemberComp _member;
     private State _currentState;
 
     public int progress;
-    public CompPowerTrader Power => _power ??= parent.TryGetComp<CompPowerTrader>();
-    public GridMemberComp Member => _member ??= parent.TryGetComp<GridMemberComp>();
 
     public State CurrentState
     {

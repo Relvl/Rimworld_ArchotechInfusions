@@ -147,6 +147,13 @@ public class GridMapComponent : MapComponent
         return comp != null && _registeredMembers.ContainsKey(c) && _registeredMembers[c].Props.GridType == comp.Props.GridType;
     }
 
+    public IEnumerable<T> GetComps<T>() where T : ThingComp
+    {
+        foreach (var grid in _grids)
+        foreach (var comp in grid.GetComps<T>())
+            yield return comp;
+    }
+
     public static GridMapComponent GetInstance(Map map)
     {
         if (_cachedGridComponent.Item1 != map.uniqueID)

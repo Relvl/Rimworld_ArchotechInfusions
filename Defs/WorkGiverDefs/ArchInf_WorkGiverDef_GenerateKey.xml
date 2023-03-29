@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Defs>
+    <WorkGiverDef>
+        <defName>ArchInf_GenerateKey</defName>
+        <label>Generating key</label>
+        <giverClass>ArchotechInfusions.jobs.WorkGiver_GenerateKey</giverClass>
+        <workType>Research</workType>
+        <verb>generate</verb>
+        <gerund>generates at</gerund>
+        <priorityInType>99</priorityInType>
+        <requiredCapacities>
+            <li>Manipulation</li>
+        </requiredCapacities>
+        <canBeDoneByMechs>false</canBeDoneByMechs>
+    </WorkGiverDef>
+
+</Defs>
