@@ -10,6 +10,7 @@ namespace ArchotechInfusions.comps;
 public abstract class CompBase_Stageable<T, TP> : CompBase_Membered<TP> where TP : CompProperties
 {
     protected static readonly StateIdle Idle = new();
+    protected string LastCheckStatus;
 
     private State _currentState;
 
@@ -93,6 +94,7 @@ public abstract class CompBase_Stageable<T, TP> : CompBase_Membered<TP> where TP
 
     protected virtual void StopAction(string reason = default)
     {
+        LastCheckStatus = reason;
         if (CurrentState == Idle) return;
         CurrentState = Idle;
         if (reason != default) Message(reason, false);
@@ -100,6 +102,7 @@ public abstract class CompBase_Stageable<T, TP> : CompBase_Membered<TP> where TP
 
     public virtual bool FinalAction()
     {
+        LastCheckStatus = default;
         return false;
     }
 
@@ -132,6 +135,8 @@ public abstract class CompBase_Stageable<T, TP> : CompBase_Membered<TP> where TP
                 sb.AppendLine($"Progress: {((float)progress / CurrentState.Ticks * 100f):0.}%");
             }
         }
+
+        if (LastCheckStatus != default) sb.AppendLine(LastCheckStatus);
 
         return sb.TrimEnd().ToString();
     }

@@ -84,6 +84,8 @@ public class Comp_Transceiver : CompBase_Stageable<Comp_Transceiver, CompProps_T
         if (key == default) return Message("Grid has no generated keys", silent);
 
         CurrentState = new StageRecharge(Props.RechargeTicks);
+        // todo fail statuses
+        LastCheckStatus = default;
 
         return true;
     }
@@ -108,7 +110,7 @@ public class Comp_Transceiver : CompBase_Stageable<Comp_Transceiver, CompProps_T
         _key = default;
         base.StopAction(reason);
     }
-
+    
     public override IEnumerable<Gizmo> CompGetGizmosExtra()
     {
         if (CurrentState == Idle)
