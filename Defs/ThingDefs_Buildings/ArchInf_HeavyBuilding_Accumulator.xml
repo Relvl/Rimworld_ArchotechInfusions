@@ -30,6 +30,7 @@
                 <cornerBR>Damage/Corner</cornerBR>
             </damageData>
         </graphicData>
+        <drawerType>MapMeshAndRealTime</drawerType>
         <fillPercent>0.40</fillPercent>
         <size>(1,2)</size>
         <castEdgeShadows>True</castEdgeShadows>
