@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Defs>
 
-    <!--ArchInf_Building_KeyGenerator-->
     <ThingDef ParentName="ArchInf_HeavyBuilding_Base">
-        <defName>ArchInf_Building_KeyGenerator</defName>
-        <label>archotech key generator</label>
-        <description>Allow to generate Archotech data key</description>
-        <thingClass>ArchotechInfusions.building.ArchInf_KeyGenerator_Building</thingClass>
+        <defName>ArchInf_Building_Database</defName>
+        <label>instruction database</label>
+        <description>Allow to store docoded instructions</description>
+        <thingClass>ArchotechInfusions.building.ArchInf_Database_Building</thingClass>
         <costStuffCount>115</costStuffCount>
         <costList>
             <ComponentIndustrial>20</ComponentIndustrial>
@@ -18,12 +17,13 @@
         <statBases>
             <MaxHitPoints>150</MaxHitPoints>
             <WorkToBuild>1500</WorkToBuild>
-            <Mass>200</Mass>
+            <Mass>500</Mass>
         </statBases>
         <graphicData>
-            <texPath>ArchotechInfusions/Things/Buildings/ArchInf_KeyGenerator</texPath>
+            <texPath>ArchotechInfusions/Things/Buildings/ArchInf_Database</texPath>
             <graphicClass>Graphic_Multi</graphicClass>
-            <drawSize>(7,4)</drawSize>
+            <shaderType>CutoutComplex</shaderType>
+            <drawSize>(3.6,3.6)</drawSize>
             <damageData>
                 <cornerTL>Damage/Corner</cornerTL>
                 <cornerTR>Damage/Corner</cornerTR>
@@ -32,18 +32,10 @@
             </damageData>
         </graphicData>
         <surfaceType>Item</surfaceType>
-        <interactionCellOffset>(0,0,-1)</interactionCellOffset>
-        <hasInteractionCell>true</hasInteractionCell>
         <fillPercent>1</fillPercent>
-        <size>(5,2)</size>
+        <size>(2,2)</size>
         <castEdgeShadows>True</castEdgeShadows>
         <rotatable>true</rotatable>
-        <building>
-            <bed_humanlike>false</bed_humanlike>
-            <bed_showSleeperBody>True</bed_showSleeperBody>
-            <canPlaceOverImpassablePlant>false</canPlaceOverImpassablePlant>
-            <ai_chillDestination>false</ai_chillDestination>
-        </building>
         <comps>
             <li Class="ArchotechInfusions.grid.GridMemberCompProps">
                 <GridType>ArchInfGrid</GridType>
@@ -56,13 +48,14 @@
                 <basePowerConsumption>1500</basePowerConsumption>
                 <idlePowerDraw>100</idlePowerDraw>
             </li>
-            <li Class="ArchotechInfusions.comps.CompProps_KeyGenerator">
-                <WorkAmmount>1500</WorkAmmount>
-                <MaxStoredKeys>3</MaxStoredKeys>
-                <TotalEnergyCost>200</TotalEnergyCost>
-                <AccumulatorRecacheTicks>60</AccumulatorRecacheTicks>
+            <li Class="ArchotechInfusions.comps.CompProps_Database">
+            </li>
+            <li Class="CompProperties_Glower">
+                <compClass>CompGlower</compClass>
+                <glowRadius>1</glowRadius>
+                <glowColor>(110,186,255,0)</glowColor>
             </li>
         </comps>
     </ThingDef>
-
+    
 </Defs>
