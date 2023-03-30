@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<Defs>
-    <JobDef>
-        <defName>ArchInf_GenerateKey</defName>
-        <driverClass>ArchotechInfusions.jobs.JobDriver_GenerateKey</driverClass>
-        <reportString>Generating archotech key.</reportString>
-        <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
-    </JobDef>
-</Defs>

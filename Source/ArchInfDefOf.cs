@@ -14,17 +14,10 @@ public static class ArchInfSoundDefOf
 }
 
 [DefOf]
-public class WorkGiverDefOf
-{
-    public static WorkGiverDef ArchInf_GenerateKey;
-
-    static WorkGiverDefOf() => DefOfHelper.EnsureInitializedInCtor(typeof(WorkGiverDefOf));
-}
-
-[DefOf]
 public class JobDriverDefOf
 {
     public static JobDef ArchInf_GenerateKey;
+    public static JobDef ArchInf_RefuelContainer;
 
     static JobDriverDefOf() => DefOfHelper.EnsureInitializedInCtor(typeof(JobDriverDefOf));
 }

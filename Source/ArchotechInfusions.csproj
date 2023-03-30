@@ -95,7 +95,7 @@
         <Compile Include="grid\GridMemberCompProps.cs" />
         <Compile Include="grid\harmony\Patch_GraphicUtility_WrapLinked.cs" />
         <Compile Include="jobs\JobDriver_GenerateKey.cs" />
-        <Compile Include="jobs\WorkGiver_GenerateKey.cs" />
+        <Compile Include="jobs\JobDriver_RefuelContainer.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
     <ItemGroup>
@@ -122,8 +122,11 @@
       <Content Include="..\Assemblies\ArchotechInfusions.pdb">
         <Link>_mod_links\Assemblies\ArchotechInfusions.pdb</Link>
       </Content>
-      <Content Include="..\Defs\JobDefs\ArchInf_JobDef_GenerateKey.xml">
+      <Content Include="..\Defs\Jobs\ArchInf_JobDef_GenerateKey.xml">
         <Link>_mod_links\Defs\JobDefs\ArchInf_JobDef_GenerateKey.xml</Link>
+      </Content>
+      <Content Include="..\Defs\Jobs\ArchInf_JobDef_RefuelContainer.xml">
+        <Link>_mod_links\Defs\Jobs\ArchInf_JobDef_RefuelContainer.xml</Link>
       </Content>
       <Content Include="..\Defs\Misc\Designations\ArchInf_DesignationCategories.xml">
         <Link>_mod_links\Defs\Misc\Designations\ArchInf_DesignationCategories.xml</Link>
@@ -166,9 +169,6 @@
       </Content>
       <Content Include="..\Defs\ThingDefs_Buildings\base\ArchInf_HeavyBuilding_Base.xml">
         <Link>_mod_links\Defs\ThingDefs_Buildings\base\ArchInf_HeavyBuilding_Base.xml</Link>
-      </Content>
-      <Content Include="..\Defs\WorkGiverDefs\ArchInf_WorkGiverDef_GenerateKey.xml">
-        <Link>_mod_links\Defs\WorkGiverDefs\ArchInf_WorkGiverDef_GenerateKey.xml</Link>
       </Content>
       <Content Include="..\Sounds\TransceiverReceive.ogg">
         <Link>_mod_links\Sounds\TransceiverReceive.ogg</Link>
