@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Defs>
+    
+    <ArchotechInfusions.def.StatNegateDef>
+        <defName>DefaultStatNegate</defName>
+        <NegatedStats>
+            <li>Flammability</li>
+            <li>EquipDelay</li>
+            <li>WornBulk</li>
+            <li>Mass</li>
+        </NegatedStats>
+    </ArchotechInfusions.def.StatNegateDef>
+
+</Defs>

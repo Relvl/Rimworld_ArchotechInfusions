@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Defs>
+
+    <ArchotechInfusions.def.StatIgnoreDef>
+        <defName>DefaultIgnore</defName>
+        <!-- StatDef/defName set. Allow use wildcard (*) at start or end the name (only one) -->
+        <IgnoredStats>
+            <li>StuffEffectMultiplier*</li>
+            <li>SellPriceFactor</li>
+            <li>MarketValue</li>
+            <li>DeteriorationRate</li>
+            <li>Beauty</li>
+            <li>WorkToMake</li>
+        </IgnoredStats>
+    </ArchotechInfusions.def.StatIgnoreDef>
+
+</Defs>

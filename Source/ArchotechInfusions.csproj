@@ -55,9 +55,14 @@
           <HintPath>..\..\..\RimWorldWin64_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
           <Private>False</Private>
         </Reference>
+        <Reference Include="UnityEngine.TextRenderingModule">
+          <HintPath>..\..\..\RimWorldWin64_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
     </ItemGroup>
     <ItemGroup>
         <Compile Include="ArchInfDefOf.cs" />
+        <Compile Include="ArchInfStatPart.cs" />
         <Compile Include="ArchotechInfusionsMod.cs" />
         <Compile Include="building\ArchInf_Accumulator_Building.cs" />
         <Compile Include="building\ArchInf_Loom_Building.cs" />
@@ -80,6 +85,10 @@
         <Compile Include="comps\Comp_KeyGenerator.cs" />
         <Compile Include="comps\Comp_Printer.cs" />
         <Compile Include="comps\Comp_Transceiver.cs" />
+        <Compile Include="def\StatCollectorDef.cs" />
+        <Compile Include="def\StatIgnoreDef.cs" />
+        <Compile Include="def\StatModDef.cs" />
+        <Compile Include="def\StatNegateDef.cs" />
         <Compile Include="Extensions.cs" />
         <Compile Include="grid\graphic\GraphicGridLink.cs" />
         <Compile Include="grid\graphic\GraphicLinkedMoreLayers.cs" />
@@ -94,9 +103,18 @@
         <Compile Include="grid\GridMemberComp.cs" />
         <Compile Include="grid\GridMemberCompProps.cs" />
         <Compile Include="grid\harmony\Patch_GraphicUtility_WrapLinked.cs" />
+        <Compile Include="InstructionTarget.cs" />
+        <Compile Include="InstructionType.cs" />
         <Compile Include="jobs\JobDriver_GenerateKey.cs" />
         <Compile Include="jobs\JobDriver_RefuelContainer.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="statcollectors\Instruction.cs" />
+        <Compile Include="statcollectors\ArchInf_StatCollector_FromApparel.cs" />
+        <Compile Include="statcollectors\IStatCollector.cs" />
+        <Compile Include="statcollectors\StatCollectionElement.cs" />
+        <Compile Include="statcollectors\StatCollector.cs" />
+        <Compile Include="ui\CompDatabaseWindow.cs" />
+        <Compile Include="ui\ShowElementsWindow.cs" />
     </ItemGroup>
     <ItemGroup>
       <Folder Include="..\Languages\English">
@@ -122,6 +140,9 @@
       <Content Include="..\Assemblies\ArchotechInfusions.pdb">
         <Link>_mod_links\Assemblies\ArchotechInfusions.pdb</Link>
       </Content>
+      <Content Include="..\Defs\StatIgnoreDefs.xml">
+        <Link>_mod_links\Defs\StatIgnoreDefs.xml</Link>
+      </Content>
       <Content Include="..\Defs\Jobs\ArchInf_JobDef_GenerateKey.xml">
         <Link>_mod_links\Defs\JobDefs\ArchInf_JobDef_GenerateKey.xml</Link>
       </Content>
@@ -136,6 +157,15 @@
       </Content>
       <Content Include="..\Defs\SoundDefs\ArchInf_Sounds.xml">
         <Link>_mod_links\Defs\SoundDefs\ArchInf_Sounds.xml</Link>
+      </Content>
+      <Content Include="..\Defs\StatCollectorDefs.xml">
+        <Link>_mod_links\Defs\StatCollectorDefs.xml</Link>
+      </Content>
+      <Content Include="..\Defs\StatModDefs.xml">
+        <Link>_mod_links\Defs\StatModDefs.xml</Link>
+      </Content>
+      <Content Include="..\Defs\StatNegateDefs.xml">
+        <Link>_mod_links\Defs\StatNegateDefs.xml</Link>
       </Content>
       <Content Include="..\Defs\ThingCategoryDefs\ArchInf_ThingCategoryDef.xml">
         <Link>_mod_links\Defs\ThingCategoryDefs\ArchInf_ThingCategoryDef.xml</Link>

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using ArchotechInfusions.statcollectors;
+using ArchotechInfusions.ui;
 using RimWorld;
 using Verse;
 
@@ -20,10 +22,14 @@ public class Comp_Decoder : CompBase_Stageable<Comp_Decoder, CompProps_Decoder>
     private State _backupState;
     private int _backupProgress;
     private State _startup;
+    private Guid _key;
+    private Instruction _modifier;
 
     public override void PostExposeData()
     {
         base.PostExposeData();
+        Scribe_Values.Look(ref _key, "key");
+        Scribe_Deep.Look(ref _modifier, "storedModifier");
         if (ScribeState(ref _backupState, "backupState"))
         {
             Scribe_Values.Look(ref _backupProgress, "backupProgress");
@@ -43,6 +49,17 @@ public class Comp_Decoder : CompBase_Stageable<Comp_Decoder, CompProps_Decoder>
             CurrentState = _startup ??= new StateStartup(Props.StartupTicks);
         }
 
+        if (_modifier is not null && Power.PowerOn)
+        {
+            var databases = Member.Grid.GetComps<Comp_Database>();
+            foreach (var compDatabase in databases)
+                if (compDatabase.MakeDatabaseRecord(_modifier))
+                {
+                    _modifier = null;
+                    break;
+                }
+        }
+
         base.CompTick();
     }
 
@@ -50,9 +67,7 @@ public class Comp_Decoder : CompBase_Stageable<Comp_Decoder, CompProps_Decoder>
     {
         if (CurrentState != Idle) return Message($"{parent.LabelCap} is busy", silent);
         if (!Power.PowerOn) return Message($"{parent.LabelCap} is out of power", silent);
-
-        // todo check database
-
+        if (_modifier is not null) return Message($"{parent.LabelCap} has stored data packet", silent);
         return true;
     }
 
@@ -68,16 +83,24 @@ public class Comp_Decoder : CompBase_Stageable<Comp_Decoder, CompProps_Decoder>
 
     public void SetupKey(Guid key)
     {
+        _key = key;
     }
 
     public override bool FinalAction()
     {
-        if (true /*todo send to database*/)
-        {
-            Messages.Message("DEV: decode done!", parent, MessageTypeDefOf.PositiveEvent);
-            CurrentState = Idle;
-            return true;
-        }
+        CurrentState = Idle;
+        _modifier = StatCollector.GenerateNewInstruction();
+        _key = default;
+        if (DebugSettings.ShowDevGizmos) Messages.Message("DEV: decode done!", parent, MessageTypeDefOf.PositiveEvent);
+        return true;
+    }
+
+    protected override void StopAction(string reason = default)
+    {
+        base.StopAction(reason);
+        _key = default;
+        _backupProgress = default;
+        _backupState = default;
     }
 
     public override IEnumerable<Gizmo> CompGetGizmosExtra()
@@ -85,7 +108,16 @@ public class Comp_Decoder : CompBase_Stageable<Comp_Decoder, CompProps_Decoder>
         if (DebugSettings.ShowDevGizmos)
         {
             yield return new Command_Action { defaultLabel = "Try decode", action = () => StartAction() };
-            yield return new Command_Action { defaultLabel = "Call final", action = () => { } };
+            yield return new Command_Action { defaultLabel = "Call final", action = () => FinalAction() };
+            yield return new Command_Action
+            {
+                defaultLabel = "Show available stats",
+                action = () =>
+                {
+                    Find.WindowStack.TryRemove(typeof(ShowElementsWindow));
+                    Find.WindowStack.Add(new ShowElementsWindow());
+                }
+            };
         }
 
         foreach (var gizmo in base.CompGetGizmosExtra()) yield return gizmo;

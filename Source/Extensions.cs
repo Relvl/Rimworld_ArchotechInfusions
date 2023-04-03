@@ -15,4 +15,7 @@ public static class Extensions
             sb.Length = i + 1;
         return sb;
     }
+
+    public static float PercentOfRange(this float input, float min, float max) => (input - min) / (max - min);
+    public static float Denormalize(this float input, float min, float max) => input * (max - min) + min;
 }

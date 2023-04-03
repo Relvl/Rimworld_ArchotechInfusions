@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Defs>
+    <ArchotechInfusions.def.StatCollectorDef>
+        <defName>ApparelCollector</defName>
+        <CollectorClasses>
+            <li>ArchotechInfusions.statcollectors.ArchInf_StatCollector_FromApparel</li>
+        </CollectorClasses>
+    </ArchotechInfusions.def.StatCollectorDef>
+</Defs>
