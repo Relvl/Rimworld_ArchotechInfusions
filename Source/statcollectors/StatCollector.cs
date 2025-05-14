@@ -9,8 +9,8 @@ namespace ArchotechInfusions.statcollectors;
 
 public static class StatCollector
 {
-    private static readonly HashSet<string> IgnoredDefs = new();
-    private static readonly HashSet<string> NegatedDefs = new();
+    private static readonly HashSet<string> IgnoredDefs = [];
+    private static readonly HashSet<string> NegatedDefs = [];
 
     private static IEnumerable<StatCollectionElement> _statCache;
     public static IEnumerable<StatCollectionElement> StatCache => _statCache ??= GetStatCache();

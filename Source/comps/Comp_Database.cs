@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using ArchotechInfusions.comps.comp_base;
 using ArchotechInfusions.statcollectors;
 using ArchotechInfusions.ui;
 using Verse;
@@ -14,18 +15,18 @@ public class CompProps_Database : CompProperties
     public CompProps_Database() => compClass = typeof(Comp_Database);
 }
 
-public class Comp_Database : CompBase_Membered<CompProps_Database>
+public class Comp_Database : CompBase_Grid<CompProps_Database>
 {
-    private List<Instruction> _modifiers = new();
+    private List<Instruction> _modifiers = [];
     private float _spaceUsed;
 
     public override void PostExposeData()
     {
         Scribe_Collections.Look(ref _modifiers, "instructions", LookMode.Deep);
-        RecalSpaceUsed();
+        RecalcSpaceUsed();
     }
 
-    private void RecalSpaceUsed() => _spaceUsed = _modifiers.Sum(m => m.Complexity);
+    private void RecalcSpaceUsed() => _spaceUsed = _modifiers.Sum(m => m.Complexity);
     private float FreeSpace => Props.MaxSpace - _spaceUsed;
 
     public bool MakeDatabaseRecord(Instruction modifier)
@@ -34,7 +35,7 @@ public class Comp_Database : CompBase_Membered<CompProps_Database>
         if (FreeSpace < modifier.Complexity) return false;
 
         _modifiers.Add(modifier);
-        RecalSpaceUsed();
+        RecalcSpaceUsed();
         return true;
     }
 
@@ -43,7 +44,7 @@ public class Comp_Database : CompBase_Membered<CompProps_Database>
     public void RemoveModifier(Instruction modifier)
     {
         _modifiers.Remove(modifier);
-        RecalSpaceUsed();
+        RecalcSpaceUsed();
     }
 
     public override string CompInspectStringExtra()
@@ -53,9 +54,9 @@ public class Comp_Database : CompBase_Membered<CompProps_Database>
 
     public override IEnumerable<Gizmo> CompGetGizmosExtra()
     {
-        yield return new Command_Action()
+        yield return new Command_Action
         {
-            defaultLabel = "Show instructions",
+            defaultLabel = "JAI.Database.ShowInstructions".Translate(),
             action = () =>
             {
                 Find.WindowStack.TryRemove(typeof(CompDatabaseWindow));
@@ -71,7 +72,7 @@ public class Comp_Database : CompBase_Membered<CompProps_Database>
                 action = () =>
                 {
                     _modifiers.Add(StatCollector.GenerateNewInstruction());
-                    RecalSpaceUsed();
+                    RecalcSpaceUsed();
                 }
             };
         }

@@ -1,26 +1,20 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ArchotechInfusions.comps;
 using Verse;
 
 namespace ArchotechInfusions.grid;
 
-public class Grid
+public class Grid(GridMapComponent mapComponent, string gridType)
 {
-    public readonly Guid Guid;
-    public readonly GridMapComponent MapComponent;
-    public readonly string GridType;
-    public readonly List<GridMemberComp> Members = new();
-
-    private readonly Dictionary<Type, List<GridMemberComp>> _parentTypeCache = new();
     private readonly Dictionary<Type, List<ThingComp>> _compsCache = new();
 
-    public Grid(GridMapComponent mapComponent, string gridType)
-    {
-        Guid = Guid.NewGuid();
-        MapComponent = mapComponent;
-        GridType = gridType;
-    }
+    private readonly Dictionary<Type, List<GridMemberComp>> _parentTypeCache = new();
+    public readonly string GridType = gridType;
+    public readonly Guid Guid = Guid.NewGuid();
+    public readonly GridMapComponent MapComponent = mapComponent;
+    public readonly List<GridMemberComp> Members = [];
 
     public void OnTick()
     {
@@ -32,26 +26,34 @@ public class Grid
         Members.Add(member);
 
         var type = member.parent.GetType();
-        if (!_parentTypeCache.ContainsKey(type)) _parentTypeCache[type] = new List<GridMemberComp>();
+        if (!_parentTypeCache.ContainsKey(type)) _parentTypeCache[type] = [];
         _parentTypeCache[type].Add(member);
 
         foreach (var thingComp in member.parent.AllComps)
         {
             if (thingComp is GridMemberComp) continue;
-            if (!_compsCache.ContainsKey(thingComp.GetType())) _compsCache[thingComp.GetType()] = new List<ThingComp>();
+            if (!_compsCache.ContainsKey(thingComp.GetType())) _compsCache[thingComp.GetType()] = [];
             _compsCache[thingComp.GetType()].Add(thingComp);
         }
     }
 
-    public List<GridMemberComp> GetMembersOfParent(Type type)
-    {
-        if (!_parentTypeCache.ContainsKey(type)) _parentTypeCache[type] = new List<GridMemberComp>();
-        return _parentTypeCache[type].ToList();
-    }
-
     public List<T> GetComps<T>() where T : ThingComp
     {
-        if (!_compsCache.ContainsKey(typeof(T))) _compsCache[typeof(T)] = new List<ThingComp>();
+        if (!_compsCache.ContainsKey(typeof(T))) _compsCache[typeof(T)] = [];
         return _compsCache[typeof(T)].Cast<T>().ToList();
+    }
+
+    public float GetTotalCharge()
+    {
+        return GetComps<Comp_Accumulator>().Sum(a => a.Stored);
+    }
+
+    public void ConsumeEnergy(ref float wantedAmount)
+    {
+        foreach (var accumulator in GetComps<Comp_Accumulator>())
+        {
+            accumulator.Consume(ref wantedAmount);
+            if (wantedAmount <= 0) break;
+        }
     }
 }

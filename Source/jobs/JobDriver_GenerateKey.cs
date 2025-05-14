@@ -59,7 +59,7 @@ public class JobDriver_GenerateKey : JobDriver
         toil.WithEffect(EffecterDefOf.Research, TargetIndex.A);
         toil.FailOnCannotTouch(TargetIndex.A, PathEndMode.InteractionCell);
         toil.FailOn(() => Generator is null || !Generator.CanGenerateNewKey());
-        toil.tickAction = () => Generator.DoGenerateTick(GetActor(), this, pawn.GetStatValue(StatDefOf.ResearchSpeed));
+        toil.tickAction = () => Generator.DoJobTick(GetActor(), this, pawn.GetStatValue(StatDefOf.ResearchSpeed));
         toil.WithProgressBar(TargetIndex.A, () => TargetA.Thing.TryGetComp<Comp_KeyGenerator>()?.GetPercentComplete() ?? 0f);
         yield return toil;
 

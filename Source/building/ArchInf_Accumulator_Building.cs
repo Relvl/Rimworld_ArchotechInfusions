@@ -18,17 +18,13 @@ public class ArchInf_Accumulator_Building : AddInf_Building
 
     private Comp_Accumulator Comp => _comp ??= GetComp<Comp_Accumulator>();
 
-    public override void Draw()
+    protected override void DrawAt(Vector3 drawLoc, bool flip = false)
     {
-        base.Draw();
-        DrawEnergyBar();
-    }
+        base.DrawAt(drawLoc, flip);
 
-    protected virtual void DrawEnergyBar()
-    {
         var rotation = Rotation;
         rotation.Rotate(RotationDirection.Clockwise);
-        var request = new GenDraw.FillableBarRequest
+        GenDraw.DrawFillableBar(new GenDraw.FillableBarRequest
         {
             center = DrawPos + Vector3.up * 0.1f,
             size = BarSize,
@@ -37,8 +33,6 @@ public class ArchInf_Accumulator_Building : AddInf_Building
             unfilledMat = BarUnfilledMat,
             margin = 0.15f,
             rotation = rotation
-        };
-
-        GenDraw.DrawFillableBar(request);
+        });
     }
 }

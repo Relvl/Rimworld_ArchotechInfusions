@@ -19,9 +19,9 @@
             <Mass>3000</Mass>
         </statBases>
         <graphicData>
-            <texPath>ArchotechInfusions/Things/Buildings/ArchInf_Transceiver</texPath>
+            <texPath>ArchotechInfusions/Things/Buildings/ArchInf_Transceiver_New</texPath>
             <graphicClass>Graphic_Single</graphicClass>
-            <drawSize>(3,6.6875)</drawSize>
+            <drawSize>(8,10)</drawSize>
             <damageData>
                 <cornerTL>Damage/Corner</cornerTL>
                 <cornerTR>Damage/Corner</cornerTR>
@@ -29,9 +29,10 @@
                 <cornerBR>Damage/Corner</cornerBR>
             </damageData>
         </graphicData>
+        <rotatable>false</rotatable>
+        <castEdgeShadows>false</castEdgeShadows>
         <fillPercent>1</fillPercent>
-        <size>(3,3)</size>
-        <castEdgeShadows>True</castEdgeShadows>
+        <size>(5,5)</size>
         <building>
             <soundAmbient>WeatherAffecter_Ambience</soundAmbient>
         </building>

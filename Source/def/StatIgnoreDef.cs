@@ -5,5 +5,5 @@ namespace ArchotechInfusions.def;
 
 public class StatIgnoreDef : Def
 {
-    public List<string> IgnoredStats = new();
+    public List<string> IgnoredStats = [];
 }

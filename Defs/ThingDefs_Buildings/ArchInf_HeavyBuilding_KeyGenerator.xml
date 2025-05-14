@@ -50,7 +50,7 @@
                 <idlePowerDraw>100</idlePowerDraw>
             </li>
             <li Class="ArchotechInfusions.comps.CompProps_KeyGenerator">
-                <WorkAmmount>1500</WorkAmmount>
+                <WorkAmount>1500</WorkAmount>
                 <MaxStoredKeys>3</MaxStoredKeys>
                 <TotalEnergyCost>200</TotalEnergyCost>
                 <AccumulatorRecacheTicks>60</AccumulatorRecacheTicks>

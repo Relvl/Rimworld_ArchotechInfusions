@@ -82,4 +82,32 @@
         </subSounds>
     </SoundDef>
 
+    <SoundDef>
+        <defName>ArchInfDecoderStart</defName>
+        <context>MapOnly</context>
+        <eventNames/>
+        <subSounds>
+            <li>
+                <grains>
+                    <li Class="AudioGrain_Clip">
+                        <clipPath>DecoderStart</clipPath>
+                    </li>
+                </grains>
+                <volumeRange>
+                    <min>100</min>
+                    <max>120</max>
+                </volumeRange>
+                <pitchRange>
+                    <min>0.95</min>
+                    <max>1.05</max>
+                </pitchRange>
+                <distRange>
+                    <min>0</min>
+                    <max>70</max>
+                </distRange>
+                <sustainLoop>False</sustainLoop>
+            </li>
+        </subSounds>
+    </SoundDef>
+
 </Defs>

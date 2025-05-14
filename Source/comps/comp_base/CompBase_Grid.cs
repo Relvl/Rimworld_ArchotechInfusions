@@ -1,11 +1,12 @@
+using System.Diagnostics.CodeAnalysis;
 using ArchotechInfusions.grid;
 using RimWorld;
 using Verse;
 
-namespace ArchotechInfusions.comps;
+namespace ArchotechInfusions.comps.comp_base;
 
-// ReSharper disable once InconsistentNaming
-public class CompBase_Membered<T> : ThingComp where T : CompProperties
+[SuppressMessage("ReSharper", "MemberCanBeProtected.Global")]
+public class CompBase_Grid<T> : ThingComp where T : CompProperties
 {
     private CompPowerTrader _power;
     private GridMemberComp _member;

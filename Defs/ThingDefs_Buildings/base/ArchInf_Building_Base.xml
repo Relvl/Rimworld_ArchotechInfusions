@@ -12,7 +12,7 @@
         <constructionSkillPrerequisite>15</constructionSkillPrerequisite>
         <soundImpactDefault>BulletImpact_Metal</soundImpactDefault>
         <stuffCategories>
-            <li>StrongMetallic</li>
+            <li>Metallic</li>
         </stuffCategories>
     </ThingDef>
 </Defs>

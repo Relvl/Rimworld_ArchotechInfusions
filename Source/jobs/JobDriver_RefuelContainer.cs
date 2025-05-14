@@ -14,7 +14,7 @@ public class WorkGiver_RefuelContainer : WorkGiver_Scanner
 
     public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn)
     {
-        foreach (var generator in pawn.Map.LightGrid().GetComps<Comp_Container>())
+        foreach (var generator in pawn.Map.LightGrid().GetComps<Comp_ArchiteContainer>())
             if (generator.CanStoreMore())
                 yield return generator.parent;
     }
@@ -29,7 +29,7 @@ public class WorkGiver_RefuelContainer : WorkGiver_Scanner
         if (pawn.Map.designationManager.DesignationOn(t, DesignationDefOf.Deconstruct) != null) return false;
         if (!pawn.CanReserveAndReach(t, PathEndMode.Touch, pawn.NormalMaxDanger(), ignoreOtherReservations: forced)) return false;
 
-        var comp = t.TryGetComp<Comp_Container>();
+        var comp = t.TryGetComp<Comp_ArchiteContainer>();
         if (!comp.CanStoreMore())
         {
             JobFailReason.Is("CantStoreMore".Translate());
@@ -41,18 +41,18 @@ public class WorkGiver_RefuelContainer : WorkGiver_Scanner
 
     public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
     {
-        var targetB = FindFuel(pawn, t.TryGetComp<Comp_Container>());
+        var targetB = FindFuel(pawn, t.TryGetComp<Comp_ArchiteContainer>());
         if (targetB is null) return null;
         return JobMaker.MakeJob(JobDriverDefOf.ArchInf_RefuelContainer, t, targetB);
     }
 
-    private static Thing FindFuel(Pawn pawn, Comp_Container container)
+    private static Thing FindFuel(Pawn pawn, Comp_ArchiteContainer architeContainer)
     {
         bool Validator(Thing x)
         {
             if (x.IsForbidden(pawn)) return false;
             if (!pawn.CanReserveAndReach(x, PathEndMode.Touch, pawn.NormalMaxDanger())) return false;
-            if (!container.IsThingAllowedAsFuel(x)) return false;
+            if (!architeContainer.IsThingAllowedAsFuel(x)) return false;
             return true;
         }
 
@@ -63,7 +63,7 @@ public class WorkGiver_RefuelContainer : WorkGiver_Scanner
             PathEndMode.ClosestTouch,
             TraverseParms.For(pawn),
             validator: Validator,
-            customGlobalSearchSet: container.GetAvailableFuels(pawn.Map)
+            customGlobalSearchSet: architeContainer.GetAvailableFuels(pawn.Map)
         );
     }
 }
@@ -80,7 +80,7 @@ public class JobDriver_RefuelContainer : JobDriver
         this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
         this.FailOnBurningImmobile(TargetIndex.A);
 
-        var comp = TargetA.Thing.TryGetComp<Comp_Container>();
+        var comp = TargetA.Thing.TryGetComp<Comp_ArchiteContainer>();
 
         this.FailOn(() => comp is null || !comp.CanStoreMore());
 

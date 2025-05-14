@@ -1,4 +1,3 @@
-using System;
 using System.Text;
 using RimWorld;
 using Verse;
@@ -7,12 +6,12 @@ namespace ArchotechInfusions.statcollectors;
 
 public class Instruction : IExposable
 {
-    public StatDef Def;
-    public InstructionType Type = InstructionType.Add;
-    public float Value;
-    public TechLevel TechLevel;
     public float Complexity;
+    public StatDef Def;
+    public TechLevel TechLevel;
+    public InstructionType Type = InstructionType.Add;
     public InstructionTarget TypeFilter = InstructionTarget.None;
+    public float Value;
 
     public void ExposeData()
     {

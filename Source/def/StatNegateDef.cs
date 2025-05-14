@@ -5,5 +5,5 @@ namespace ArchotechInfusions.def;
 
 public class StatNegateDef : Def
 {
-    public List<string> NegatedStats = new();
+    public List<string> NegatedStats = [];
 }

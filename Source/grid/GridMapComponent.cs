@@ -26,7 +26,7 @@ public class GridMapComponent : MapComponent
 
     private static (int, GridMapComponent) _cachedGridComponent = (-1, null);
 
-    private readonly List<Grid> _grids = new();
+    private readonly List<Grid> _grids = [];
     private readonly Dictionary<IntVec3, GridMemberComp> _registeredMembers = new();
 
     public GridMapComponent(Map map) : base(map)

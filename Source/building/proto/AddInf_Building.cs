@@ -2,7 +2,4 @@ using Verse;
 
 namespace ArchotechInfusions.building.proto;
 
-public class AddInf_Building : Building
-{
-    
-}
+public class AddInf_Building : Building;

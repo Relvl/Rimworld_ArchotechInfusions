@@ -2,10 +2,10 @@
 <ModMetaData>
     <name>Archotech Infusions</name>
     <author>Johnson1893</author>
-    <packageId>io.github.Relvl.Rimworld.ArchotechInfusions</packageId>
+    <packageId>johnson1893.archotech.infusions</packageId>
     <url>https://github.com/Relvl/Rimworld_ArchotechInfusions</url>
     <supportedVersions>
-        <li>1.4</li>
+        <li>1.5</li>
     </supportedVersions>
     <description>
         <![CDATA[]]>
@@ -23,6 +23,7 @@
             <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
         </li>
     </modDependencies>
+    <loadBefore/>
     <loadAfter>
         <li>brrainz.harmony</li>
         <li>Ludeon.RimWorld</li>
@@ -32,9 +33,6 @@
         <li>UnlimitedHugs.HugsLib</li>
         <li>skyarkhangel.HSK</li>
     </loadAfter>
-    <loadBefore>
-        <li>trinity.RuntimeGCupdated</li>
-    </loadBefore>
     <incompatibleWith>
         <li>notfood.Infused</li>
         <li>latta.infusion</li>

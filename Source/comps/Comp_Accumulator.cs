@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using ArchotechInfusions.comps.comp_base;
 using RimWorld;
 using Verse;
 
@@ -14,7 +15,7 @@ public class CompProps_Accumulator : CompProperties
     public CompProps_Accumulator() => compClass = typeof(Comp_Accumulator);
 }
 
-public class Comp_Accumulator : CompBase_Membered<CompProps_Accumulator>
+public class Comp_Accumulator : CompBase_Grid<CompProps_Accumulator>
 {
     private float _stored;
     private float _storedLastTick;

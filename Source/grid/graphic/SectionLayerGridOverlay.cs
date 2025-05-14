@@ -9,7 +9,7 @@ public class SectionLayerGridOverlay : SectionLayer
 {
     public SectionLayerGridOverlay(Section section) : base(section)
     {
-        relevantChangeTypes = MapMeshFlag.Buildings;
+        relevantChangeTypes = MapMeshFlagDefOf.Buildings;
     }
 
     public override void DrawLayer()

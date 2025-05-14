@@ -6,5 +6,5 @@ namespace ArchotechInfusions.def;
 
 public class StatCollectorDef : Def
 {
-    public List<Type> CollectorClasses = new();
+    public List<Type> CollectorClasses = [];
 }

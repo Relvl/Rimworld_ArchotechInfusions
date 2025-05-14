@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<LanguageData>
+    <JAI.State>State</JAI.State>
+    <JAI.State.Idle>Idle</JAI.State.Idle>
+    <JAI.State.Recharging>Recharging</JAI.State.Recharging>
+    <JAI.State.Transmitting>Transmitting</JAI.State.Transmitting>
+    <JAI.State.Receiving>Receiving</JAI.State.Receiving>
+    <JAI.State.Startup>Startup</JAI.State.Startup>
+    <JAI.State.Decoding>Decoding</JAI.State.Decoding>
+</LanguageData>

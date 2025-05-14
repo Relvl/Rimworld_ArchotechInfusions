@@ -2,7 +2,7 @@
 <Defs>
 
     <ThingDef ParentName="ArchInf_HeavyBuilding_Base">
-        <defName>ArchInf_Building_Container</defName>
+        <defName>ArchInf_Building_ArchiteContainer</defName>
         <label>archite container</label>
         <description>Allow to store archite</description>
         <thingClass>ArchotechInfusions.building.ArchInf_Container_Building</thingClass>
@@ -43,7 +43,7 @@
                 <basePowerConsumption>1500</basePowerConsumption>
                 <idlePowerDraw>100</idlePowerDraw>
             </li>
-            <li Class="ArchotechInfusions.comps.CompProps_Container">
+            <li Class="ArchotechInfusions.comps.CompProps_ArchiteContainer">
                 <MaxStored>10000</MaxStored>
                 <AvailableItems>
                     <li>

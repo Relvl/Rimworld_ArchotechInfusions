@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<LanguageData>
+    <JAI.Gizmo.Transceiver.Start>Start</JAI.Gizmo.Transceiver.Start>
+    <JAI.Gizmo.Transceiver.Start.Desc>Start transmitting and receiving in manual mode. After completion, the transceiver will switch back to idle mode waiting new command.</JAI.Gizmo.Transceiver.Start.Desc>
+    <JAI.Gizmo.Transceiver.Stop>STOP!</JAI.Gizmo.Transceiver.Stop>
+    <JAI.Gizmo.Transceiver.Stop.Desc>Stops the current transceiver cycle. All the progress and energy spent will be lost.</JAI.Gizmo.Transceiver.Stop.Desc>
+    <JAI.Gizmo.Transceiver.Stop.Confirm>Really want to stop process? The key, all data and energy will be lost!</JAI.Gizmo.Transceiver.Stop.Confirm>
+    <JAI.Gizmo.Transceiver.Autostart.ON>Autostart: ON</JAI.Gizmo.Transceiver.Autostart.ON>
+    <JAI.Gizmo.Transceiver.Autostart.OFF>Autostart: OFF</JAI.Gizmo.Transceiver.Autostart.OFF>
+    <JAI.Gizmo.Transceiver.Autostart.Desc>Switches the automatic start of the transceiver cycle when there is a key and a reserve of energy.</JAI.Gizmo.Transceiver.Autostart.Desc>
+    <JAI.Gizmo.Transceiver.></JAI.Gizmo.Transceiver.>
+    <JAI.Gizmo.Mute.ON>Mute: ON</JAI.Gizmo.Mute.ON>
+    <JAI.Gizmo.Mute.OFF>Mute: OFF</JAI.Gizmo.Mute.OFF>
+    <JAI.Gizmo.Mute.Desc>Drowns out all the sounds of the {0}.</JAI.Gizmo.Mute.Desc>
+    <JAI.Gizmo.></JAI.Gizmo.>
+</LanguageData>

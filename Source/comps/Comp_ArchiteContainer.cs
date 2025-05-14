@@ -2,27 +2,30 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ArchotechInfusions.comps.comp_base;
 using RimWorld;
 using Verse;
-using Verse.Sound;
 
 namespace ArchotechInfusions.comps;
 
 // ReSharper disable UnassignedField.Global,FieldCanBeMadeReadOnly.Global,InconsistentNaming,ClassNeverInstantiated.Global -- def reflective
-public class CompProps_Container : CompProperties
+public class CompProps_ArchiteContainer : CompProperties
 {
+    public List<ItemData> AvailableItems = [];
     public int MaxStored = 10000;
-    public List<ItemData> AvailableItems = new();
 
-    public CompProps_Container() => compClass = typeof(Comp_Container);
+    public CompProps_ArchiteContainer()
+    {
+        compClass = typeof(Comp_ArchiteContainer);
+    }
 }
 
-public class Comp_Container : CompBase_Membered<CompProps_Container>
+public class Comp_ArchiteContainer : CompBase_Grid<CompProps_ArchiteContainer>
 {
-    private ItemData _minContainer;
     private ItemData _maxContainer;
-    private float _stored;
     private ItemData _maxUnloadableContainer;
+    private ItemData _minContainer;
+    private float _stored;
 
     public float Stored
     {
@@ -34,6 +37,8 @@ public class Comp_Container : CompBase_Membered<CompProps_Container>
             _maxUnloadableContainer = avData.Count > 0 ? avData.MaxBy(d => d.ArchiteCount) : null;
         }
     }
+
+    public float FreeSpace => Props.MaxStored - Stored;
 
     public override void Initialize(CompProperties p)
     {
@@ -48,13 +53,20 @@ public class Comp_Container : CompBase_Membered<CompProps_Container>
         Stored = _stored;
     }
 
-    public float FreeSpace => Props.MaxStored - Stored;
+    public IEnumerable<Thing> GetAvailableFuels(Map map)
+    {
+        return Props.AvailableItems.Where(f => f.ArchiteCount < FreeSpace).SelectMany(f => map.listerThings.ThingsOfDef(f.ThingDef));
+    }
 
-    public IEnumerable<Thing> GetAvailableFuels(Map map) => Props.AvailableItems.Where(f => f.ArchiteCount < FreeSpace).SelectMany(f => map.listerThings.ThingsOfDef(f.ThingDef));
+    public bool IsThingAllowedAsFuel(Thing thing)
+    {
+        return Props.AvailableItems.Any(f => f.ThingDef == thing.def && f.ArchiteCount < FreeSpace);
+    }
 
-    public bool IsThingAllowedAsFuel(Thing thing) => Props.AvailableItems.Any(f => f.ThingDef == thing.def && f.ArchiteCount < FreeSpace);
-
-    public bool CanStoreMore() => Power.PowerOn && FreeSpace >= _minContainer.ArchiteCount;
+    public bool CanStoreMore()
+    {
+        return Power.PowerOn && FreeSpace >= _minContainer.ArchiteCount;
+    }
 
     public void InsertFuel(Thing fuel)
     {
@@ -74,7 +86,7 @@ public class Comp_Container : CompBase_Membered<CompProps_Container>
         yield return new Command_Action
         {
             defaultLabel = "Unload",
-            disabled = _maxUnloadableContainer is null,
+            Disabled = _maxUnloadableContainer is null,
             disabledReason = "Not enought archite to fill any container",
             action = () =>
             {
@@ -84,7 +96,7 @@ public class Comp_Container : CompBase_Membered<CompProps_Container>
                 GenDrop.TryDropSpawn(thing, parent.InteractionCell, parent.Map, ThingPlaceMode.Near, out var dropped);
                 if (dropped != null) Stored -= _maxUnloadableContainer.ArchiteCount;
 
-                SoundDefOf.DropPod_Open.PlayOneShot(parent);
+                // SoundDefOf.DropPod_Open.PlayOneShot(parent);
             }
         };
 
@@ -100,6 +112,6 @@ public class Comp_Container : CompBase_Membered<CompProps_Container>
 
 public class ItemData
 {
-    public ThingDef ThingDef;
     public int ArchiteCount;
+    public ThingDef ThingDef;
 }

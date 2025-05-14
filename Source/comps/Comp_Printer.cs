@@ -1,3 +1,4 @@
+using ArchotechInfusions.comps.comp_base;
 using Verse;
 
 namespace ArchotechInfusions.comps;
@@ -11,6 +12,4 @@ public class CompProps_Printer : CompProperties
     public CompProps_Printer() => compClass = typeof(Comp_Printer);
 }
 
-public class Comp_Printer : CompBase_Membered<CompProps_Printer>
-{
-}
+public class Comp_Printer : CompBase_Grid<CompProps_Printer>;

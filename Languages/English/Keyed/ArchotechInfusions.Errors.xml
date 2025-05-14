@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<LanguageData>
+    <JAI>Archotech Infusions</JAI>
+    <JAI.Error.PoweredOff><![CDATA[<color=yellow>Powered off</color>]]></JAI.Error.PoweredOff>
+    <JAI.Error.FlickedOff><![CDATA[<color=yellow>Transceiver lost power while in progress!</color>]]></JAI.Error.FlickedOff>
+    <JAI.Error.IsBusy>{0} is busy</JAI.Error.IsBusy>
+    <JAI.Error.IsPoweredOff>{0} is powered off</JAI.Error.IsPoweredOff>
+    <JAI.Error.GridHasNoKeyGenerator>Grid has no key generator</JAI.Error.GridHasNoKeyGenerator>
+    <JAI.Error.GridHasNoGeneratedKeys>Grid has no generated keys</JAI.Error.GridHasNoGeneratedKeys>
+    <JAI.Error.GridHasNoAccumulator>Grid has no accumulator</JAI.Error.GridHasNoAccumulator>
+    <JAI.Error.BatteriesUncharged>The batteries are undercharged ({0} / {1})</JAI.Error.BatteriesUncharged>
+    <JAI.Error.GridHasNoDecoder><![CDATA[<color=yellow>Grid has no decoder</color>]]></JAI.Error.GridHasNoDecoder>
+    <JAI.Error.WaitingForDecoder><![CDATA[<color=yellow>Waiting for available decoder...</color>]]></JAI.Error.WaitingForDecoder>
+    <JAI.Error.Transmitter.NoPowerForRecharge>Not enough power to recharge the Transmitter!</JAI.Error.Transmitter.NoPowerForRecharge>
+    <JAI.Error.Breakdown><![CDATA[<color=yellow>Broken</color>]]></JAI.Error.Breakdown>
+    <JAI.Error.Decoder.StoredInstruction><![CDATA[<color=yellow>{0} already stores the data packet</color>]]></JAI.Error.Decoder.StoredInstruction>
+    <JAI.Error.WaitingForDatabase><![CDATA[<color=yellow>Waiting for available database...</color>]]></JAI.Error.WaitingForDatabase>
+    <JAI.Error.GridHasNoDatabase><![CDATA[<color=yellow>Grid has no database</color>]]></JAI.Error.GridHasNoDatabase>
+    <JAI.Error.><![CDATA[]]></JAI.Error.>
+</LanguageData>

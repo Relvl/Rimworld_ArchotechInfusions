@@ -1,5 +1,6 @@
 using System.Linq;
 using ArchotechInfusions.building.proto;
+using RimWorld;
 using Verse;
 
 namespace ArchotechInfusions.grid.graphic;
@@ -9,7 +10,7 @@ public class SectionLayerGridRender : SectionLayer
 {
     public SectionLayerGridRender(Section section) : base(section)
     {
-        relevantChangeTypes = MapMeshFlag.Buildings;
+        relevantChangeTypes = MapMeshFlagDefOf.Buildings;
     }
 
     public override void Regenerate()

@@ -4,13 +4,15 @@ using ArchotechInfusions.grid;
 using RimWorld;
 using Verse;
 
-namespace ArchotechInfusions.comps;
+namespace ArchotechInfusions.comps.comp_base;
 
 // ReSharper disable once InconsistentNaming
-public abstract class CompBase_Stageable<T, TP> : CompBase_Membered<TP> where TP : CompProperties
+public abstract class CompBase_GridState<T, TP> : CompBase_Grid<TP>
+    where TP : CompProperties
+    where T : CompBase_GridState<T, TP>
 {
     protected static readonly StateIdle Idle = new();
-    protected string LastCheckStatus;
+    protected string Error;
 
     private State _currentState;
 
@@ -21,6 +23,8 @@ public abstract class CompBase_Stageable<T, TP> : CompBase_Membered<TP> where TP
         get => _currentState ??= Idle;
         set
         {
+            if (value != _currentState)
+                Error = default;
             _currentState = value;
             progress = 0;
         }
@@ -85,25 +89,23 @@ public abstract class CompBase_Stageable<T, TP> : CompBase_Membered<TP> where TP
         return message;
     }
 
-    public virtual AcceptanceReport CanStart(bool silent = false)
-    {
-        return false;
-    }
+    public abstract AcceptanceReport TryRun(bool silent = false);
 
-    public abstract AcceptanceReport StartAction(bool silent = false);
+    public virtual bool OnComplete() => false;
 
-    protected virtual void StopAction(string reason = default)
+    protected virtual AcceptanceReport Stop(string reason, bool silent)
     {
-        LastCheckStatus = reason;
-        if (CurrentState == Idle) return;
         CurrentState = Idle;
-        if (reason != default) Message(reason, false);
-    }
 
-    public virtual bool FinalAction()
-    {
-        LastCheckStatus = default;
-        return false;
+        if (reason != default)
+        {
+            if (silent)
+                Error = reason;
+            else
+                Messages.Message(reason, parent, MessageTypeDefOf.RejectInput);
+        }
+
+        return reason;
     }
 
     public override void CompTick()
@@ -114,42 +116,36 @@ public abstract class CompBase_Stageable<T, TP> : CompBase_Membered<TP> where TP
 
         if (progress >= CurrentState.Ticks)
         {
-            if (parent.IsHashIntervalTick(50)) CurrentState.OnProgressComplete((T)(object)this);
+            if (parent.IsHashIntervalTick(50))
+                CurrentState.OnProgressComplete((T)this);
             return;
         }
 
-        if (progress == 1) CurrentState.OnFirstTick((T)(object)this);
-        CurrentState.OnCompTick((T)(object)this);
+        if (progress == 1) CurrentState.OnFirstTick((T)this);
+        CurrentState.OnCompTick((T)this);
 
         progress = Math.Min(++progress, CurrentState.Ticks);
     }
 
     public override string CompInspectStringExtra()
     {
+        if (!Power.PowerOn)
+            return "JAI.Error.PoweredOff".Translate();
+
+        if (Error != default)
+            return Error;
+
         var sb = new StringBuilder();
-        if (Power.PowerOn && CurrentState != Idle)
-        {
-            var canContinue = CurrentState.CompInspectStringExtra(sb, (T)(object)this);
-            if (canContinue)
-            {
-                sb.AppendLine($"Progress: {((float)progress / CurrentState.Ticks * 100f):0.}%");
-            }
-        }
-
-        if (LastCheckStatus != default) sb.AppendLine(LastCheckStatus);
-
+        CurrentState.CompInspectStringExtra(sb, (T)this);
         return sb.TrimEnd().ToString();
     }
 
-    public abstract class State : IExposable
+    public abstract class State(int ticks) : IExposable
     {
         public abstract string Label { get; }
-        public int Ticks;
-
-        protected State(int ticks)
-        {
-            Ticks = ticks;
-        }
+        public virtual string Color => "green";
+        public virtual bool ShowProgress => true;
+        public int Ticks = ticks;
 
         public virtual void OnProgressComplete(T owner)
         {
@@ -163,24 +159,26 @@ public abstract class CompBase_Stageable<T, TP> : CompBase_Membered<TP> where TP
         {
         }
 
-        public void ExposeData()
+        public virtual void ExposeData()
         {
             Scribe_Values.Look(ref Ticks, "ticks");
         }
 
-        public virtual bool CompInspectStringExtra(StringBuilder sb, T owner)
+        public virtual void CompInspectStringExtra(StringBuilder sb, T owner)
         {
-            sb.AppendLine($"State: {Label}");
-            return true;
+            var progress = (float)owner.progress / Ticks * 100f;
+            sb.Append("JAI.State".Translate()).Append(": <color=").Append(Color).Append(">").Append(Label).Append("</color>");
+            if (ShowProgress)
+                sb.Append(", ").Append(progress.ToString("0.")).AppendLine("%");
+            else
+                sb.AppendLine();
         }
     }
 
-    protected class StateIdle : State
+    protected class StateIdle(int ticks = int.MaxValue) : State(ticks)
     {
-        public override string Label => "Idle".Translate();
-
-        public StateIdle(int ticks = int.MaxValue) : base(ticks)
-        {
-        }
+        public override string Label => "JAI.State.Idle".Translate();
+        public override string Color => "white";
+        public override bool ShowProgress => false;
     }
 }
