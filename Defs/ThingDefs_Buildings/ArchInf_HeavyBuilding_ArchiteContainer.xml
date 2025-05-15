@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
+
 <Defs>
 
     <ThingDef ParentName="ArchInf_HeavyBuilding_Base">
@@ -27,6 +28,8 @@
                 <rect>(0.05,0.05,0.95,0.95)</rect>
             </damageData>
         </graphicData>
+        <drawerType>MapMeshAndRealTime</drawerType>
+
         <fillPercent>0.8</fillPercent>
         <size>(2,2)</size>
         <castEdgeShadows>false</castEdgeShadows>
@@ -35,8 +38,8 @@
             <li Class="ArchotechInfusions.grid.GridMemberCompProps">
                 <GridType>ArchInfGrid</GridType>
             </li>
-            <li Class="CompProperties_Breakdownable"/>
-            <li Class="CompProperties_Flickable"/>
+            <li Class="CompProperties_Breakdownable" />
+            <li Class="CompProperties_Flickable" />
             <li Class="CompProperties_Power">
                 <compClass>CompPowerTrader</compClass>
                 <transmitsPower>true</transmitsPower>

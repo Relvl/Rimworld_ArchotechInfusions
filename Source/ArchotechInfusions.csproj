@@ -72,10 +72,11 @@
         <Compile Include="building\ArchInf_IOPort_Building.cs" />
         <Compile Include="building\ArchInf_KeyGenerator_Building.cs" />
         <Compile Include="building\ArchInf_Printer_Building.cs" />
-        <Compile Include="building\ArchInf_Repair_Building.cs" />
+        <Compile Include="building\ArchInf_Repairer_Building.cs" />
         <Compile Include="building\ArchInf_Transceiver_Building.cs" />
         <Compile Include="building\proto\AddInf_Building.cs" />
         <Compile Include="building\proto\ArchInf_BuildingLink.cs" />
+        <Compile Include="comps\Comp_ArchiteRepairer.cs" />
         <Compile Include="comps\comp_base\CompBase_Grid.cs" />
         <Compile Include="comps\comp_base\CompBase_GridState.cs" />
         <Compile Include="comps\Comp_Accumulator.cs" />
@@ -105,8 +106,12 @@
         <Compile Include="grid\harmony\Patch_GraphicUtility_WrapLinked.cs" />
         <Compile Include="InstructionTarget.cs" />
         <Compile Include="InstructionType.cs" />
+        <Compile Include="jobs\JobDriver_ArchiteRepair.cs" />
         <Compile Include="jobs\JobDriver_GenerateKey.cs" />
         <Compile Include="jobs\JobDriver_RefuelContainer.cs" />
+        <Compile Include="jobs\WorkGiver_ArchiteRepair.cs" />
+        <Compile Include="jobs\WorkGiver_GenerateKey.cs" />
+        <Compile Include="jobs\WorkGiver_RefuelContainer.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="statcollectors\Instruction.cs" />
         <Compile Include="statcollectors\ArchInf_StatCollector_FromApparel.cs" />

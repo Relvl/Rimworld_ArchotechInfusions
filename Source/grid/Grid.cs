@@ -48,11 +48,27 @@ public class Grid(GridMapComponent mapComponent, string gridType)
         return GetComps<Comp_Accumulator>().Sum(a => a.Stored);
     }
 
+    public float GetTotalArchite()
+    {
+        return GetComps<Comp_ArchiteContainer>().Sum(a => a.Stored);
+    }
+
     public void ConsumeEnergy(ref float wantedAmount)
     {
         foreach (var accumulator in GetComps<Comp_Accumulator>())
         {
+            // todo distribute consumption! not from just first one!
             accumulator.Consume(ref wantedAmount);
+            if (wantedAmount <= 0) break;
+        }
+    }
+
+    public void ConsumeArchite(ref float wantedAmount)
+    {
+        foreach (var container in GetComps<Comp_ArchiteContainer>())
+        {
+            // todo distribute consumption! not from just first one!
+            container.Consume(ref wantedAmount);
             if (wantedAmount <= 0) break;
         }
     }

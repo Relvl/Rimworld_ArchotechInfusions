@@ -24,14 +24,14 @@ public class GridMemberComp : ThingComp
             if (thing != parent && thing.TryGetComp<GridMemberComp>() != null)
                 thing.Destroy(); // todo drop resources
 
-        parent.Map.LightGrid().Register(this, respawningAfterLoad);
+        parent.Map.ArchInfGrid().Register(this, respawningAfterLoad);
 
         base.PostSpawnSetup(respawningAfterLoad);
     }
 
     public override void PostDeSpawn(Map map)
     {
-        map.LightGrid().Unregister(this);
+        map.ArchInfGrid().Unregister(this);
         base.PostDeSpawn(map);
     }
 

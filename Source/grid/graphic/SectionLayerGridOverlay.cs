@@ -35,7 +35,7 @@ public class SectionLayerGridOverlay : SectionLayer
     public override void Regenerate()
     {
         ClearSubMeshes(MeshParts.All);
-        foreach (var c in section.CellRect) Map.LightGrid().RenderOverlay(this, c);
+        foreach (var c in section.CellRect) Map.ArchInfGrid().RenderOverlay(this, c);
         FinalizeMesh(MeshParts.All);
     }
 }

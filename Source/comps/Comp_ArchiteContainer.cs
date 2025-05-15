@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using ArchotechInfusions.comps.comp_base;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace ArchotechInfusions.comps;
@@ -20,17 +21,22 @@ public class CompProps_ArchiteContainer : CompProperties
     }
 }
 
+[StaticConstructorOnStartup]
 public class Comp_ArchiteContainer : CompBase_Grid<CompProps_ArchiteContainer>
 {
-    private ItemData _maxContainer;
+    private bool _allowAutoRefuel = true;
+
     private ItemData _maxUnloadableContainer;
     private ItemData _minContainer;
+
+    /// <summary>
+    /// </summary>
     private float _stored;
 
     public float Stored
     {
         get => _stored;
-        set
+        private set
         {
             _stored = Math.Max(0, Math.Min(value, Props.MaxStored));
             var avData = Props.AvailableItems.Where(d => d.ArchiteCount < value).ToList();
@@ -38,29 +44,39 @@ public class Comp_ArchiteContainer : CompBase_Grid<CompProps_ArchiteContainer>
         }
     }
 
-    public float FreeSpace => Props.MaxStored - Stored;
+    public float StoredPercent => Stored / Props.MaxStored;
+
+    private float FreeSpace => Props.MaxStored - Stored;
 
     public override void Initialize(CompProperties p)
     {
         base.Initialize(p);
         _minContainer = Props.AvailableItems.MinBy(c => c.ArchiteCount);
-        _maxContainer = Props.AvailableItems.MaxBy(c => c.ArchiteCount);
     }
 
     public override void PostExposeData()
     {
-        Scribe_Values.Look(ref _stored, "stored");
+        Scribe_Values.Look(ref _stored, "Stored");
+        Scribe_Values.Look(ref _allowAutoRefuel, "AllowAutoRefuel");
         Stored = _stored;
+    }
+
+    public override void PostDraw()
+    {
+        if (!_allowAutoRefuel)
+            parent.Map.overlayDrawer.DrawOverlay(parent, OverlayTypes.ForbiddenRefuel);
+        if (Stored <= 0)
+            parent.Map.overlayDrawer.DrawOverlay(parent, OverlayTypes.OutOfFuel);
     }
 
     public IEnumerable<Thing> GetAvailableFuels(Map map)
     {
-        return Props.AvailableItems.Where(f => f.ArchiteCount < FreeSpace).SelectMany(f => map.listerThings.ThingsOfDef(f.ThingDef));
+        return Props.AvailableItems.Where(f => f.ArchiteCount <= FreeSpace).SelectMany(f => map.listerThings.ThingsOfDef(f.ThingDef)).ToList();
     }
 
     public bool IsThingAllowedAsFuel(Thing thing)
     {
-        return Props.AvailableItems.Any(f => f.ThingDef == thing.def && f.ArchiteCount < FreeSpace);
+        return Props.AvailableItems.Any(f => f.ThingDef == thing.def && f.ArchiteCount <= FreeSpace);
     }
 
     public bool CanStoreMore()
@@ -68,16 +84,38 @@ public class Comp_ArchiteContainer : CompBase_Grid<CompProps_ArchiteContainer>
         return Power.PowerOn && FreeSpace >= _minContainer.ArchiteCount;
     }
 
+    public int CountToFullyRefuel(Thing thing)
+    {
+        var avItem = Props.AvailableItems.Find(av => av.ThingDef == thing.def);
+        if (avItem == null) return 0;
+        return (int)Math.Floor(FreeSpace / avItem.ArchiteCount);
+    }
+
     public void InsertFuel(Thing fuel)
     {
         var data = Props.AvailableItems.First(i => i.ThingDef == fuel.def);
-        Stored += data.ArchiteCount;
+        Stored += data.ArchiteCount * fuel.stackCount;
+    }
+
+    public bool Consume(ref float amount)
+    {
+        // todo! balance tha containers
+        if (Stored >= amount)
+        {
+            Stored -= amount;
+            amount = 0;
+            return true;
+        }
+
+        amount -= Math.Min(Stored, amount);
+        Stored = 0;
+        return false;
     }
 
     public override string CompInspectStringExtra()
     {
         var sb = new StringBuilder();
-        sb.AppendLine($"Archite stored: {Stored:0.##}µU");
+        sb.AppendLine($"Archite stored: {Stored:0.##}/{Props.MaxStored:0.##} µU");
         return sb.TrimEnd().ToString();
     }
 
@@ -107,6 +145,19 @@ public class Comp_ArchiteContainer : CompBase_Grid<CompProps_ArchiteContainer>
             yield return new Command_Action { defaultLabel = "+10%", action = () => Stored += Props.MaxStored * 0.1f };
             yield return new Command_Action { defaultLabel = "Full", action = () => Stored = Props.MaxStored };
         }
+
+        yield return new Command_Toggle
+        {
+            defaultLabel = "CommandToggleAllowAutoRefuel".Translate(),
+            defaultDesc = "CommandToggleAllowAutoRefuelDesc".Translate(),
+            hotKey = KeyBindingDefOf.Command_ItemForbid,
+            icon = _allowAutoRefuel ? TexCommand.ForbidOff : (Texture)TexCommand.ForbidOn,
+            isActive = () => _allowAutoRefuel,
+            toggleAction = () => _allowAutoRefuel = !_allowAutoRefuel
+        };
+
+        foreach (var gizmo in base.CompGetGizmosExtra())
+            yield return gizmo;
     }
 }
 

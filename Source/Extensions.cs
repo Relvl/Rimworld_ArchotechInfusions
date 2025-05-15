@@ -1,4 +1,5 @@
 using System.Text;
+using Verse;
 
 namespace ArchotechInfusions;
 
@@ -18,4 +19,11 @@ public static class Extensions
 
     public static float PercentOfRange(this float input, float min, float max) => (input - min) / (max - min);
     public static float Denormalize(this float input, float min, float max) => input * (max - min) + min;
+
+    public static Rot4 CopyAndRotate(this Rot4 input, RotationDirection direction)
+    {
+        var copy = input;
+        copy.Rotate(direction);
+        return copy;
+    }
 }

@@ -21,9 +21,6 @@ public class ArchInf_Accumulator_Building : AddInf_Building
     protected override void DrawAt(Vector3 drawLoc, bool flip = false)
     {
         base.DrawAt(drawLoc, flip);
-
-        var rotation = Rotation;
-        rotation.Rotate(RotationDirection.Clockwise);
         GenDraw.DrawFillableBar(new GenDraw.FillableBarRequest
         {
             center = DrawPos + Vector3.up * 0.1f,
@@ -32,7 +29,7 @@ public class ArchInf_Accumulator_Building : AddInf_Building
             filledMat = BarFilledMat,
             unfilledMat = BarUnfilledMat,
             margin = 0.15f,
-            rotation = rotation
+            rotation = Rotation.CopyAndRotate(RotationDirection.Clockwise)
         });
     }
 }

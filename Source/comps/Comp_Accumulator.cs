@@ -12,7 +12,10 @@ public class CompProps_Accumulator : CompProperties
 {
     public float MaxStored;
 
-    public CompProps_Accumulator() => compClass = typeof(Comp_Accumulator);
+    public CompProps_Accumulator()
+    {
+        compClass = typeof(Comp_Accumulator);
+    }
 }
 
 public class Comp_Accumulator : CompBase_Grid<CompProps_Accumulator>
@@ -26,6 +29,8 @@ public class Comp_Accumulator : CompBase_Grid<CompProps_Accumulator>
         private set => _stored = Math.Max(0, Math.Min(value, Props.MaxStored));
     }
 
+    private bool IsFull => Stored >= Props.MaxStored;
+
     public override void PostExposeData()
     {
         base.PostExposeData();
@@ -34,8 +39,6 @@ public class Comp_Accumulator : CompBase_Grid<CompProps_Accumulator>
         Stored = _stored;
         _storedLastTick = _stored;
     }
-
-    public bool IsFull => Stored >= Props.MaxStored;
 
     public override void CompTick()
     {

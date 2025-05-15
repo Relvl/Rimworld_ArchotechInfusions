@@ -22,7 +22,7 @@ public class GraphicGridLink : GraphicLinkedMoreLayers
     {
         if (!c.InBounds(parent.Map)) return false;
         var parentComp = parent.TryGetComp<GridMemberComp>();
-        if (!parent.Map.LightGrid().ShouldConnect(c, parentComp)) return false;
+        if (!parent.Map.ArchInfGrid().ShouldConnect(c, parentComp)) return false;
         return true;
     }
 
@@ -48,7 +48,7 @@ public class GraphicGridLink : GraphicLinkedMoreLayers
     {
         if (!c.InBounds(thing.Map)) return false;
         if (comp.Props.Visibility == GridVisibility.HideUnderTiling && c.GetTerrain(thing.Map).layerable) return false;
-        if (!thing.Map.LightGrid().ShouldConnect(c, comp)) return false;
+        if (!thing.Map.ArchInfGrid().ShouldConnect(c, comp)) return false;
         return true;
     }
 }

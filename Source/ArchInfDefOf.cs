@@ -23,6 +23,7 @@ public class JobDriverDefOf
 {
     public static JobDef ArchInf_GenerateKey;
     public static JobDef ArchInf_RefuelContainer;
+    public static JobDef ArchInf_RepairInventory;
 
     static JobDriverDefOf() => DefOfHelper.EnsureInitializedInCtor(typeof(JobDriverDefOf));
 }

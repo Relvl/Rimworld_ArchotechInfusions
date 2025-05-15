@@ -1,4 +1,5 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using ArchotechInfusions.comps;
 using RimWorld;
 using Verse;
@@ -6,9 +7,12 @@ using Verse.AI;
 
 namespace ArchotechInfusions.jobs;
 
-public class JobDriver_GenerateKey : JobDriver
+[SuppressMessage("ReSharper", "UnusedType.Global")]
+public class JobDriver_ArchiteRepair : JobDriver
 {
-    private Comp_KeyGenerator _keyGenerator;
+    private Comp_ArchiteRepairer _repairer;
+    private Comp_ArchiteRepairer Repairer => _repairer ??= TargetA.Thing.TryGetComp<Comp_ArchiteRepairer>();
+
 
     public override bool TryMakePreToilReservations(bool errorOnFailed)
     {
@@ -25,16 +29,15 @@ public class JobDriver_GenerateKey : JobDriver
 
         var toil = ToilMaker.MakeToil();
         toil.defaultCompleteMode = ToilCompleteMode.Never;
-        toil.activeSkill = () => SkillDefOf.Intellectual;
+        toil.activeSkill = () => SkillDefOf.Crafting;
         toil.WithEffect(EffecterDefOf.Research, TargetIndex.A);
         toil.FailOnCannotTouch(TargetIndex.A, PathEndMode.InteractionCell);
-        toil.FailOn(() => Generator is null || !Generator.CanGenerateNewKey());
-        toil.tickAction = () => Generator.DoJobTick(GetActor(), this, pawn.GetStatValue(StatDefOf.ResearchSpeed));
-        toil.WithProgressBar(TargetIndex.A, () => TargetA.Thing.TryGetComp<Comp_KeyGenerator>()?.GetPercentComplete() ?? 0f);
+        toil.FailOn(() => !Repairer.CanWork());
+        toil.tickAction = () => Repairer.DoJobTick(GetActor(), this, pawn.GetStatValue(StatDefOf.WorkSpeedGlobal));
+        toil.WithProgressBar(TargetIndex.A, () => TargetA.Thing.TryGetComp<Comp_ArchiteRepairer>()?.GetPercentComplete() ?? 0f);
+        
         yield return toil;
 
         yield return Toils_General.Wait(2);
     }
-
-    private Comp_KeyGenerator Generator => _keyGenerator ??= TargetA.Thing.TryGetComp<Comp_KeyGenerator>();
 }

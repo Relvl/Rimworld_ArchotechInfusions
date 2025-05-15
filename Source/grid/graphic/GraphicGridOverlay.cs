@@ -14,7 +14,7 @@ public class GraphicGridOverlay : Graphic_Linked
         if (!c.InBounds(parent.Map)) return false;
         var comp = parent.TryGetComp<GridMemberComp>();
         if (comp is null) return false;
-        return parent.Map.LightGrid().IsSameGrid(c, parent.TryGetComp<GridMemberComp>());
+        return parent.Map.ArchInfGrid().IsSameGrid(c, parent.TryGetComp<GridMemberComp>());
     }
 
     public override void Print(SectionLayer layer, Thing parent, float extraRotation)

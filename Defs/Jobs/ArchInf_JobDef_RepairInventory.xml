@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Defs>
+    <WorkGiverDef>
+        <defName>ArchInf_RepairInventory</defName>
+        <label>Repair inventory items</label>
+        <giverClass>ArchotechInfusions.jobs.WorkGiver_ArchiteRepair</giverClass>
+        <workType>BasicWorker</workType>
+        <priorityInType>99</priorityInType>
+        <verb>repair</verb>
+        <gerund>repairs at</gerund>
+        <requiredCapacities>
+            <li>Manipulation</li>
+        </requiredCapacities>
+        <canBeDoneByMechs>false</canBeDoneByMechs>
+    </WorkGiverDef>
+
+    <JobDef>
+        <defName>ArchInf_RepairInventory</defName>
+        <driverClass>ArchotechInfusions.jobs.JobDriver_ArchiteRepair</driverClass>
+        <reportString>Repairing their inventory.</reportString>
+        <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+    </JobDef>
+</Defs>
