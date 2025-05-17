@@ -55,6 +55,10 @@
           <HintPath>..\..\..\RimWorldWin64_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
           <Private>False</Private>
         </Reference>
+        <Reference Include="UnityEngine.InputLegacyModule">
+          <HintPath>..\..\..\RimWorldWin64_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
         <Reference Include="UnityEngine.TextRenderingModule">
           <HintPath>..\..\..\RimWorldWin64_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
           <Private>False</Private>
@@ -108,17 +112,23 @@
         <Compile Include="InstructionType.cs" />
         <Compile Include="jobs\JobDriver_ArchiteRepair.cs" />
         <Compile Include="jobs\JobDriver_GenerateKey.cs" />
+        <Compile Include="jobs\JobDriver_Print.cs" />
         <Compile Include="jobs\JobDriver_RefuelContainer.cs" />
         <Compile Include="jobs\WorkGiver_ArchiteRepair.cs" />
         <Compile Include="jobs\WorkGiver_GenerateKey.cs" />
         <Compile Include="jobs\WorkGiver_RefuelContainer.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="statcollectors\Instruction.cs" />
-        <Compile Include="statcollectors\ArchInf_StatCollector_FromApparel.cs" />
+        <Compile Include="statcollectors\ArchInf_StatCollector_Apparel.cs" />
         <Compile Include="statcollectors\IStatCollector.cs" />
         <Compile Include="statcollectors\StatCollectionElement.cs" />
         <Compile Include="statcollectors\StatCollector.cs" />
         <Compile Include="ui\CompDatabaseWindow.cs" />
+        <Compile Include="ui\component\InstructionListView.cs" />
+        <Compile Include="ui\component\InstructionView.cs" />
+        <Compile Include="ui\print\PrintWindow.cs" />
+        <Compile Include="ui\print\ThingSelectorWindow.cs" />
+        <Compile Include="ui\print\PrintWindowSelector.cs" />
         <Compile Include="ui\ShowElementsWindow.cs" />
     </ItemGroup>
     <ItemGroup>

@@ -8,17 +8,12 @@ using Verse;
 
 namespace ArchotechInfusions.statcollectors;
 
-public class StatCollectionElement
+public class StatCollectionElement(StatDef statDef)
 {
-    public StatDef StatDef;
+    public StatDef StatDef = statDef;
     public StatModDef Modifier = new();
 
     private float? _order;
-
-    public StatCollectionElement(StatDef statDef)
-    {
-        StatDef = statDef;
-    }
 
     public bool AddUsed => Modifier.Add.x < Modifier.Add.y && Math.Abs(Modifier.Add.x - Modifier.Add.y) > 0.0001;
     public bool MulUsed => Modifier.Mul.x < Modifier.Mul.y && Math.Abs(Modifier.Mul.x - Modifier.Mul.y) > 0.0001;

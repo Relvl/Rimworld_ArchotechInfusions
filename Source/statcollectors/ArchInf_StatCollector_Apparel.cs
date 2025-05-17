@@ -4,7 +4,7 @@ using Verse;
 namespace ArchotechInfusions.statcollectors;
 
 // ReSharper disable once InconsistentNaming, UnusedType.Global - reflective ArchotechInfusions.statcollectors.StatCollectionElement.MakeStatCache
-public class ArchInf_StatCollector_FromApparel : IStatCollector
+public class ArchInf_StatCollector_Apparel : IStatCollector
 {
     public IEnumerable<StatCollectionElement> Collect()
     {
@@ -14,11 +14,17 @@ public class ArchInf_StatCollector_FromApparel : IStatCollector
 
             if (thingDef.statBases is not null)
                 foreach (var modifier in thingDef.statBases)
-                    yield return new StatCollectionElement(modifier.stat).FillThing(thingDef).FillOffsets(modifier).UpdateTypeFilter(InstructionTarget.Apparel);
+                    yield return new StatCollectionElement(modifier.stat)
+                        .FillThing(thingDef)
+                        .FillOffsets(modifier)
+                        .UpdateTypeFilter(InstructionTarget.Apparel);
 
             if (thingDef.equippedStatOffsets is not null)
                 foreach (var modifier in thingDef.equippedStatOffsets)
-                    yield return new StatCollectionElement(modifier.stat).FillThing(thingDef).FillOffsets(modifier).UpdateTypeFilter(InstructionTarget.Apparel);
+                    yield return new StatCollectionElement(modifier.stat)
+                        .FillThing(thingDef)
+                        .FillOffsets(modifier)
+                        .UpdateTypeFilter(InstructionTarget.Apparel);
         }
     }
 }

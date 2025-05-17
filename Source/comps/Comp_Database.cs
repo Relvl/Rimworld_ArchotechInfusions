@@ -39,7 +39,13 @@ public class Comp_Database : CompBase_Grid<CompProps_Database>
         return true;
     }
 
-    public IEnumerable<Instruction> Modifiers => _modifiers;
+    public bool TryRemoveInstruction(Instruction modifier)
+    {
+        if (!Power.PowerOn) return false;
+        return _modifiers.Remove(modifier);
+    }
+
+    public List<Instruction> Modifiers => _modifiers;
 
     public void RemoveModifier(Instruction modifier)
     {

@@ -1,4 +1,6 @@
 using System.Text;
+using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace ArchotechInfusions;
@@ -25,5 +27,48 @@ public static class Extensions
         var copy = input;
         copy.Rotate(direction);
         return copy;
+    }
+
+    public static void Draw(this Thing thing, Rect rowRect, bool highlight = false, string extraText = "")
+    {
+        GUI.color = Color.white;
+        Text.Font = GameFont.Small;
+        
+        var isOver = Mouse.IsOver(rowRect);
+        if (isOver && highlight)
+        {
+            GUI.color = ITab_Pawn_Gear.HighlightColor;
+            GUI.DrawTexture(rowRect, TexUI.HighlightTex);
+        }
+
+        Widgets.InfoCardButton(0, rowRect.yMin + 2, thing);
+        rowRect.xMin += 28;
+
+        if (thing.def.DrawMatSingle != null && thing.def.DrawMatSingle.mainTexture != null)
+        {
+            Widgets.ThingIcon(new Rect(rowRect.xMin, rowRect.yMin, 28f, 28f), thing);
+            rowRect.xMin += 32;
+        }
+
+        Text.Anchor = TextAnchor.MiddleLeft;
+        GUI.color = ITab_Pawn_Gear.ThingLabelColor;
+
+        var nameRect = new Rect(rowRect.xMin, rowRect.yMin, rowRect.width - 36f, rowRect.height);
+        
+        // todo crop rect by total text width
+        
+        Text.WordWrap = false;
+        var text = (thing.LabelCap + extraText).Truncate(nameRect.width);
+        Widgets.Label(nameRect, text);
+        Text.WordWrap = true;
+
+        Text.Anchor = TextAnchor.MiddleLeft;
+        if (isOver)
+        {
+            var tip = thing.LabelNoParenthesisCap.AsTipTitle() + GenLabel.LabelExtras(thing, true, true) + "\n\n" + thing.DescriptionDetailed;
+            if (thing.def.useHitPoints)
+                tip = tip + "\n" + thing.HitPoints + " / " + thing.MaxHitPoints;
+            TooltipHandler.TipRegion(rowRect, tip);
+        }
     }
 }

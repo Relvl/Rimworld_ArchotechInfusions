@@ -1,8 +1,12 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
 <LanguageData>
     <JAI.Progress>Progress: {0}</JAI.Progress>
     <JAI.KeyGenerator.KeysCount>Keys generated: {0}</JAI.KeyGenerator.KeysCount>
     <JAI.Decoder.StoredBackup><![CDATA[<color=yellow>Stored a backup with progress: {0}%</color>]]></JAI.Decoder.StoredBackup>
     <JAI.Database.ShowInstructions>Show instructions</JAI.Database.ShowInstructions>
-    <JAI.></JAI.>
+    <JAI.Printer.SelectThing.Title>Select thing to print</JAI.Printer.SelectThing.Title>
+    <JAI.Printer.SelectThing.Select>Select</JAI.Printer.SelectThing.Select>
+    <JAI.Printer.Print.Title>Select instruction to print</JAI.Printer.Print.Title>
+    <JAI.Printer.Print.Confirm>Print</JAI.Printer.Print.Confirm>
 </LanguageData>

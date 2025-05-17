@@ -22,19 +22,7 @@ public static class StatCollector
 
         var usedStats = new Dictionary<string, StatCollectionElement>();
 
-        void ProcessElement(StatCollectionElement element, bool force = false)
-        {
-            if (!force && usedStats.ContainsKey(element.StatDef.defName))
-            {
-                usedStats[element.StatDef.defName].UpdateFrom(element);
-                return;
-            }
-
-            usedStats.Remove(element.StatDef.defName);
-            usedStats.Add(element.StatDef.defName, element);
-        }
-
-        // Doind all the collectors
+        // Doing all the collectors
         foreach (var collectorDef in DefDatabase<StatCollectorDef>.AllDefs)
         foreach (var collectorClass in collectorDef.CollectorClasses)
         {
@@ -48,7 +36,7 @@ public static class StatCollector
             {
                 if (IgnoredDefs.Contains(element.StatDef.defName)) continue;
                 if (NegatedDefs.Contains(element.StatDef.defName)) element.Modifier.IsNegated = true;
-                ProcessElement(element);
+                ProcessElement(element, usedStats);
             }
         }
 
@@ -57,7 +45,7 @@ public static class StatCollector
             var statDef = DefDatabase<StatDef>.GetNamed(overrideDef.defName, false);
             if (statDef is null) continue;
             var element = new StatCollectionElement(statDef) { Modifier = overrideDef };
-            ProcessElement(element, true);
+            ProcessElement(element, usedStats, true);
         }
 
         foreach (var element in usedStats.Values)
@@ -65,6 +53,18 @@ public static class StatCollector
             if (element.IsPassive) continue;
             yield return element;
         }
+    }
+
+    private static void ProcessElement(StatCollectionElement element, Dictionary<string, StatCollectionElement> usedStats, bool force = false)
+    {
+        if (!force && usedStats.ContainsKey(element.StatDef.defName))
+        {
+            usedStats[element.StatDef.defName].UpdateFrom(element);
+            return;
+        }
+
+        usedStats.Remove(element.StatDef.defName);
+        usedStats.Add(element.StatDef.defName, element);
     }
 
     private static void CollectDefsTo<T>(ICollection<string> list, Func<T, List<string>> provider) where T : Def

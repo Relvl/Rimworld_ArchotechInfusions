@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Defs>
+    <!-- No work giver. Check ArchInf_Printer_Building.GetFloatMenuOptions -->
+    <JobDef>
+        <defName>ArchInf_Print</defName>
+        <driverClass>ArchotechInfusions.jobs.JobDriver_Print</driverClass>
+        <reportString>Printing the instruction.</reportString>
+        <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+    </JobDef>
+</Defs>

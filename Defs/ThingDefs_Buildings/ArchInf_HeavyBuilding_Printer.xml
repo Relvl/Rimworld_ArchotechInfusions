@@ -56,6 +56,9 @@
                 <idlePowerDraw>100</idlePowerDraw>
             </li>
             <li Class="ArchotechInfusions.comps.CompProps_Printer">
+                <PrintEnergyCost>1000</PrintEnergyCost>
+                <PrintTicks>500</PrintTicks>
+                <PrintArchiteCost>250</PrintArchiteCost>
             </li>
         </comps>
     </ThingDef>

@@ -14,8 +14,8 @@ public class CompDatabaseWindow : Window
     private const int CellMargin = 10;
 
     private readonly Comp_Database _comp;
-    private Vector2 _scroll;
     private float _lastFrameHeight;
+    private Vector2 _scroll;
 
     public CompDatabaseWindow(Comp_Database comp)
     {
@@ -57,26 +57,33 @@ public class CompDatabaseWindow : Window
             var sb = new StringBuilder();
             sb.Append("<color=#00FF00>").Append(modifier.Def.LabelCap).Append("</color> ");
             modifier.FillValueString(sb);
-
             Widgets.Label(cellRect, sb.ToString());
             cellRect.yMin += 13;
 
             sb.Clear();
             sb.Append("Complexity: ").Append(modifier.Complexity.ToString("0.##"));
             Widgets.Label(cellRect, sb.ToString());
-            cellRect.yMin += 11;
+            cellRect.yMin += 13;
 
-            // if (Mouse.IsOver(closeCell)) GUI.DrawTexture(closeCell, TexUI.HighlightTex);
+            sb.Clear();
+            sb.Append("B: ").Append(modifier.Def.defaultBaseValue.ToString("0.##")).Append(", ");
+            sb.Append("R: ").Append(modifier.Def.Worker.ValueToString(modifier.Value, true)).Append(", ");
+            Widgets.Label(cellRect, sb.ToString());
+            cellRect.yMin += 13;
+
             if (Widgets.ButtonImage(closeCell, TexButton.CloseXSmall))
             {
-                Find.WindowStack.Add(
-                    Dialog_MessageBox.CreateConfirmation(
-                        "ArchInf.Message.RemoveInstruction".Translate(),
-                        () => _comp.RemoveModifier(modifier),
-                        true,
-                        "ArchInf.Message.RemoveInstruction.Title".Translate()
-                    )
-                );
+                if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
+                    _comp.RemoveModifier(modifier);
+                else
+                    Find.WindowStack.Add(
+                        Dialog_MessageBox.CreateConfirmation(
+                            "ArchInf.Message.RemoveInstruction".Translate(),
+                            () => _comp.RemoveModifier(modifier),
+                            true,
+                            "ArchInf.Message.RemoveInstruction.Title".Translate()
+                        )
+                    );
             }
 
             idx++;
