@@ -71,27 +71,41 @@ public class StatDefinitionDef : Def
 
         if (OperationAdd is not null)
         {
-            if (OperationAdd.Default < OperationAdd.Min || OperationAdd.Default > OperationAdd.Max)
-                yield return $"JAI: StatDefinitionDef[defName={defName}]/OperationAdd Default < Min || Default > Max";
+            if (OutOfRange(OperationAdd))
+                yield return $"JAI: StatDefinitionDef[defName={defName}]/OperationAdd Default is out of Min..Max";
             if (Mathf.Approximately(OperationAdd.Min, OperationAdd.Default) && Mathf.Approximately(OperationAdd.Max, OperationAdd.Default))
                 yield return $"JAI: StatDefinitionDef[defName={defName}]/OperationAdd Default==Min==Max";
         }
 
         if (OperationMul is not null)
         {
-            if (OperationMul.Default < OperationMul.Min || OperationMul.Default > OperationMul.Max)
-                yield return $"JAI: StatDefinitionDef[defName={defName}]/OperationMul Default < Min || Default > Max";
+            if (OutOfRange(OperationMul))
+                yield return $"JAI: StatDefinitionDef[defName={defName}]/OperationMul Default is out of Min..Max";
             if (Mathf.Approximately(OperationMul.Min, OperationMul.Default) && Mathf.Approximately(OperationMul.Max, OperationMul.Default))
                 yield return $"JAI: StatDefinitionDef[defName={defName}]/OperationMul Default==Min==Max";
         }
 
         if (OperationSet is not null)
         {
-            if (OperationSet.Default < OperationSet.Min || OperationSet.Default > OperationSet.Max)
-                yield return $"JAI: StatDefinitionDef[defName={defName}]/OperationSet Default < Min || Default > Max";
+            if (OutOfRange(OperationSet))
+                yield return $"JAI: StatDefinitionDef[defName={defName}]/OperationSet Default is out of Min..Max";
             if (Mathf.Approximately(OperationSet.Min, OperationSet.Default) && Mathf.Approximately(OperationSet.Max, OperationSet.Default))
                 yield return $"JAI: StatDefinitionDef[defName={defName}]/OperationSet Default==Min==Max";
         }
+
+        if (OperationAdd is not null && OperationSet is not null && OperationAdd.isInverted != OperationSet.isInverted)
+            yield return $"JAI: StatDefinitionDef[defName={defName}]/OperationAdd.isInverted != OperationSet.isInverted";
+        if (OperationMul is not null && OperationSet is not null && OperationMul.isInverted != OperationSet.isInverted)
+            yield return $"JAI: StatDefinitionDef[defName={defName}]/OperationMul.isInverted != OperationSet.isInverted";
+        if (OperationAdd is not null && OperationMul is not null && OperationAdd.isInverted != OperationMul.isInverted)
+            yield return $"JAI: StatDefinitionDef[defName={defName}]/OperationAdd.isInverted != OperationMul.isInverted";
+    }
+
+    private static bool OutOfRange(Operation operation)
+    {
+        if (operation.Max > operation.Min && (operation.Default < operation.Min || operation.Default > operation.Max)) return true;
+        if (operation.Min > operation.Max && (operation.Default < operation.Max || operation.Default > operation.Min)) return true;
+        return false;
     }
 
     public class Operation

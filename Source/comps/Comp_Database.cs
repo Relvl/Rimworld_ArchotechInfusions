@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using ArchotechInfusions.comps.comp_base;
 using ArchotechInfusions.instructions;
 using ArchotechInfusions.statprocessor;
 using ArchotechInfusions.ui;
+using UnityEngine;
 using Verse;
 
 namespace ArchotechInfusions.comps;
@@ -19,8 +21,11 @@ public class CompProps_Database : CompProperties
     }
 }
 
+[StaticConstructorOnStartup]
 public class Comp_Database : CompBase_Grid<CompProps_Database>
 {
+    private static Texture2D showDbTex;
+
     private List<AInstruction> _modifiers = [];
     private float _spaceUsed;
     private float FreeSpace => Props.MaxSpace - _spaceUsed;
@@ -35,13 +40,13 @@ public class Comp_Database : CompBase_Grid<CompProps_Database>
 
     private void RecalcSpaceUsed()
     {
-        _spaceUsed = _modifiers.Sum(m => m.Complexity);
+        _spaceUsed = _modifiers.Sum(m => Math.Abs(m.Complexity));
     }
 
     public bool MakeDatabaseRecord(AInstruction modifier)
     {
         if (!Power.PowerOn) return false;
-        if (FreeSpace < modifier.Complexity) return false;
+        if (FreeSpace < Math.Abs(modifier.Complexity)) return false;
 
         _modifiers.Add(modifier);
         RecalcSpaceUsed();
@@ -67,9 +72,11 @@ public class Comp_Database : CompBase_Grid<CompProps_Database>
 
     public override IEnumerable<Gizmo> CompGetGizmosExtra()
     {
+        showDbTex ??= ContentFinder<Texture2D>.Get("ArchotechInfusions/UI/Gizmo/Database");
         yield return new Command_Action
         {
             defaultLabel = "JAI.Database.ShowInstructions".Translate(),
+            icon = showDbTex,
             action = () =>
             {
                 Find.WindowStack.TryRemove(typeof(CompDatabaseWindow));

@@ -108,6 +108,6 @@ public abstract class AInstructionProcessor<T>(StatDefinitionDef def) : IInstruc
             }
         }
 
-        return Mathf.Lerp(-Def.Complexity, Def.Complexity, (factor + 1f) / 2f);
+        return Mathf.Lerp(-Def.Complexity / /*todo config? def? */10f, Def.Complexity, (factor + 1f) / 2f);
     }
 }

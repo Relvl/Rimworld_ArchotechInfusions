@@ -24,8 +24,7 @@ public class CompProps_Printer : CompProperties
 
 public class Comp_Printer : CompBase_Grid<CompProps_Printer>
 {
-    private AInstruction _currentInstruction;
-    private List<AInstruction> _instructions = [];
+    private AInstruction _instruction;
     private int _ticksCurrentCycle;
     private Thing _targetThing;
 
@@ -36,11 +35,8 @@ public class Comp_Printer : CompBase_Grid<CompProps_Printer>
     {
         base.PostExposeData();
 
-        Scribe_Collections.Look(ref _instructions, "Instructions", LookMode.Deep);
-        Scribe_Deep.Look(ref _currentInstruction, "CurrentInstruction");
+        Scribe_Deep.Look(ref _instruction, "PrintingInstruction", LookMode.Deep);
         Scribe_Values.Look(ref _ticksCurrentCycle, "TicksCurrentCycle");
-
-        _instructions ??= [];
     }
 
     public bool CanWork()
@@ -65,26 +61,19 @@ public class Comp_Printer : CompBase_Grid<CompProps_Printer>
 
     public void EnqueueInstruction(AInstruction instruction, Thing target)
     {
-        _instructions.Add(instruction);
+        _instruction = instruction;
         _targetThing = target;
         Member.Grid.TryRemoveInstruction(instruction);
     }
 
     public void DoJobStarted(Pawn pawn, JobDriver driver, bool initial)
     {
-        Log.Warning("-- on job started");
-
-        if (_currentInstruction != null)
-            Log.Error("JAI: printing started with active instruction, something goes wrong!");
-
-        if (_instructions.Count == 0)
+        if (_instruction is null)
         {
             driver.EndJobWith(JobCondition.Succeeded);
             return;
         }
 
-        _currentInstruction = _instructions.First();
-        _instructions.Remove(_currentInstruction);
         _ticksCurrentCycle = 0;
     }
 
@@ -92,8 +81,8 @@ public class Comp_Printer : CompBase_Grid<CompProps_Printer>
     {
         if (_ticksCurrentCycle >= Props.PrintTicks)
         {
-            var applyInstruction = _currentInstruction;
-            _currentInstruction = null;
+            var applyInstruction = _instruction;
+            _instruction = null;
             ApplyInstruction(pawn, driver, applyInstruction);
             DoJobStarted(pawn, driver, false);
             return;
@@ -104,19 +93,10 @@ public class Comp_Printer : CompBase_Grid<CompProps_Printer>
 
     public void DoJobFinished(Pawn pawn, JobDriver driver)
     {
-        Log.Warning("-- on job finished");
         WindowSelector.ForceClose();
         _targetThing = null;
-        if (Member.Grid.TryPutInstruction(_currentInstruction))
-            _currentInstruction = null;
-        foreach (var instruction in _instructions.ToList())
-            if (Member.Grid.TryPutInstruction(instruction))
-                _instructions.Remove(instruction);
-        if (_instructions.Count > 0)
-        {
-            Log.Error("JAI: printing finished with active instructions in queue!");
-            _instructions.Clear();
-        }
+        if (Member.Grid.TryPutInstruction(_instruction))
+            _instruction = null;
     }
 
 

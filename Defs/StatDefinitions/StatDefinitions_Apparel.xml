@@ -8,13 +8,13 @@
         <Target>Apparel</Target>
         <Complexity>100</Complexity>
         <OperationAdd>
-            <Weight>10</Weight>
-            <Min>-0.2</Min>
-            <Max>0.2</Max>
+            <Weight>5</Weight>
+            <Min>0.2</Min>
+            <Max>-0.2</Max>
             <Default>0</Default>
         </OperationAdd>
         <OperationMul>
-            <Weight>80</Weight>
+            <Weight>5</Weight>
             <Min>1.8</Min>
             <Max>0.5</Max>
             <Default>1</Default>
@@ -34,8 +34,8 @@
         <Complexity>100</Complexity>
         <OperationAdd>
             <Weight>10</Weight>
-            <Min>-0.2</Min>
-            <Max>0.2</Max>
+            <Min>0.2</Min>
+            <Max>-0.2</Max>
             <Default>0</Default>
         </OperationAdd>
         <OperationMul>

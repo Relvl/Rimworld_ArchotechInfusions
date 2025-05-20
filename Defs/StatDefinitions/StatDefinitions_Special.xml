@@ -9,8 +9,8 @@
         <Complexity>100</Complexity>
         <OperationAdd>
             <Weight>5</Weight>
-            <Min>-50</Min>
-            <Max>50</Max>
+            <Min>50</Min>
+            <Max>-50</Max>
         </OperationAdd>
         <OperationMul>
             <Weight>5</Weight>
@@ -37,9 +37,9 @@
         <Worker>ArchotechInfusions.statprocessor.InstructionProcessorIntegrity</Worker>
         <Complexity>0</Complexity>
         <OperationAdd>
-            <Weight>10</Weight>
+            <Weight>1</Weight>
             <Min>0</Min>
-            <Max>1000</Max>
+            <Max>100</Max>
         </OperationAdd>
     </ArchotechInfusions.StatDefinitionDef>
 

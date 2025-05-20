@@ -10,20 +10,20 @@
         <OperationAdd>
             <Weight>10</Weight>
             <Min>0.5</Min>
-            <Max>1.8</Max>
+            <Max>-0.5</Max>
             <Default>0</Default>
         </OperationAdd>
         <OperationMul>
-            <Weight>80</Weight>
-            <Min>0.2</Min>
-            <Max>1.2</Max>
+            <Weight>10</Weight>
+            <Min>1.2</Min>
+            <Max>0.2</Max>
             <Default>1</Default>
         </OperationMul>
         <OperationSet>
             <Weight>1</Weight>
-            <Min>0.2</Min>
-            <Max>1.5</Max>
-            <Default>0</Default>
+            <Min>1.2</Min>
+            <Max>0.2</Max>
+            <Default>1</Default>
         </OperationSet>
     </ArchotechInfusions.StatDefinitionDef>
 
@@ -34,21 +34,21 @@
         <Complexity>100</Complexity>
         <OperationAdd>
             <Weight>10</Weight>
-            <Min>0.2</Min>
-            <Max>1.8</Max>
+            <Min>1.5</Min>
+            <Max>-1.8</Max>
             <Default>0</Default>
         </OperationAdd>
         <OperationMul>
-            <Weight>80</Weight>
-            <Min>0.2</Min>
-            <Max>1.2</Max>
+            <Weight>10</Weight>
+            <Min>1.2</Min>
+            <Max>0.2</Max>
             <Default>1</Default>
         </OperationMul>
         <OperationSet>
             <Weight>1</Weight>
-            <Min>0.2</Min>
-            <Max>1.5</Max>
-            <Default>0</Default>
+            <Min>1.2</Min>
+            <Max>0.5</Max>
+            <Default>0.75</Default>
         </OperationSet>
     </ArchotechInfusions.StatDefinitionDef>
 

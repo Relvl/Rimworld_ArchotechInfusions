@@ -7,5 +7,5 @@ public class InstructionQuality : AInstruction
 {
     public override string Label => "Quality".Translate();
 
-    public override void FillValueString(StringBuilder sb) => sb.Append("<color=green>+1</color>");
+    public override void RenderValue(StringBuilder sb) => sb.Append("<color=green>+1</color>");
 }

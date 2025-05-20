@@ -11,18 +11,22 @@ namespace ArchotechInfusions.ui.component;
 
 public static class InstructionView
 {
+    private static readonly StringBuilder Builder = new();
     public const float Height = 45f;
     public const float MinWidth = 220f;
     private static readonly Color MenuSectionBgBorderColor = new ColorInt(135, 135, 135).ToColor;
+    private static readonly Color HoverColor = new ColorInt(205, 197, 10).ToColor.ToTransparent(0.5f);
 
     public static void Draw(this AInstruction instruction, Rect cellRect, bool active = false, params ButtonData[] buttons)
     {
         Text.Font = GameFont.Tiny;
         Text.Anchor = TextAnchor.UpperLeft;
 
-        if (active) GUI.color = Color.yellow;
+        var hover = Mouse.IsOver(cellRect);
+
+        GUI.color = active ? Color.yellow : instruction.BgColor;
         GUI.DrawTexture(cellRect, TexUI.HighlightTex);
-        GUI.color = active ? Color.yellow : MenuSectionBgBorderColor;
+        GUI.color = active ? Color.yellow : hover ? HoverColor : MenuSectionBgBorderColor;
         Widgets.DrawBox(cellRect);
 
         GUI.color = Color.white;
@@ -48,20 +52,32 @@ public static class InstructionView
                 button.OnClick?.Invoke(instruction);
             }
         }
+
+        if (hover)
+        {
+            Builder.Clear();
+            instruction.RenderTooltip(Builder);
+            var tooltip = Builder.ToString();
+            if (!tooltip.NullOrEmpty())
+                TooltipHandler.TipRegion(cellRect, tooltip);
+        }
     }
 
     private static IEnumerable<string> CellLines(AInstruction instruction)
     {
-        var sb = new StringBuilder();
+        Builder.Clear();
+        instruction.RenderLabel(Builder);
+        instruction.RenderValue(Builder);
+        yield return Builder.ToString();
 
-        sb.Clear();
-        sb.Append("<color=#00FF00>").Append(instruction.Label).Append("</color> ");
-        instruction.FillValueString(sb);
-        yield return sb.ToString();
+        Builder.Clear();
+        instruction.RenderComplexity(Builder);
+        yield return Builder.ToString();
 
-        sb.Clear();
-        sb.Append("Complexity: ").Append(instruction.Complexity.ToString("0.##"));
-        yield return sb.ToString();
+        Builder.Clear();
+        instruction.RenderExtraLine(Builder);
+
+        yield return Builder.ToString();
     }
 
     public class ButtonData

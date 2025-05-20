@@ -31,7 +31,7 @@ public class PrintWindowSelector(Comp_Printer comp)
     public void OnThingSelected(Pawn pawn, Thing thing)
     {
         Find.WindowStack.TryRemove(typeof(ThingSelectorWindow));
-        _printWindow = new PrintWindow(this, pawn, comp, thing);
+        _printWindow = new PrintWindow(this, comp, thing);
         Find.WindowStack.Add(_printWindow);
     }
 

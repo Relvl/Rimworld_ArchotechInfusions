@@ -12,6 +12,8 @@ public class CompDatabaseWindow : Window
     private readonly Comp_Database _comp;
     private readonly InstructionView.ButtonData _deleteButton;
 
+    public override Vector2 InitialSize => new(800, 700);
+
     public CompDatabaseWindow(Comp_Database comp)
     {
         draggable = true;

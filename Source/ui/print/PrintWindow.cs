@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
 using ArchotechInfusions.comps;
 using ArchotechInfusions.instructions;
@@ -15,19 +14,15 @@ public class PrintWindow : Window
 {
     private readonly InstructionView.ButtonData _dequeueButton;
     private readonly InstructionView.ButtonData _enqueueButton;
-    private readonly List<AInstruction> _instructionsToApply = [];
 
-    private readonly Pawn _pawn;
     private readonly Comp_Printer _printer;
     private readonly PrintWindowSelector _selector;
     private readonly Thing _thing;
+    private AInstruction _instruction;
 
-    public override Vector2 InitialSize => new(800, 600);
-
-    public PrintWindow(PrintWindowSelector selector, Pawn pawn, Comp_Printer printer, Thing thing)
+    public PrintWindow(PrintWindowSelector selector, Comp_Printer printer, Thing thing)
     {
         _selector = selector;
-        _pawn = pawn;
         _printer = printer;
         _thing = thing;
 
@@ -40,21 +35,23 @@ public class PrintWindow : Window
         _enqueueButton = new InstructionView.ButtonData { Tooltip = "Print this instruction", Texture = TexButton.Play, OnClick = OnEnqueue };
     }
 
+    public override Vector2 InitialSize => new(800, 600);
+
     public override void PostClose()
     {
         _selector.OnPrintWindowClosed();
-        _instructionsToApply.Clear();
+        _instruction = null;
         base.PostClose();
     }
 
-    public void OnEnqueue(AInstruction instruction)
+    private void OnEnqueue(AInstruction instruction)
     {
-        _instructionsToApply.Add(instruction);
+        _instruction = instruction;
     }
 
-    public void OnDequeue(AInstruction instruction)
+    private void OnDequeue(AInstruction instruction)
     {
-        _instructionsToApply.Remove(instruction);
+        _instruction = null;
     }
 
     public override void DoWindowContents(Rect inRect)
@@ -77,10 +74,13 @@ public class PrintWindow : Window
         Text.Font = GameFont.Medium;
         GUI.color = Color.cyan;
         Widgets.Label(titleRect, "JAI.Printer.Print.Title".Translate());
-        _thing.Draw(thingRect, false, $", HP: {_thing.HitPoints}/{_thing.MaxHitPoints}, Integrity: {120f:0.00}");
+        _thing.Draw(thingRect, false, $", HP: {_thing.HitPoints}/{_thing.MaxHitPoints}, Integrity: {120f:0.00}"); // todo integrity or not used
 
-        var instructions = _printer.Member.Grid.GetComps<Comp_Database>().SelectMany(database => database.Modifiers);
-        instructions.Draw(inRect, i => _instructionsToApply.Contains(i), i => _instructionsToApply.Contains(i) ? [_dequeueButton] : [_enqueueButton]);
+        var instructions = _printer.Member.Grid
+            .GetComps<Comp_Database>()
+            .SelectMany(database => database.Modifiers)
+            .Where(instruction => instruction.IsThingApplicable(_thing));
+        instructions.Draw(inRect, i => _instruction == i, i => _instruction == i ? [_dequeueButton] : [_enqueueButton]);
 
         DrawTotals(totalsRect);
 
@@ -94,40 +94,33 @@ public class PrintWindow : Window
 
     private void DrawButtons(Rect buttonsRect)
     {
-        if (Widgets.ButtonText(buttonsRect with { width = 100 }, "Back".Translate(), overrideTextAnchor: TextAnchor.MiddleCenter))
-        {
-            _selector.ForceClose();
-        }
+        if (Widgets.ButtonText(buttonsRect with { width = 100 }, "Back".Translate(), overrideTextAnchor: TextAnchor.MiddleCenter)) _selector.ForceClose();
 
-        var confirmButtonRect = buttonsRect with { xMin = buttonsRect.width - 100 };
-        if (Widgets.ButtonText(confirmButtonRect, "JAI.Printer.Print.Confirm".Translate(), true, true, _instructionsToApply.Count > 0, TextAnchor.MiddleCenter))
+        if (_instruction is not null)
         {
-            SoundDefOf.Crunch.PlayOneShotOnCamera();
-            foreach (var instruction in _instructionsToApply)
-                _printer.EnqueueInstruction(instruction, _thing);
-            _selector.ForceClose();
+            var confirmButtonRect = buttonsRect with { xMin = buttonsRect.width - 100 };
+            if (Widgets.ButtonText(confirmButtonRect, "JAI.Printer.Print.Confirm".Translate(), true, true, true, TextAnchor.MiddleCenter))
+            {
+                SoundDefOf.Crunch.PlayOneShotOnCamera();
+                _printer.EnqueueInstruction(_instruction, _thing);
+                _selector.ForceClose();
+            }
         }
     }
 
     private void DrawTotals(Rect inRect)
     {
+        if (_instruction is null) return;
+
         Text.Font = GameFont.Small;
         GUI.color = Color.white;
-
-        var totalComplexity = 0f;
-        var totalArchite = 0f;
-        foreach (var instruction in _instructionsToApply)
-        {
-            totalComplexity += instruction.Complexity;
-            totalArchite += _printer.Props.PrintArchiteCost;
-        }
 
         Text.Font = GameFont.Small;
         Widgets.DrawMenuSection(inRect);
         var textRect = inRect.ContractedBy(4);
 
         var sb = new StringBuilder();
-        sb.Append("Instructions: ").Append(_instructionsToApply.Count).Append(". Total complexity: ").Append(totalComplexity.ToString("0.00")).Append(". Total archite needed: ").Append(totalArchite).AppendLine(".");
+        sb.Append("Complexity: ").Append(_instruction.Complexity.ToString("0.00")).Append(". Archite needed: ").Append(_printer.Props.PrintArchiteCost).AppendLine(".");
         Widgets.Label(textRect, sb.ToString());
     }
 }
