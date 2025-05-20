@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ArchotechInfusions.comps.comp_base;
-using ArchotechInfusions.statcollectors;
+using ArchotechInfusions.instructions;
 using ArchotechInfusions.ui;
 using ArchotechInfusions.ui.print;
 using Verse;
@@ -24,8 +24,8 @@ public class CompProps_Printer : CompProperties
 
 public class Comp_Printer : CompBase_Grid<CompProps_Printer>
 {
-    private Instruction _currentInstruction;
-    private List<Instruction> _instructions = [];
+    private AInstruction _currentInstruction;
+    private List<AInstruction> _instructions = [];
     private int _ticksCurrentCycle;
     private Thing _targetThing;
 
@@ -63,7 +63,7 @@ public class Comp_Printer : CompBase_Grid<CompProps_Printer>
         WindowSelector.OpenThingSelector(pawn);
     }
 
-    public void EnqueueInstruction(Instruction instruction, Thing target)
+    public void EnqueueInstruction(AInstruction instruction, Thing target)
     {
         _instructions.Add(instruction);
         _targetThing = target;
@@ -125,7 +125,7 @@ public class Comp_Printer : CompBase_Grid<CompProps_Printer>
         return (float)_ticksCurrentCycle / Props.PrintTicks;
     }
 
-    public void ApplyInstruction(Pawn pawn, JobDriver driver, Instruction instruction)
+    public void ApplyInstruction(Pawn pawn, JobDriver driver, AInstruction instruction)
     {
         Log.Warning($"-- apply instruction: {instruction}");
     }

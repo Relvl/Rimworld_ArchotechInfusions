@@ -9,4 +9,7 @@
     <JAI.Printer.SelectThing.Select>Select</JAI.Printer.SelectThing.Select>
     <JAI.Printer.Print.Title>Select instruction to print</JAI.Printer.Print.Title>
     <JAI.Printer.Print.Confirm>Print</JAI.Printer.Print.Confirm>
+    
+    <JAI.instruction.integrity>Integrity</JAI.instruction.integrity>
+    <JAI.instruction.unbreakable>Unbreakable!</JAI.instruction.unbreakable>
 </LanguageData>

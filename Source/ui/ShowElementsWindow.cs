@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Text;
-using ArchotechInfusions.statcollectors;
 using UnityEngine;
 using Verse;
 
@@ -34,7 +33,7 @@ public class ShowElementsWindow : Window
 
         Widgets.BeginScrollView(inRect, ref _scroll, innerRect);
         var idx = 0;
-        foreach (var element in StatCollector.StatCache.OrderBy(e => e.Order()))
+        /*foreach (var element in StatCollector.StatCache.OrderBy(e => e.Order()))
         {
             var colIdx = idx % columnCount;
             var rowIdx = idx / columnCount;
@@ -56,7 +55,7 @@ public class ShowElementsWindow : Window
             Widgets.Label(cellRect, $"Weight: {element.Order():0.##}");
 
             idx++;
-        }
+        }*/
 
         _lastFrameHeight = idx / columnCount * (CellHeight + CellMargin);
         Widgets.EndScrollView();

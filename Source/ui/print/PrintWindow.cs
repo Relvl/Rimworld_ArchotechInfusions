@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Text;
 using ArchotechInfusions.comps;
-using ArchotechInfusions.statcollectors;
+using ArchotechInfusions.instructions;
 using ArchotechInfusions.ui.component;
 using RimWorld;
 using UnityEngine;
@@ -15,7 +15,7 @@ public class PrintWindow : Window
 {
     private readonly InstructionView.ButtonData _dequeueButton;
     private readonly InstructionView.ButtonData _enqueueButton;
-    private readonly List<Instruction> _instructionsToApply = [];
+    private readonly List<AInstruction> _instructionsToApply = [];
 
     private readonly Pawn _pawn;
     private readonly Comp_Printer _printer;
@@ -47,12 +47,12 @@ public class PrintWindow : Window
         base.PostClose();
     }
 
-    public void OnEnqueue(Instruction instruction)
+    public void OnEnqueue(AInstruction instruction)
     {
         _instructionsToApply.Add(instruction);
     }
 
-    public void OnDequeue(Instruction instruction)
+    public void OnDequeue(AInstruction instruction)
     {
         _instructionsToApply.Remove(instruction);
     }

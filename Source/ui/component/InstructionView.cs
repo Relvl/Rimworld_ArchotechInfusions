@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using ArchotechInfusions.statcollectors;
+using ArchotechInfusions.instructions;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -15,7 +15,7 @@ public static class InstructionView
     public const float MinWidth = 220f;
     private static readonly Color MenuSectionBgBorderColor = new ColorInt(135, 135, 135).ToColor;
 
-    public static void Draw(this Instruction instruction, Rect cellRect, bool active = false, params ButtonData[] buttons)
+    public static void Draw(this AInstruction instruction, Rect cellRect, bool active = false, params ButtonData[] buttons)
     {
         Text.Font = GameFont.Tiny;
         Text.Anchor = TextAnchor.UpperLeft;
@@ -50,29 +50,24 @@ public static class InstructionView
         }
     }
 
-    private static IEnumerable<string> CellLines(Instruction instruction)
+    private static IEnumerable<string> CellLines(AInstruction instruction)
     {
         var sb = new StringBuilder();
 
         sb.Clear();
-        sb.Append("<color=#00FF00>").Append(instruction.Def.LabelCap).Append("</color> ");
+        sb.Append("<color=#00FF00>").Append(instruction.Label).Append("</color> ");
         instruction.FillValueString(sb);
         yield return sb.ToString();
 
         sb.Clear();
         sb.Append("Complexity: ").Append(instruction.Complexity.ToString("0.##"));
         yield return sb.ToString();
-
-        sb.Clear();
-        sb.Append("B: ").Append(instruction.Def.defaultBaseValue.ToString("0.##")).Append(", ");
-        sb.Append("R: ").Append(instruction.Def.Worker.ValueToString(instruction.Value, true)).Append(", ");
-        yield return sb.ToString();
     }
 
     public class ButtonData
     {
         public string Tooltip;
-        public Action<Instruction> OnClick;
+        public Action<AInstruction> OnClick;
         public Texture2D Texture;
     }
 }

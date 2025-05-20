@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using ArchotechInfusions.statcollectors;
+using ArchotechInfusions.instructions;
 using UnityEngine;
 using Verse;
 
@@ -13,7 +13,7 @@ public static class InstructionListView
     private static Vector2 _scrollPosition = Vector2.zero;
     private static float _lastFrameHeight;
 
-    public static void Draw(this IEnumerable<Instruction> instructions, Rect inRect, Func<Instruction, bool> isActiveFunc = null, Func<Instruction, InstructionView.ButtonData[]> buttonsFunc = null)
+    public static void Draw(this IEnumerable<AInstruction> instructions, Rect inRect, Func<AInstruction, bool> isActiveFunc = null, Func<AInstruction, InstructionView.ButtonData[]> buttonsFunc = null)
     {
         Text.Font = GameFont.Tiny;
         Text.WordWrap = false;

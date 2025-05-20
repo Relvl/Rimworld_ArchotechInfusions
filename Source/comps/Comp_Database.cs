@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using ArchotechInfusions.comps.comp_base;
-using ArchotechInfusions.statcollectors;
+using ArchotechInfusions.instructions;
+using ArchotechInfusions.statprocessor;
 using ArchotechInfusions.ui;
 using Verse;
 
@@ -12,13 +13,19 @@ public class CompProps_Database : CompProperties
 {
     public int MaxSpace = 1000;
 
-    public CompProps_Database() => compClass = typeof(Comp_Database);
+    public CompProps_Database()
+    {
+        compClass = typeof(Comp_Database);
+    }
 }
 
 public class Comp_Database : CompBase_Grid<CompProps_Database>
 {
-    private List<Instruction> _modifiers = [];
+    private List<AInstruction> _modifiers = [];
     private float _spaceUsed;
+    private float FreeSpace => Props.MaxSpace - _spaceUsed;
+
+    public List<AInstruction> Modifiers => _modifiers;
 
     public override void PostExposeData()
     {
@@ -26,10 +33,12 @@ public class Comp_Database : CompBase_Grid<CompProps_Database>
         RecalcSpaceUsed();
     }
 
-    private void RecalcSpaceUsed() => _spaceUsed = _modifiers.Sum(m => m.Complexity);
-    private float FreeSpace => Props.MaxSpace - _spaceUsed;
+    private void RecalcSpaceUsed()
+    {
+        _spaceUsed = _modifiers.Sum(m => m.Complexity);
+    }
 
-    public bool MakeDatabaseRecord(Instruction modifier)
+    public bool MakeDatabaseRecord(AInstruction modifier)
     {
         if (!Power.PowerOn) return false;
         if (FreeSpace < modifier.Complexity) return false;
@@ -39,15 +48,13 @@ public class Comp_Database : CompBase_Grid<CompProps_Database>
         return true;
     }
 
-    public bool TryRemoveInstruction(Instruction modifier)
+    public bool TryRemoveInstruction(AInstruction modifier)
     {
         if (!Power.PowerOn) return false;
         return _modifiers.Remove(modifier);
     }
 
-    public List<Instruction> Modifiers => _modifiers;
-
-    public void RemoveModifier(Instruction modifier)
+    public void RemoveModifier(AInstruction modifier)
     {
         _modifiers.Remove(modifier);
         RecalcSpaceUsed();
@@ -71,16 +78,14 @@ public class Comp_Database : CompBase_Grid<CompProps_Database>
         };
 
         if (DebugSettings.ShowDevGizmos)
-        {
             yield return new Command_Action
             {
                 defaultLabel = "Force make random",
                 action = () =>
                 {
-                    _modifiers.Add(StatCollector.GenerateNewInstruction());
+                    _modifiers.Add(StatProcessor.GenerateInstruction());
                     RecalcSpaceUsed();
                 }
             };
-        }
     }
 }

@@ -1,6 +1,6 @@
 namespace ArchotechInfusions;
 
-public enum InstructionType
+public enum EInstructionType
 {
     Add,
     Mul,

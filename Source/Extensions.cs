@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Text;
 using RimWorld;
 using UnityEngine;
@@ -33,7 +35,7 @@ public static class Extensions
     {
         GUI.color = Color.white;
         Text.Font = GameFont.Small;
-        
+
         var isOver = Mouse.IsOver(rowRect);
         if (isOver && highlight)
         {
@@ -54,9 +56,9 @@ public static class Extensions
         GUI.color = ITab_Pawn_Gear.ThingLabelColor;
 
         var nameRect = new Rect(rowRect.xMin, rowRect.yMin, rowRect.width - 36f, rowRect.height);
-        
+
         // todo crop rect by total text width
-        
+
         Text.WordWrap = false;
         var text = (thing.LabelCap + extraText).Truncate(nameRect.width);
         Widgets.Label(nameRect, text);
@@ -70,5 +72,13 @@ public static class Extensions
                 tip = tip + "\n" + thing.HitPoints + " / " + thing.MaxHitPoints;
             TooltipHandler.TipRegion(rowRect, tip);
         }
+    }
+
+    public static TValue ComputeIfAbsent<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, Func<TKey, TValue> func)
+    {
+        if (dictionary.TryGetValue(key, out var result)) return result;
+        result = func(key);
+        dictionary.Add(key, result);
+        return result;
     }
 }

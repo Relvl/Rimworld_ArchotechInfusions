@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.Text;
 using ArchotechInfusions.comps.comp_base;
-using ArchotechInfusions.statcollectors;
+using ArchotechInfusions.instructions;
+using ArchotechInfusions.statprocessor;
 using ArchotechInfusions.ui;
 using Verse;
 using Verse.Sound;
@@ -24,7 +25,7 @@ public class Comp_Decoder : CompBase_GridState<Comp_Decoder, CompProps_Decoder>
 {
     private int _backupProgress;
     private State _backupState;
-    private Instruction _instruction;
+    private AInstruction _instruction;
     private bool _mute;
     private State _startup;
 
@@ -67,7 +68,7 @@ public class Comp_Decoder : CompBase_GridState<Comp_Decoder, CompProps_Decoder>
 
     public override bool OnComplete()
     {
-        _instruction ??= StatCollector.GenerateNewInstruction();
+        _instruction ??= StatProcessor.GenerateInstruction();
 
         var anyDatabasePresent = false;
         foreach (var compDatabase in Member.Grid.GetComps<Comp_Database>())

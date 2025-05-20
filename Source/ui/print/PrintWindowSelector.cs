@@ -1,5 +1,4 @@
 ﻿using ArchotechInfusions.comps;
-using ArchotechInfusions.statcollectors;
 using Verse;
 
 namespace ArchotechInfusions.ui.print;

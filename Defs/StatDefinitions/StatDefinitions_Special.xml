@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<Defs>
+
+    <ArchotechInfusions.StatDefinitionDef>
+        <defName>Weight</defName>
+        <Target>Any</Target>
+        <Worker>ArchotechInfusions.statprocessor.InstructionProcessorWeight</Worker>
+        <Complexity>100</Complexity>
+        <OperationAdd>
+            <Weight>5</Weight>
+            <Min>-50</Min>
+            <Max>50</Max>
+        </OperationAdd>
+        <OperationMul>
+            <Weight>5</Weight>
+            <Min>1.5</Min>
+            <Max>-1.5</Max>
+        </OperationMul>
+
+    </ArchotechInfusions.StatDefinitionDef>
+
+    <ArchotechInfusions.StatDefinitionDef>
+        <defName>Quality</defName>
+        <Target>Any</Target>
+        <Worker>ArchotechInfusions.statprocessor.InstructionProcessorQuality</Worker>
+        <Complexity>100</Complexity>
+        <OperationAdd>
+            <Weight>5</Weight>
+            <Default>0</Default>
+        </OperationAdd>
+    </ArchotechInfusions.StatDefinitionDef>
+
+    <ArchotechInfusions.StatDefinitionDef>
+        <defName>Integrity</defName>
+        <Target>Any</Target>
+        <Worker>ArchotechInfusions.statprocessor.InstructionProcessorIntegrity</Worker>
+        <Complexity>0</Complexity>
+        <OperationAdd>
+            <Weight>10</Weight>
+            <Min>0</Min>
+            <Max>1000</Max>
+        </OperationAdd>
+    </ArchotechInfusions.StatDefinitionDef>
+
+    <ArchotechInfusions.StatDefinitionDef>
+        <defName>Durability</defName>
+        <Target>Any</Target>
+        <Worker>ArchotechInfusions.statprocessor.InstructionProcessorDurability</Worker>
+        <Complexity>50</Complexity>
+        <OperationAdd>
+            <Weight>5</Weight>
+            <Min>1</Min>
+            <Max>1000</Max>
+        </OperationAdd>
+        <OperationMul>
+            <Weight>5</Weight>
+            <Min>-1.5</Min>
+            <Max>1.5</Max>
+        </OperationMul>
+
+    </ArchotechInfusions.StatDefinitionDef>
+
+    <ArchotechInfusions.StatDefinitionDef>
+        <defName>Unbreakable</defName>
+        <Target>Any</Target>
+        <Worker>ArchotechInfusions.statprocessor.InstructionProcessorUnbreakable</Worker>
+        <Complexity>200</Complexity>
+        <OperationSet>
+            <Weight>1</Weight>
+            <Default>0</Default>
+        </OperationSet>
+    </ArchotechInfusions.StatDefinitionDef>
+
+</Defs>

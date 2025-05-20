@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ArchotechInfusions.comps;
-using ArchotechInfusions.statcollectors;
+using ArchotechInfusions.instructions;
 using Verse;
 
 namespace ArchotechInfusions.grid;
@@ -74,7 +74,7 @@ public class Grid(GridMapComponent mapComponent, string gridType)
         }
     }
 
-    public bool TryPutInstruction(Instruction instruction)
+    public bool TryPutInstruction(AInstruction instruction)
     {
         if (instruction == default) return false;
         foreach (var database in GetComps<Comp_Database>())
@@ -83,7 +83,7 @@ public class Grid(GridMapComponent mapComponent, string gridType)
         return false;
     }
 
-    public bool TryRemoveInstruction(Instruction instruction)
+    public bool TryRemoveInstruction(AInstruction instruction)
     {
         if (instruction == default) return false;
         foreach (var database in GetComps<Comp_Database>())

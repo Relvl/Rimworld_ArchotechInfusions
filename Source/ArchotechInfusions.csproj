@@ -65,8 +65,6 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="ArchInfDefOf.cs" />
-        <Compile Include="ArchInfStatPart.cs" />
         <Compile Include="ArchotechInfusionsMod.cs" />
         <Compile Include="building\ArchInf_Accumulator_Building.cs" />
         <Compile Include="building\ArchInf_Loom_Building.cs" />
@@ -90,10 +88,9 @@
         <Compile Include="comps\Comp_KeyGenerator.cs" />
         <Compile Include="comps\Comp_Printer.cs" />
         <Compile Include="comps\Comp_Transceiver.cs" />
-        <Compile Include="def\StatCollectorDef.cs" />
-        <Compile Include="def\StatIgnoreDef.cs" />
-        <Compile Include="def\StatModDef.cs" />
-        <Compile Include="def\StatNegateDef.cs" />
+        <Compile Include="def\ArchInfSoundDefOf.cs" />
+        <Compile Include="def\JobDriverDefOf.cs" />
+        <Compile Include="def\StatDefinitionDef.cs" />
         <Compile Include="Extensions.cs" />
         <Compile Include="grid\graphic\GraphicGridLink.cs" />
         <Compile Include="grid\graphic\GraphicLinkedMoreLayers.cs" />
@@ -108,8 +105,15 @@
         <Compile Include="grid\GridMemberComp.cs" />
         <Compile Include="grid\GridMemberCompProps.cs" />
         <Compile Include="grid\harmony\Patch_GraphicUtility_WrapLinked.cs" />
-        <Compile Include="InstructionTarget.cs" />
-        <Compile Include="InstructionType.cs" />
+        <Compile Include="instructions\AInstruction.cs" />
+        <Compile Include="instructions\EInstructionTarget.cs" />
+        <Compile Include="instructions\EInstructionType.cs" />
+        <Compile Include="instructions\InstructionDurability.cs" />
+        <Compile Include="instructions\InstructionIntegrity.cs" />
+        <Compile Include="instructions\InstructionQuality.cs" />
+        <Compile Include="instructions\InstructionStat.cs" />
+        <Compile Include="instructions\InstructionUnbreakable.cs" />
+        <Compile Include="instructions\InstructionWeight.cs" />
         <Compile Include="jobs\JobDriver_ArchiteRepair.cs" />
         <Compile Include="jobs\JobDriver_GenerateKey.cs" />
         <Compile Include="jobs\JobDriver_Print.cs" />
@@ -118,11 +122,15 @@
         <Compile Include="jobs\WorkGiver_GenerateKey.cs" />
         <Compile Include="jobs\WorkGiver_RefuelContainer.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
-        <Compile Include="statcollectors\Instruction.cs" />
-        <Compile Include="statcollectors\ArchInf_StatCollector_Apparel.cs" />
-        <Compile Include="statcollectors\IStatCollector.cs" />
-        <Compile Include="statcollectors\StatCollectionElement.cs" />
-        <Compile Include="statcollectors\StatCollector.cs" />
+        <Compile Include="statprocessor\AInstructionProcessor.cs" />
+        <Compile Include="statprocessor\IInstructionProcessor.cs" />
+        <Compile Include="statprocessor\InstructionProcessorDurability.cs" />
+        <Compile Include="statprocessor\InstructionProcessorIntegrity.cs" />
+        <Compile Include="statprocessor\InstructionProcessorQuality.cs" />
+        <Compile Include="statprocessor\InstructionProcessorStats.cs" />
+        <Compile Include="statprocessor\InstructionProcessorUnbreakable.cs" />
+        <Compile Include="statprocessor\InstructionProcessorWeight.cs" />
+        <Compile Include="statprocessor\StatProcessor.cs" />
         <Compile Include="ui\CompDatabaseWindow.cs" />
         <Compile Include="ui\component\InstructionListView.cs" />
         <Compile Include="ui\component\InstructionView.cs" />
@@ -131,172 +139,7 @@
         <Compile Include="ui\print\PrintWindowSelector.cs" />
         <Compile Include="ui\ShowElementsWindow.cs" />
     </ItemGroup>
-    <ItemGroup>
-      <Folder Include="..\Languages\English">
-        <Link>_mod_links\Languages\English</Link>
-      </Folder>
-      <Folder Include="..\Languages\Russian">
-        <Link>_mod_links\Languages\Russian</Link>
-      </Folder>
-    </ItemGroup>
-    <ItemGroup>
-      <Content Include="..\.gitignore">
-        <Link>_mod_links\.gitignore</Link>
-      </Content>
-      <Content Include="..\About\About.xml">
-        <Link>_mod_links\About\About.xml</Link>
-      </Content>
-      <Content Include="..\About\README.MD">
-        <Link>_mod_links\About\README.MD</Link>
-      </Content>
-      <Content Include="..\Assemblies\ArchotechInfusions.dll">
-        <Link>_mod_links\Assemblies\ArchotechInfusions.dll</Link>
-      </Content>
-      <Content Include="..\Assemblies\ArchotechInfusions.pdb">
-        <Link>_mod_links\Assemblies\ArchotechInfusions.pdb</Link>
-      </Content>
-      <Content Include="..\Defs\StatIgnoreDefs.xml">
-        <Link>_mod_links\Defs\StatIgnoreDefs.xml</Link>
-      </Content>
-      <Content Include="..\Defs\Jobs\ArchInf_JobDef_GenerateKey.xml">
-        <Link>_mod_links\Defs\JobDefs\ArchInf_JobDef_GenerateKey.xml</Link>
-      </Content>
-      <Content Include="..\Defs\Jobs\ArchInf_JobDef_RefuelContainer.xml">
-        <Link>_mod_links\Defs\Jobs\ArchInf_JobDef_RefuelContainer.xml</Link>
-      </Content>
-      <Content Include="..\Defs\Misc\Designations\ArchInf_DesignationCategories.xml">
-        <Link>_mod_links\Defs\Misc\Designations\ArchInf_DesignationCategories.xml</Link>
-      </Content>
-      <Content Include="..\Defs\ResearchProjectDefs\ArchInf_ResearchProjectDef.xml">
-        <Link>_mod_links\Defs\ResearchProjectDefs\ArchInf_ResearchProjectDef.xml</Link>
-      </Content>
-      <Content Include="..\Defs\SoundDefs\ArchInf_Sounds.xml">
-        <Link>_mod_links\Defs\SoundDefs\ArchInf_Sounds.xml</Link>
-      </Content>
-      <Content Include="..\Defs\StatCollectorDefs.xml">
-        <Link>_mod_links\Defs\StatCollectorDefs.xml</Link>
-      </Content>
-      <Content Include="..\Defs\StatModDefs.xml">
-        <Link>_mod_links\Defs\StatModDefs.xml</Link>
-      </Content>
-      <Content Include="..\Defs\StatNegateDefs.xml">
-        <Link>_mod_links\Defs\StatNegateDefs.xml</Link>
-      </Content>
-      <Content Include="..\Defs\ThingCategoryDefs\ArchInf_ThingCategoryDef.xml">
-        <Link>_mod_links\Defs\ThingCategoryDefs\ArchInf_ThingCategoryDef.xml</Link>
-      </Content>
-      <Content Include="..\Defs\ThingDefs_Buildings\ArchInf_HeavyBuilding_Container.xml">
-        <Link>_mod_links\Defs\ThingDefs_Buildings\ArchInf_HeavyBuilding_Container.xml</Link>
-      </Content>
-      <Content Include="..\Defs\ThingDefs_Buildings\ArchInf_HeavyBuilding_Database.xml">
-        <Link>_mod_links\Defs\ThingDefs_Buildings\ArchInf_HeavyBuilding_Database.xml</Link>
-      </Content>
-      <Content Include="..\Defs\ThingDefs_Buildings\ArchInf_HeavyBuilding_KeyGenerator.xml">
-        <Link>_mod_links\Defs\ThingDefs_Buildings\ArchInf_HeavyBuilding_KeyGenerator.xml</Link>
-      </Content>
-      <Content Include="..\Defs\ThingDefs_Buildings\ArchInf_Building_Loom.xml">
-        <Link>_mod_links\Defs\ThingDefs_Buildings\ArchInf_Building_Loom.xml</Link>
-      </Content>
-      <Content Include="..\Defs\ThingDefs_Buildings\ArchInf_HeavyBuilding_Accumulator.xml">
-        <Link>_mod_links\Defs\ThingDefs_Buildings\ArchInf_HeavyBuilding_Accumulator.xml</Link>
-      </Content>
-      <Content Include="..\Defs\ThingDefs_Buildings\ArchInf_HeavyBuilding_Decoder.xml">
-        <Link>_mod_links\Defs\ThingDefs_Buildings\ArchInf_HeavyBuilding_Decoder.xml</Link>
-      </Content>
-      <Content Include="..\Defs\ThingDefs_Buildings\ArchInf_HeavyBuilding_Printer.xml">
-        <Link>_mod_links\Defs\ThingDefs_Buildings\ArchInf_HeavyBuilding_Printer.xml</Link>
-      </Content>
-      <Content Include="..\Defs\ThingDefs_Buildings\ArchInf_HeavyBuilding_Transceiver.xml">
-        <Link>_mod_links\Defs\ThingDefs_Buildings\ArchInf_HeavyBuilding_Transceiver.xml</Link>
-      </Content>
-      <Content Include="..\Defs\ThingDefs_Buildings\base\ArchInf_Building_Base.xml">
-        <Link>_mod_links\Defs\ThingDefs_Buildings\base\ArchInf_Building_Base.xml</Link>
-      </Content>
-      <Content Include="..\Defs\ThingDefs_Buildings\base\ArchInf_HeavyBuilding_Base.xml">
-        <Link>_mod_links\Defs\ThingDefs_Buildings\base\ArchInf_HeavyBuilding_Base.xml</Link>
-      </Content>
-      <Content Include="..\Sounds\TransceiverReceive.ogg">
-        <Link>_mod_links\Sounds\TransceiverReceive.ogg</Link>
-      </Content>
-      <Content Include="..\Sounds\TransceiverRecharge.ogg">
-        <Link>_mod_links\Sounds\TransceiverRecharge.ogg</Link>
-      </Content>
-      <Content Include="..\Sounds\TransceiverStart.ogg">
-        <Link>_mod_links\Sounds\TransceiverStart.ogg</Link>
-      </Content>
-      <Content Include="..\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Accumulator_east.png">
-        <Link>_mod_links\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Accumulator_east.png</Link>
-      </Content>
-      <Content Include="..\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Accumulator_north.png">
-        <Link>_mod_links\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Accumulator_north.png</Link>
-      </Content>
-      <Content Include="..\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Database_east.png">
-        <Link>_mod_links\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Database_east.png</Link>
-      </Content>
-      <Content Include="..\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Database_eastm.png">
-        <Link>_mod_links\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Database_eastm.png</Link>
-      </Content>
-      <Content Include="..\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Database_north.png">
-        <Link>_mod_links\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Database_north.png</Link>
-      </Content>
-      <Content Include="..\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Database_northm.PNG">
-        <Link>_mod_links\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Database_northm.PNG</Link>
-      </Content>
-      <Content Include="..\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Database_south.png">
-        <Link>_mod_links\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Database_south.png</Link>
-      </Content>
-      <Content Include="..\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Database_southm.png">
-        <Link>_mod_links\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Database_southm.png</Link>
-      </Content>
-      <Content Include="..\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Loom_Atlas.png">
-        <Link>_mod_links\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Loom_Atlas.png</Link>
-      </Content>
-      <Content Include="..\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Loom_AtlasBP.png">
-        <Link>_mod_links\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Loom_AtlasBP.png</Link>
-      </Content>
-      <Content Include="..\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Printer_east.png">
-        <Link>_mod_links\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Printer_east.png</Link>
-      </Content>
-      <Content Include="..\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Printer_north.png">
-        <Link>_mod_links\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Printer_north.png</Link>
-      </Content>
-      <Content Include="..\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Printer_south.png">
-        <Link>_mod_links\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Printer_south.png</Link>
-      </Content>
-      <Content Include="..\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Printer_west.png">
-        <Link>_mod_links\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Printer_west.png</Link>
-      </Content>
-      <Content Include="..\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Transceiver.png">
-        <Link>_mod_links\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Transceiver.png</Link>
-      </Content>
-      <Content Include="..\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Transceiver_Preview.png">
-        <Link>_mod_links\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Transceiver_Preview.png</Link>
-      </Content>
-      <Content Include="..\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Decoder.png">
-        <Link>_mod_links\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Decoder.png</Link>
-      </Content>
-      <Content Include="..\Textures\ArchotechInfusions\Things\Buildings\ArchInf_KeyGenerator_east.png">
-        <Link>_mod_links\Textures\ArchotechInfusions\Things\Buildings\ArchInf_KeyGenerator_east.png</Link>
-      </Content>
-      <Content Include="..\Textures\ArchotechInfusions\Things\Buildings\ArchInf_KeyGenerator_north.png">
-        <Link>_mod_links\Textures\ArchotechInfusions\Things\Buildings\ArchInf_KeyGenerator_north.png</Link>
-      </Content>
-      <Content Include="..\Textures\ArchotechInfusions\Things\Buildings\ArchInf_KeyGenerator_south.png">
-        <Link>_mod_links\Textures\ArchotechInfusions\Things\Buildings\ArchInf_KeyGenerator_south.png</Link>
-      </Content>
-      <Content Include="..\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Container.png">
-        <Link>_mod_links\Textures\ArchotechInfusions\Things\Buildings\ArchInf_Container.png</Link>
-      </Content>
-      <Content Include="..\Textures\ArchotechInfusions\Things\GridOverlay_Atlas.png">
-        <Link>_mod_links\Textures\ArchotechInfusions\Things\GridOverlay_Atlas.png</Link>
-      </Content>
-      <Content Include="..\Textures\ArchotechInfusions\UI\Loom_Atlas.png">
-        <Link>_mod_links\Textures\ArchotechInfusions\UI\Loom_Atlas.png</Link>
-      </Content>
-      <Content Include="..\Textures\ArchotechInfusions\UI\voltage.png">
-        <Link>_mod_links\Textures\ArchotechInfusions\UI\voltage.png</Link>
-      </Content>
-    </ItemGroup>
+    
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
          Other similar extension points exist, see Microsoft.Common.targets.
