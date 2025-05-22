@@ -48,7 +48,7 @@ public class Comp_KeyGenerator : CompBase_Grid<CompProps_KeyGenerator>
 
     public override void CompTick()
     {
-        _chargeCache = Member.Grid.GetTotalCharge();
+        _chargeCache = Member.Grid.GetTotalEnergy();
     }
 
     public bool IsPowerEnough()

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using ArchotechInfusions.injected;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -21,9 +22,6 @@ public static class Extensions
         return sb;
     }
 
-    public static float PercentOfRange(this float input, float min, float max) => (input - min) / (max - min);
-    public static float Denormalize(this float input, float min, float max) => input * (max - min) + min;
-
     public static Rot4 CopyAndRotate(this Rot4 input, RotationDirection direction)
     {
         var copy = input;
@@ -31,7 +29,7 @@ public static class Extensions
         return copy;
     }
 
-    public static void Draw(this Thing thing, Rect rowRect, bool highlight = false, string extraText = "")
+    public static void Draw(this Thing thing, Rect rowRect, bool highlight = false, string extraText = "", Comp_ArchInfused comp = null)
     {
         GUI.color = Color.white;
         Text.Font = GameFont.Small;
@@ -67,10 +65,29 @@ public static class Extensions
         Text.Anchor = TextAnchor.MiddleLeft;
         if (isOver)
         {
-            var tip = thing.LabelNoParenthesisCap.AsTipTitle() + GenLabel.LabelExtras(thing, true, true) + "\n\n" + thing.DescriptionDetailed;
+            var sb = new StringBuilder();
+            sb.Append(thing.LabelNoParenthesisCap.AsTipTitle()).Append(GenLabel.LabelExtras(thing, true, true));
+            sb.AppendLine().AppendLine();
+            sb.AppendLine(thing.DescriptionDetailed);
+           
             if (thing.def.useHitPoints)
-                tip = tip + "\n" + thing.HitPoints + " / " + thing.MaxHitPoints;
-            TooltipHandler.TipRegion(rowRect, tip);
+            {
+                sb.Append(thing.HitPoints).Append(" / ").Append(thing.MaxHitPoints).AppendLine();
+            }
+
+            if (comp is not null)
+            {
+                sb.AppendLine();
+                sb.AppendLine("JAI.instruction.integrity.value".Translate(comp.Integrity));
+                foreach (var instruction in comp.Instructions)
+                {
+                    sb.Append(instruction.Label).Append(": ");
+                    instruction.RenderValue(sb);
+                    sb.AppendLine();
+                }
+            }
+
+            TooltipHandler.TipRegion(rowRect, sb.ToString());
         }
     }
 
@@ -80,5 +97,17 @@ public static class Extensions
         result = func(key);
         dictionary.Add(key, result);
         return result;
+    }
+
+    public static bool TryGetInfusedComp(this Thing thing, out Comp_ArchInfused comp)
+    {
+        if (thing is null)
+        {
+            comp = null;
+            return false;
+        }
+
+        comp = thing.TryGetComp<Comp_ArchInfused>();
+        return comp is not null;
     }
 }

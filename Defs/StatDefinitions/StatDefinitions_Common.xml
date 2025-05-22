@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<Defs>
+
+    <ArchotechInfusions.StatDefinitionDef>
+        <defName>MaxHitPoints</defName>
+        <StatDef>MaxHitPoints</StatDef>
+        <Target>Any</Target>
+        <Complexity>100</Complexity>
+        <OperationAdd>
+            <Weight>10</Weight>
+            <Min>-100</Min>
+            <Max>500</Max>
+            <Default>0</Default>
+        </OperationAdd>
+        <OperationMul>
+            <Weight>10</Weight>
+            <Min>0.75</Min>
+            <Max>1.25</Max>
+            <Default>1</Default>
+        </OperationMul>
+        <OperationSet>
+            <Weight>1</Weight>
+            <Min>1</Min>
+            <Max>1000</Max>
+            <Default>250</Default>
+        </OperationSet>
+    </ArchotechInfusions.StatDefinitionDef>
+
+    <ArchotechInfusions.StatDefinitionDef>
+        <defName>Mass</defName>
+        <StatDef>Mass</StatDef>
+        <Target>Any</Target>
+        <Complexity>100</Complexity>
+        <OperationAdd>
+            <Weight>10</Weight>
+            <Min>20</Min>
+            <Max>-20</Max>
+            <Default>0</Default>
+        </OperationAdd>
+        <OperationMul>
+            <Weight>10</Weight>
+            <Min>1.2</Min>
+            <Max>0.5</Max>
+            <Default>1</Default>
+        </OperationMul>
+        <OperationSet>
+            <Weight>1</Weight>
+            <Min>50</Min>
+            <Max>0</Max>
+            <Default>10</Default>
+        </OperationSet>
+    </ArchotechInfusions.StatDefinitionDef>
+
+</Defs>

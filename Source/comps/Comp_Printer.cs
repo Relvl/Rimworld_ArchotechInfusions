@@ -1,20 +1,22 @@
-using System.Collections.Generic;
-using System.Linq;
+using System.Diagnostics.CodeAnalysis;
 using ArchotechInfusions.comps.comp_base;
+using ArchotechInfusions.injected;
 using ArchotechInfusions.instructions;
-using ArchotechInfusions.ui;
 using ArchotechInfusions.ui.print;
+using RimWorld;
 using Verse;
 using Verse.AI;
 
 namespace ArchotechInfusions.comps;
 
-// ReSharper disable UnassignedField.Global,FieldCanBeMadeReadOnly.Global,InconsistentNaming,ClassNeverInstantiated.Global -- def reflective
+[SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
+[SuppressMessage("ReSharper", "FieldCanBeMadeReadOnly.Global")]
+[SuppressMessage("ReSharper", "ConvertToConstant.Global")]
 public class CompProps_Printer : CompProperties
 {
+    public int PrintArchiteCost = 250;
     public int PrintEnergyCost = 1000;
     public int PrintTicks = 1000;
-    public int PrintArchiteCost = 250;
 
     public CompProps_Printer()
     {
@@ -25,8 +27,8 @@ public class CompProps_Printer : CompProperties
 public class Comp_Printer : CompBase_Grid<CompProps_Printer>
 {
     private AInstruction _instruction;
-    private int _ticksCurrentCycle;
     private Thing _targetThing;
+    private int _ticksCurrentCycle;
 
     private PrintWindowSelector _windowSelector;
     public PrintWindowSelector WindowSelector => _windowSelector ??= new PrintWindowSelector(this);
@@ -39,34 +41,39 @@ public class Comp_Printer : CompBase_Grid<CompProps_Printer>
         Scribe_Values.Look(ref _ticksCurrentCycle, "TicksCurrentCycle");
     }
 
+    public bool HasEnoughPower()
+    {
+        return Grid.GetTotalEnergy() >= Props.PrintEnergyCost;
+    }
+
+    public bool HasEnoughArchite()
+    {
+        return Grid.GetTotalArchite() >= Props.PrintArchiteCost;
+    }
+
+    public bool HasAnyInstruction()
+    {
+        return Grid.GetComps<Comp_Database>().Any(db => db.Instructions.Count > 0);
+    }
+
     public bool CanWork()
     {
-        return Power.PowerOn;
+        return Power.PowerOn && HasEnoughPower() && HasEnoughArchite();
     }
 
-    public bool IsArchiteEnough()
-    {
-        return true;
-    }
-
-    public bool IsAnyInstructionStored()
-    {
-        return true;
-    }
-
-    public void OpenSelectThingWindow(Pawn pawn, JobDriver driver)
+    public void OpenSelectThingWindow(Pawn pawn)
     {
         WindowSelector.OpenThingSelector(pawn);
     }
 
-    public void EnqueueInstruction(AInstruction instruction, Thing target)
+    public void SetInstruction(AInstruction instruction, Thing target)
     {
         _instruction = instruction;
         _targetThing = target;
-        Member.Grid.TryRemoveInstruction(instruction);
+        Grid.TryRemoveInstruction(instruction);
     }
 
-    public void DoJobStarted(Pawn pawn, JobDriver driver, bool initial)
+    public void DoJobStarted(JobDriver driver)
     {
         if (_instruction is null)
         {
@@ -77,36 +84,62 @@ public class Comp_Printer : CompBase_Grid<CompProps_Printer>
         _ticksCurrentCycle = 0;
     }
 
-    public void DoJobTick(Pawn pawn, JobDriver driver, float speed)
+    public void DoJobTick(JobDriver driver)
     {
+        if (_targetThing is null || _instruction is null)
+        {
+            driver.EndJobWith(JobCondition.Errored);
+            return;
+        }
+
         if (_ticksCurrentCycle >= Props.PrintTicks)
         {
-            var applyInstruction = _instruction;
+            var comp = _targetThing.TryGetComp<Comp_ArchInfused>();
+            if (comp is null)
+            {
+                Log.ErrorOnce($"JAI: Thing {_targetThing} has no ArchInfused comp", _targetThing.def.defName.GetHashCode());
+                driver.EndJobWith(JobCondition.Errored);
+                return;
+            }
+
+            float energy = Props.PrintEnergyCost;
+            Grid.ConsumeEnergy(ref energy);
+            if (energy > 0)
+            {
+                Messages.Message("AI Printer: not enough energy", parent, MessageTypeDefOf.TaskCompletion, false);
+                driver.EndJobWith(JobCondition.Errored);
+                return;
+            }
+
+            float archite = Props.PrintArchiteCost;
+            Grid.ConsumeArchite(ref archite);
+            if (archite > 0)
+            {
+                Messages.Message("JAI.Printer.Print.Error.NoArchite".Translate(), parent, MessageTypeDefOf.TaskCompletion, false);
+                driver.EndJobWith(JobCondition.Errored);
+                return;
+            }
+
+            comp.Apply(_instruction);
             _instruction = null;
-            ApplyInstruction(pawn, driver, applyInstruction);
-            DoJobStarted(pawn, driver, false);
+
+            driver.EndJobWith(JobCondition.Succeeded);
             return;
         }
 
         _ticksCurrentCycle++;
     }
 
-    public void DoJobFinished(Pawn pawn, JobDriver driver)
+    public void DoJobFinished()
     {
         WindowSelector.ForceClose();
         _targetThing = null;
-        if (Member.Grid.TryPutInstruction(_instruction))
+        if (Grid.TryPutInstruction(_instruction))
             _instruction = null;
     }
-
 
     public float GetPercentComplete()
     {
         return (float)_ticksCurrentCycle / Props.PrintTicks;
-    }
-
-    public void ApplyInstruction(Pawn pawn, JobDriver driver, AInstruction instruction)
-    {
-        Log.Warning($"-- apply instruction: {instruction}");
     }
 }

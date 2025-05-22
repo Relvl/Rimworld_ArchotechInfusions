@@ -75,7 +75,7 @@ public class Comp_Transceiver : CompBase_GridState<Comp_Transceiver, CompProps_T
         if (Member.Grid.GetComps<Comp_Accumulator>().Empty())
             return Stop("JAI.Error.GridHasNoAccumulator".Translate(), silent);
 
-        var totalStored = Member.Grid.GetTotalCharge();
+        var totalStored = Member.Grid.GetTotalEnergy();
         var totalNeeded = Props.TranscieveConsumption + Props.ReceiveConsumption;
         if (totalStored < totalNeeded)
             return Stop("JAI.Error.BatteriesUncharged".Translate(totalStored.ToString("0"), totalNeeded.ToString("0")), silent);

@@ -55,7 +55,7 @@ public class Comp_ArchiteRepairer : CompBase_Grid<CompProps_ArchiteRepairer>
 
     public override void CompTick()
     {
-        _chargeCache = Member.Grid.GetTotalCharge();
+        _chargeCache = Member.Grid.GetTotalEnergy();
         _architeCache = Member.Grid.GetTotalArchite();
     }
 

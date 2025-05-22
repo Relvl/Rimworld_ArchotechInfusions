@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using ArchotechInfusions.injected;
 using ArchotechInfusions.statprocessor;
 using RimWorld;
 using UnityEngine;
@@ -39,6 +40,11 @@ public class StatDefinitionDef : Def
     /// <summary>
     /// 
     /// </summary>
+    public ExtraArchiteData ExtraArchite;
+
+    /// <summary>
+    /// 
+    /// </summary>
     public Operation OperationAdd;
 
     /// <summary>
@@ -56,6 +62,15 @@ public class StatDefinitionDef : Def
         if (OperationAdd is not null) OperationAdd.OperationType = EInstructionType.Add;
         if (OperationMul is not null) OperationMul.OperationType = EInstructionType.Mul;
         if (OperationSet is not null) OperationSet.OperationType = EInstructionType.Force;
+    }
+
+    public override void ResolveReferences()
+    {
+        if (StatDef is null) return;
+        StatDef.parts ??= [];
+        if (StatDef.parts.Any(part => part.GetType() == typeof(StatPart_ArchInfusion))) return;
+        if (StatDef.parts.Any(part => part.GetType() == typeof(StatPart_ExtraMarketValue))) return;
+        StatDef.parts.Add(new StatPart_ArchInfusion(StatDef));
     }
 
     public override IEnumerable<string> ConfigErrors()
@@ -133,5 +148,18 @@ public class StatDefinitionDef : Def
         [NonSerialized] public EInstructionType OperationType;
 
         public bool isInverted => Max < Min;
+    }
+
+    public class ExtraArchiteData
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        public float Fixed = 0f;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public float Factor = 1f;
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Text;
 using ArchotechInfusions.comps;
+using ArchotechInfusions.injected;
 using ArchotechInfusions.instructions;
 using ArchotechInfusions.ui.component;
 using RimWorld;
@@ -12,12 +13,15 @@ namespace ArchotechInfusions.ui.print;
 
 public class PrintWindow : Window
 {
+    private static readonly Color ButtonWarningColor = new(1f, 0.3f, 0.35f);
+
     private readonly InstructionView.ButtonData _dequeueButton;
     private readonly InstructionView.ButtonData _enqueueButton;
 
     private readonly Comp_Printer _printer;
     private readonly PrintWindowSelector _selector;
     private readonly Thing _thing;
+    private readonly Comp_ArchInfused _comp;
     private AInstruction _instruction;
 
     public PrintWindow(PrintWindowSelector selector, Comp_Printer printer, Thing thing)
@@ -25,6 +29,7 @@ public class PrintWindow : Window
         _selector = selector;
         _printer = printer;
         _thing = thing;
+        thing.TryGetInfusedComp(out _comp);
 
         draggable = true;
         doCloseX = true;
@@ -74,11 +79,12 @@ public class PrintWindow : Window
         Text.Font = GameFont.Medium;
         GUI.color = Color.cyan;
         Widgets.Label(titleRect, "JAI.Printer.Print.Title".Translate());
-        _thing.Draw(thingRect, false, $", HP: {_thing.HitPoints}/{_thing.MaxHitPoints}, Integrity: {120f:0.00}"); // todo integrity or not used
+        
+        _thing.Draw(thingRect, false, $", HP: {_thing.HitPoints}/{_thing.MaxHitPoints}, Integrity: {_comp.Integrity:0.00}"); // todo integrity or not used
 
         var instructions = _printer.Member.Grid
             .GetComps<Comp_Database>()
-            .SelectMany(database => database.Modifiers)
+            .SelectMany(database => database.Instructions)
             .Where(instruction => instruction.IsThingApplicable(_thing));
         instructions.Draw(inRect, i => _instruction == i, i => _instruction == i ? [_dequeueButton] : [_enqueueButton]);
 
@@ -96,16 +102,38 @@ public class PrintWindow : Window
     {
         if (Widgets.ButtonText(buttonsRect with { width = 100 }, "Back".Translate(), overrideTextAnchor: TextAnchor.MiddleCenter)) _selector.ForceClose();
 
-        if (_instruction is not null)
+        if (_instruction is null) return;
+
+        var confirmButtonRect = buttonsRect with { xMin = buttonsRect.width - 100 };
+
+        if (_comp.Integrity < _instruction.Complexity)
+            GUI.color = ButtonWarningColor;
+
+        if (Widgets.ButtonText(confirmButtonRect, "JAI.Printer.Print.Confirm".Translate(), true, true, true, TextAnchor.MiddleCenter))
         {
-            var confirmButtonRect = buttonsRect with { xMin = buttonsRect.width - 100 };
-            if (Widgets.ButtonText(confirmButtonRect, "JAI.Printer.Print.Confirm".Translate(), true, true, true, TextAnchor.MiddleCenter))
+            if (_comp.Integrity < _instruction.Complexity)
             {
-                SoundDefOf.Crunch.PlayOneShotOnCamera();
-                _printer.EnqueueInstruction(_instruction, _thing);
-                _selector.ForceClose();
+                Find.WindowStack.Add(
+                    Dialog_MessageBox.CreateConfirmation(
+                        "JAI.Printer.Print.Confirm".Translate(),
+                        Print,
+                        true,
+                        "JAI.Printer.Print.Confirm.Title".Translate()
+                    )
+                );
             }
+            else
+                Print();
         }
+
+        GUI.color = Color.white;
+    }
+
+    private void Print()
+    {
+        SoundDefOf.Crunch.PlayOneShotOnCamera();
+        _printer.SetInstruction(_instruction, _thing);
+        _selector.ForceClose();
     }
 
     private void DrawTotals(Rect inRect)

@@ -44,7 +44,7 @@ public class Grid(GridMapComponent mapComponent, string gridType)
         return _compsCache[typeof(T)].Cast<T>().ToList();
     }
 
-    public float GetTotalCharge()
+    public float GetTotalEnergy()
     {
         return GetComps<Comp_Accumulator>().Sum(a => a.Stored);
     }

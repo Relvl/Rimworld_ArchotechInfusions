@@ -39,7 +39,7 @@
             <Default>0</Default>
         </OperationAdd>
         <OperationMul>
-            <Weight>80</Weight>
+            <Weight>10</Weight>
             <Min>1.2</Min>
             <Max>0.5</Max>
             <Default>1</Default>
@@ -51,5 +51,37 @@
             <Default>1</Default>
         </OperationSet>
     </ArchotechInfusions.StatDefinitionDef>
-    
+
+    <ArchotechInfusions.StatDefinitionDef>
+        <defName>MoveSpeed</defName>
+        <StatDef>MoveSpeed</StatDef>
+        <Target>Apparel</Target>
+        <!-- At max rolled value -->
+        <Complexity>100</Complexity>
+        <ExtraArchite>
+            <!-- Just +10 archite each print -->
+            <Fixed>10</Fixed>
+            <!-- Max(0, Value*Factor) -->
+            <Factor>1.05</Factor>
+        </ExtraArchite>
+        <OperationAdd>
+            <Weight>100</Weight>
+            <Min>-10</Min>
+            <Max>10</Max>
+            <Default>0</Default>
+        </OperationAdd>
+        <OperationMul>
+            <Weight>100</Weight>
+            <Min>0.1</Min>
+            <Max>10</Max>
+            <Default>1</Default>
+        </OperationMul>
+        <OperationSet>
+            <Weight>100</Weight>
+            <Min>0.2</Min>
+            <Max>30</Max>
+            <Default>1</Default>
+        </OperationSet>
+    </ArchotechInfusions.StatDefinitionDef>
+
 </Defs>

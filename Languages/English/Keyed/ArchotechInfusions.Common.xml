@@ -11,5 +11,8 @@
     <JAI.Printer.Print.Confirm>Print</JAI.Printer.Print.Confirm>
     
     <JAI.instruction.integrity>Integrity</JAI.instruction.integrity>
+    <JAI.instruction.integrity.value>Integrity: {0}</JAI.instruction.integrity.value>
     <JAI.instruction.unbreakable>Unbreakable!</JAI.instruction.unbreakable>
+    
+    <JAI.statpart.title><![CDATA[<color=yellow>Archotech infusions</color>:]]></JAI.statpart.title>
 </LanguageData>

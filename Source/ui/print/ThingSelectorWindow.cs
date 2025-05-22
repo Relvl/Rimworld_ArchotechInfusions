@@ -83,27 +83,24 @@ public class ThingSelectorWindow : Window
 
     private void DrawThingRow(ref float y, float width, Thing thing)
     {
+        if (!thing.TryGetInfusedComp(out var comp))
+            return;
+
         var rowRect = new Rect(0.0f, y, width, 28f);
         var buttonLabel = "JAI.Printer.SelectThing.Select".Translate();
         var buttonWidth = Text.CalcSize(buttonLabel).x + 16;
         var buttonRect = new Rect(rowRect.xMax - buttonWidth, y + 1, buttonWidth, rowRect.height - 2);
         var thingRect = rowRect with { xMax = rowRect.xMax - buttonWidth - 4 };
 
-        thing.Draw(thingRect, true);
+        thing.Draw(thingRect, true, " " + "JAI.instruction.integrity.value".Translate(comp.Integrity), comp);
 
         Text.Anchor = TextAnchor.MiddleCenter;
         if (Widgets.ButtonText(buttonRect, buttonLabel))
         {
             SoundDefOf.Crunch.PlayOneShotOnCamera();
-            OnThingSelected(thing);
+            _selector.OnThingSelected(_pawn, thing);
         }
 
         y += 28f;
-    }
-
-
-    private void OnThingSelected(Thing thing)
-    {
-        _selector.OnThingSelected(_pawn, thing);
     }
 }

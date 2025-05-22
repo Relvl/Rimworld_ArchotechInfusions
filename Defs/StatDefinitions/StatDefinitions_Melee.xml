@@ -14,7 +14,7 @@
             <Default>0</Default>
         </OperationAdd>
         <OperationMul>
-            <Weight>80</Weight>
+            <Weight>10</Weight>
             <Min>0.5</Min>
             <Max>1.5</Max>
             <Default>1</Default>

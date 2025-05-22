@@ -26,21 +26,21 @@ public class Comp_Database : CompBase_Grid<CompProps_Database>
 {
     private static Texture2D showDbTex;
 
-    private List<AInstruction> _modifiers = [];
+    private List<AInstruction> _instructions = [];
     private float _spaceUsed;
     private float FreeSpace => Props.MaxSpace - _spaceUsed;
 
-    public List<AInstruction> Modifiers => _modifiers;
+    public List<AInstruction> Instructions => _instructions;
 
     public override void PostExposeData()
     {
-        Scribe_Collections.Look(ref _modifiers, "instructions", LookMode.Deep);
+        Scribe_Collections.Look(ref _instructions, nameof(Instructions), LookMode.Deep);
         RecalcSpaceUsed();
     }
 
     private void RecalcSpaceUsed()
     {
-        _spaceUsed = _modifiers.Sum(m => Math.Abs(m.Complexity));
+        _spaceUsed = _instructions.Sum(m => Math.Abs(m.Complexity));
     }
 
     public bool MakeDatabaseRecord(AInstruction modifier)
@@ -48,7 +48,7 @@ public class Comp_Database : CompBase_Grid<CompProps_Database>
         if (!Power.PowerOn) return false;
         if (FreeSpace < Math.Abs(modifier.Complexity)) return false;
 
-        _modifiers.Add(modifier);
+        _instructions.Add(modifier);
         RecalcSpaceUsed();
         return true;
     }
@@ -56,18 +56,18 @@ public class Comp_Database : CompBase_Grid<CompProps_Database>
     public bool TryRemoveInstruction(AInstruction modifier)
     {
         if (!Power.PowerOn) return false;
-        return _modifiers.Remove(modifier);
+        return _instructions.Remove(modifier);
     }
 
     public void RemoveModifier(AInstruction modifier)
     {
-        _modifiers.Remove(modifier);
+        _instructions.Remove(modifier);
         RecalcSpaceUsed();
     }
 
     public override string CompInspectStringExtra()
     {
-        return $"Instructions stored: {_modifiers.Count}\nSpace used: {_spaceUsed:0.##} / {Props.MaxSpace}";
+        return $"Instructions stored: {_instructions.Count}\nSpace used: {_spaceUsed:0.##} / {Props.MaxSpace}";
     }
 
     public override IEnumerable<Gizmo> CompGetGizmosExtra()
@@ -90,7 +90,7 @@ public class Comp_Database : CompBase_Grid<CompProps_Database>
                 defaultLabel = "Force make random",
                 action = () =>
                 {
-                    _modifiers.Add(StatProcessor.GenerateInstruction());
+                    _instructions.Add(StatProcessor.GenerateInstruction());
                     RecalcSpaceUsed();
                 }
             };

@@ -32,7 +32,7 @@ public class JobDriver_Print : JobDriver
             .FailOnDespawnedNullOrForbidden(TargetIndex.A);
 
         // open print window
-        var openInterface = Toils_General.DoAtomic(() => Building.PrinterComp.OpenSelectThingWindow(pawn, this));
+        var openInterface = Toils_General.DoAtomic(() => Building.PrinterComp.OpenSelectThingWindow(pawn));
         yield return openInterface;
 
         // just some delay
@@ -45,9 +45,9 @@ public class JobDriver_Print : JobDriver
         workToil.WithEffect(EffecterDefOf.Research, TargetIndex.A);
         workToil.FailOnCannotTouch(TargetIndex.A, PathEndMode.InteractionCell);
         workToil.FailOn(() => !Building.PrinterComp.CanWork());
-        workToil.initAction = () => Building.PrinterComp.DoJobStarted(pawn, this, true);
-        workToil.tickAction = () => Building.PrinterComp.DoJobTick(pawn, this, pawn.GetStatValue(StatDefOf.WorkSpeedGlobal));
-        workToil.AddFinishAction(() => Building.PrinterComp.DoJobFinished(pawn, this));
+        workToil.initAction = () => Building.PrinterComp.DoJobStarted(this);
+        workToil.tickAction = () => Building.PrinterComp.DoJobTick(this);
+        workToil.AddFinishAction(() => Building.PrinterComp.DoJobFinished());
         workToil.WithProgressBar(TargetIndex.A, () => Building.PrinterComp.GetPercentComplete());
         yield return workToil;
 

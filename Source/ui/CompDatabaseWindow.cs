@@ -53,7 +53,7 @@ public class CompDatabaseWindow : Window
         Text.WordWrap = false;
         GUI.color = Color.white;
 
-        var instructions = _comp.Modifiers.ToList();
+        var instructions = _comp.Instructions.ToList();
         instructions.Draw(inRect, _ => false, _ => [_deleteButton]);
 
         GUI.color = Color.white;

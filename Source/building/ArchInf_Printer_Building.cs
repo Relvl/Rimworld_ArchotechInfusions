@@ -14,11 +14,28 @@ public class ArchInf_Printer_Building : AddInf_Building
     private Comp_Printer _printerComp;
     public Comp_Printer PrinterComp => _printerComp ??= GetComp<Comp_Printer>();
 
-
     public override IEnumerable<FloatMenuOption> GetFloatMenuOptions(Pawn selPawn)
     {
         foreach (var option in base.GetFloatMenuOptions(selPawn))
             yield return option;
+
+        if (!PrinterComp.HasEnoughPower())
+        {
+            yield return new FloatMenuOption("JAI.Printer.Error.NoPower", null);
+            yield break;
+        }
+
+        if (!PrinterComp.HasEnoughArchite())
+        {
+            yield return new FloatMenuOption("JAI.Printer.Error.NoArchite", null);
+            yield break;
+        }
+
+        if (!PrinterComp.HasAnyInstruction())
+        {
+            yield return new FloatMenuOption("JAI.Error.Printer.NoINstructions", null);
+            yield break;
+        }
 
         yield return new FloatMenuOption("Print stat instruction...", () => OrderStartPrinting(selPawn));
     }
