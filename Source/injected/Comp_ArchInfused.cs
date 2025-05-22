@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
@@ -12,14 +13,15 @@ namespace ArchotechInfusions.injected;
 [SuppressMessage("ReSharper", "InconsistentNaming")]
 public class Comp_ArchInfused : ThingComp
 {
+    private float _breakRandom;
     private float _complexityCached;
     private string _descriptionPartCached;
-    private string _labelAdditionCached;
     private List<InstructionStat> _instructions = [];
+    private bool _isUnbreakable;
+    private string _labelAdditionCached;
 
     private float ExtraComplexity;
-    private float InitialIntegrity;
-    private bool _isUnbreakable;
+    public float InitialIntegrity;
 
     public bool HasInstructions => _instructions.Count > 0 || _isUnbreakable;
 
@@ -55,6 +57,7 @@ public class Comp_ArchInfused : ThingComp
         }
 
         Invalidate();
+        GenLabel.ClearCache();
     }
 
     private void Invalidate()
@@ -63,43 +66,37 @@ public class Comp_ArchInfused : ThingComp
         _complexityCached = _instructions.Sum(s => s.Complexity) + ExtraComplexity;
         _descriptionPartCached = default;
         _labelAdditionCached = default;
+        PostSpawnSetup(false);
     }
 
     public override void PostExposeData()
     {
         Scribe_Values.Look(ref _isUnbreakable, nameof(IsUnbreakable));
         Scribe_Values.Look(ref ExtraComplexity, nameof(ExtraComplexity));
-        Scribe_Collections.Look(ref _instructions, "Instructions", LookMode.Deep);
+        Scribe_Values.Look(ref InitialIntegrity, nameof(InitialIntegrity));
+        Scribe_Values.Look(ref _breakRandom, "BreakRandom");
+        Scribe_Collections.Look(ref _instructions, nameof(Instructions), LookMode.Deep);
         Invalidate();
     }
 
     public override void PostSpawnSetup(bool respawningAfterLoad)
     {
-        base.PostSpawnSetup(respawningAfterLoad);
         if (Mathf.Approximately(InitialIntegrity, default))
-        {
             InitialIntegrity = parent.MaxHitPoints;
-        }
+        if (Mathf.Approximately(_breakRandom, default))
+            _breakRandom = Rand.Value;
     }
-    
-    public override bool AllowStackWith(Thing other) => !HasInstructions;
+
+    public override bool AllowStackWith(Thing other)
+    {
+        return !HasInstructions;
+    }
 
     public override string TransformLabel(string label)
     {
-        var result = base.TransformLabel(label);
-        if (HasInstructions)
-        {
-            if (_labelAdditionCached == default)
-            {
-                _labelAdditionCached = "";
-                if (_instructions.Count > 0) _labelAdditionCached += $" +{_instructions.Count}";
-                if (_isUnbreakable) _labelAdditionCached += " (Unbreakable)";
-            }
-
-            result += _labelAdditionCached;
-        }
-
-        return result;
+        if (Instructions.Count > 0)
+            return $"<color=#E57AFF>+{Instructions.Count}</color> " + base.TransformLabel(label);
+        return base.TransformLabel(label);
     }
 
     public override string GetDescriptionPart()
@@ -107,18 +104,27 @@ public class Comp_ArchInfused : ThingComp
         var result = base.GetDescriptionPart();
         if (HasInstructions)
         {
-            if (_descriptionPartCached == default)
+            if (_descriptionPartCached == default || DebugSettings.ShowDevGizmos)
             {
                 var sb = new StringBuilder();
                 sb.AppendLine("Archotech Infusion:");
-                sb.Append("\t").AppendLine("JAI.instruction.integrity.value".Translate(Integrity.ToString("0.00")));
-                sb.AppendLine();
+                sb.Append("\t").Append("JAI.instruction.integrity.value".Translate(Integrity.ToString("0.##"))).AppendLine();
+
+                if (DebugSettings.ShowDevGizmos)
+                {
+                    sb.Append("\tInitial integrity:").AppendLine(InitialIntegrity.ToString("0.##"));
+                    sb.Append("\tExtra complexity:").AppendLine(ExtraComplexity.ToString("0.##"));
+                }
+
                 foreach (var instruction in _instructions)
                 {
                     sb.Append("\t").Append(instruction.Label).Append(": ");
                     instruction.RenderValue(sb);
                     sb.AppendLine();
                 }
+
+                if (IsUnbreakable)
+                    sb.Append("\t").Append("JAI.instruction.unbreakable".Translate());
 
                 sb.AppendLine();
                 _descriptionPartCached = sb.ToString();
@@ -127,6 +133,34 @@ public class Comp_ArchInfused : ThingComp
             result += _descriptionPartCached;
         }
 
+        return result;
+    }
+
+    public (float damageAmount, float breakChance) GetApplyDamageFor(AInstruction instruction)
+    {
+        var damagePercent = instruction.Complexity / InitialIntegrity;
+        var damageAmount = parent.MaxHitPoints * damagePercent;
+        damageAmount = Math.Max(1, Math.Min(parent.HitPoints - 1, damageAmount));
+        if (IsUnbreakable) damageAmount = 0;
+
+        var breakChance = 0f;
+        if (instruction.Complexity > 0 && Integrity < instruction.Complexity)
+        {
+            var newIntegrity = Integrity - instruction.Complexity;
+            breakChance = -newIntegrity / InitialIntegrity / 2f; // todo curve
+            breakChance = Mathf.Clamp(breakChance, 0.01f, 0.95f);
+        }
+
+        return (damageAmount, breakChance);
+    }
+
+    /// <summary>
+    ///     Yes. Exactly. Anti save-scum. ;]
+    /// </summary>
+    public float TakeBreakRandom()
+    {
+        var result = _breakRandom;
+        _breakRandom = Rand.Value;
         return result;
     }
 }

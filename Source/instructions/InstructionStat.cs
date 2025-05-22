@@ -1,28 +1,69 @@
-﻿using System.Text;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using RimWorld;
-using Verse;
+using UnityEngine;
 
 namespace ArchotechInfusions.instructions;
 
-public class InstructionStat : AInstruction
+[SuppressMessage("ReSharper", "ClassWithVirtualMembersNeverInherited.Global")]
+public class InstructionStat(StatDefinitionDef definition, StatDefinitionDef.Operation operation) : AInstruction(definition, operation)
 {
-    public StatDef Def;
-
-    public override string Label => Def.LabelCap;
-
-    public override void ExposeData()
+    /// <summary>
+    ///     IExposable constructor
+    /// </summary>
+    [SuppressMessage("ReSharper", "UnusedMember.Local")]
+    private InstructionStat() : this(default, null)
     {
-        base.ExposeData();
-        Scribe_Defs.Look(ref Def, "stat");
     }
+
+    private StatDef StatDef => Definition.StatDef;
+
+    public override string Label => StatDef.LabelCap;
 
     public override void RenderExtraLine(StringBuilder sb)
     {
-        if (TypeFilter.HasFlag(EInstructionTarget.Apparel))
+        if (Definition.Target.HasFlag(EInstructionTarget.Apparel))
             sb.Append("Apparel ");
-        if (TypeFilter.HasFlag(EInstructionTarget.MeleeWeapon))
+        if (Definition.Target.HasFlag(EInstructionTarget.MeleeWeapon))
             sb.Append("Melee ");
-        if (TypeFilter.HasFlag(EInstructionTarget.RangedWeapon))
+        if (Definition.Target.HasFlag(EInstructionTarget.RangedWeapon))
             sb.Append("Ranged ");
+    }
+
+    public virtual void TransformStatValue(StatDef statDef, ref float value)
+    {
+        if (statDef != StatDef) return;
+        switch (Type)
+        {
+            case EInstructionType.Add:
+                value += Value;
+                break;
+            case EInstructionType.Mul:
+                value *= Value;
+                break;
+            case EInstructionType.Force:
+                value = Value;
+                break;
+        }
+    }
+
+    public virtual bool AddStatExplanation(StatDef statDef, StringBuilder sb)
+    {
+        if (statDef != StatDef) return false;
+        sb.Append("\t").Append(Label);
+        switch (Type)
+        {
+            case EInstructionType.Add:
+                sb.Append(Value > 0 ? ": +" : ": -").Append(statDef.ValueToString(Mathf.Abs(Value))).AppendLine();
+                break;
+            case EInstructionType.Mul:
+                sb.Append(": x").Append(Value).AppendLine();
+                break;
+            case EInstructionType.Force:
+                sb.Append(Value > 0 ? ": =" : ": = -").Append(statDef.ValueToString(Mathf.Abs(Value))).AppendLine();
+                break;
+        }
+
+        return true;
     }
 }

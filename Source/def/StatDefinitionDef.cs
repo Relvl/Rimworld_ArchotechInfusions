@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using ArchotechInfusions.injected;
-using ArchotechInfusions.statprocessor;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Random = UnityEngine.Random;
 
 namespace ArchotechInfusions;
 
@@ -18,44 +16,36 @@ namespace ArchotechInfusions;
 public class StatDefinitionDef : Def
 {
     /// <summary>
-    /// 
-    /// </summary>
-    public StatDef StatDef;
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public Type Worker = typeof(InstructionProcessorStats);
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public EInstructionTarget Target = EInstructionTarget.Any;
-
-    /// <summary>
-    /// 
     /// </summary>
     public float Complexity = 100f;
 
     /// <summary>
-    /// 
     /// </summary>
     public ExtraArchiteData ExtraArchite;
 
     /// <summary>
-    /// 
     /// </summary>
     public Operation OperationAdd;
 
     /// <summary>
-    /// 
     /// </summary>
     public Operation OperationMul;
 
     /// <summary>
-    /// 
     /// </summary>
     public Operation OperationSet;
+
+    /// <summary>
+    /// </summary>
+    public StatDef StatDef;
+
+    /// <summary>
+    /// </summary>
+    public EInstructionTarget Target = EInstructionTarget.Any;
+
+    /// <summary>
+    /// </summary>
+    public Type Worker = typeof(InstructionGeneratorStats);
 
     public override void PostSetIndices()
     {
@@ -78,7 +68,7 @@ public class StatDefinitionDef : Def
         foreach (var error in base.ConfigErrors())
             yield return error;
 
-        if (StatDef is not null && Worker != typeof(InstructionProcessorStats))
+        if (StatDef is not null && Worker != typeof(InstructionGeneratorStats))
             yield return $"JAI: StatDefinitionDef[defName={defName}]/StatDef is not null && Worker != InstructionProcessorStats";
 
         if (OperationAdd is null && OperationMul is null && OperationSet is null)
@@ -108,11 +98,11 @@ public class StatDefinitionDef : Def
                 yield return $"JAI: StatDefinitionDef[defName={defName}]/OperationSet Default==Min==Max";
         }
 
-        if (OperationAdd is not null && OperationSet is not null && OperationAdd.isInverted != OperationSet.isInverted)
+        if (OperationAdd is not null && OperationSet is not null && OperationAdd.IsInverted != OperationSet.IsInverted)
             yield return $"JAI: StatDefinitionDef[defName={defName}]/OperationAdd.isInverted != OperationSet.isInverted";
-        if (OperationMul is not null && OperationSet is not null && OperationMul.isInverted != OperationSet.isInverted)
+        if (OperationMul is not null && OperationSet is not null && OperationMul.IsInverted != OperationSet.IsInverted)
             yield return $"JAI: StatDefinitionDef[defName={defName}]/OperationMul.isInverted != OperationSet.isInverted";
-        if (OperationAdd is not null && OperationMul is not null && OperationAdd.isInverted != OperationMul.isInverted)
+        if (OperationAdd is not null && OperationMul is not null && OperationAdd.IsInverted != OperationMul.IsInverted)
             yield return $"JAI: StatDefinitionDef[defName={defName}]/OperationAdd.isInverted != OperationMul.isInverted";
     }
 
@@ -123,43 +113,52 @@ public class StatDefinitionDef : Def
         return false;
     }
 
+    public Operation GetOperation(EInstructionType type)
+    {
+        switch (type)
+        {
+            case EInstructionType.Add:
+                return OperationAdd;
+            case EInstructionType.Mul:
+                return OperationMul;
+            case EInstructionType.Force:
+                return OperationSet;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(type), type, null);
+        }
+    }
+
     public class Operation
     {
         /// <summary>
-        /// 
         /// </summary>
-        public int Weight = 1;
+        public float Default = 1f;
 
         /// <summary>
-        /// 
-        /// </summary>
-        public float Min = 1f;
-
-        /// <summary>
-        /// 
         /// </summary>
         public float Max = 1f;
 
         /// <summary>
-        /// 
         /// </summary>
-        public float Default = 1f;
+        public float Min = 1f;
 
         [NonSerialized] public EInstructionType OperationType;
 
-        public bool isInverted => Max < Min;
+        /// <summary>
+        /// </summary>
+        public int Weight = 1;
+
+        public bool IsInverted => Max < Min;
     }
 
     public class ExtraArchiteData
     {
         /// <summary>
-        /// 
-        /// </summary>
-        public float Fixed = 0f;
-
-        /// <summary>
-        /// 
         /// </summary>
         public float Factor = 1f;
+
+        /// <summary>
+        /// </summary>
+        public float Fixed = 0f;
     }
 }

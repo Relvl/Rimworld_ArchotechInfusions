@@ -5,14 +5,28 @@
     <JAI.KeyGenerator.KeysCount>Keys generated: {0}</JAI.KeyGenerator.KeysCount>
     <JAI.Decoder.StoredBackup><![CDATA[<color=yellow>Stored a backup with progress: {0}%</color>]]></JAI.Decoder.StoredBackup>
     <JAI.Database.ShowInstructions>Show instructions</JAI.Database.ShowInstructions>
+
     <JAI.Printer.SelectThing.Title>Select thing to print</JAI.Printer.SelectThing.Title>
     <JAI.Printer.SelectThing.Select>Select</JAI.Printer.SelectThing.Select>
     <JAI.Printer.Print.Title>Select instruction to print</JAI.Printer.Print.Title>
+
+    <JAI.Printer.Print.Desc>Confirm the start of printing.</JAI.Printer.Print.Desc>
+    <JAI.Printer.Print.Damage>Upon completion, the item will take {0} damage.</JAI.Printer.Print.Damage>
+    <JAI.Printer.Print.Damage.Unbreakable>Upon completion, the item will no take damage.</JAI.Printer.Print.Damage.Unbreakable>
+    <JAI.Printer.Print.BreakChance><![CDATA[<color=yellow>Since the integrity is too low, the item may be destroyed upon completion. Approximate chance: {0}%.</color>]]></JAI.Printer.Print.BreakChance>
     <JAI.Printer.Print.Confirm>Print</JAI.Printer.Print.Confirm>
-    
+
     <JAI.instruction.integrity>Integrity</JAI.instruction.integrity>
     <JAI.instruction.integrity.value>Integrity: {0}</JAI.instruction.integrity.value>
     <JAI.instruction.unbreakable>Unbreakable!</JAI.instruction.unbreakable>
-    
+    <JAI.instruction.unbreakable.label>unbreakable</JAI.instruction.unbreakable.label>
+    <JAI.instruction.unbreakable.infocard><![CDATA[
+This thing is indestructible. It will not take any damage from using or while taking damage to the pawn.
+
+It can still be destroyed by recycling.
+]]></JAI.instruction.unbreakable.infocard>
+    <JAI.Printer.Print.ThingDestroyed>Print fail! Thing got destroyed!</JAI.Printer.Print.ThingDestroyed>
+    <JAI.Printer.Print.ThingDestroyed.Desc>{0} tried to print instruction, the complexity of which exceeded the integrity of the {1}, and failed. The {2} was destroyed.</JAI.Printer.Print.ThingDestroyed.Desc>
+
     <JAI.statpart.title><![CDATA[<color=yellow>Archotech infusions</color>:]]></JAI.statpart.title>
 </LanguageData>

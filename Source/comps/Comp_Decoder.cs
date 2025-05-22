@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Text;
 using ArchotechInfusions.comps.comp_base;
 using ArchotechInfusions.instructions;
-using ArchotechInfusions.statprocessor;
 using ArchotechInfusions.ui;
 using Verse;
 using Verse.Sound;

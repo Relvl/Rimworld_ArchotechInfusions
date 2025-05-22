@@ -1,13 +1,22 @@
-﻿using System.Text;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using UnityEngine;
 using Verse;
 
 namespace ArchotechInfusions.instructions;
 
-public class InstructionIntegrity : AInstruction
+public class InstructionIntegrity(StatDefinitionDef definition, StatDefinitionDef.Operation operation) : AInstruction(definition, operation)
 {
-    private static Color Bg = Color.blue.ToTransparent(0.3f);
-    
+    private static readonly Color Bg = Color.blue.ToTransparent(0.3f);
+
+    /// <summary>
+    ///     IExposable constructor
+    /// </summary>
+    [SuppressMessage("ReSharper", "UnusedMember.Local")]
+    private InstructionIntegrity() : this(default, null)
+    {
+    }
+
     public override string Label => "JAI.instruction.integrity".Translate();
     public override Color BgColor => Bg;
 

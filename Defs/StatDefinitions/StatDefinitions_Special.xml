@@ -1,11 +1,12 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 
+<!-- These are some hardcoded, and needs to be handled in the code with dedicated instruction generators. -->
 <Defs>
 
     <ArchotechInfusions.StatDefinitionDef>
         <defName>Quality</defName>
         <Target>Any</Target>
-        <Worker>ArchotechInfusions.statprocessor.InstructionProcessorQuality</Worker>
+        <Worker>ArchotechInfusions.InstructionGeneratorQuality</Worker>
         <Complexity>100</Complexity>
         <OperationAdd>
             <Weight>5</Weight>
@@ -16,7 +17,7 @@
     <ArchotechInfusions.StatDefinitionDef>
         <defName>Integrity</defName>
         <Target>Any</Target>
-        <Worker>ArchotechInfusions.statprocessor.InstructionProcessorIntegrity</Worker>
+        <Worker>ArchotechInfusions.InstructionGeneratorIntegrity</Worker>
         <Complexity>0</Complexity>
         <OperationAdd>
             <Weight>1</Weight>
@@ -28,7 +29,7 @@
     <ArchotechInfusions.StatDefinitionDef>
         <defName>Unbreakable</defName>
         <Target>Any</Target>
-        <Worker>ArchotechInfusions.statprocessor.InstructionProcessorUnbreakable</Worker>
+        <Worker>ArchotechInfusions.InstructionGeneratorUnbreakable</Worker>
         <Complexity>200</Complexity>
         <OperationSet>
             <Weight>1</Weight>

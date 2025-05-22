@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using ArchotechInfusions.comps;
 using RimWorld;
 using UnityEngine;
@@ -85,6 +83,8 @@ public class ThingSelectorWindow : Window
     {
         if (!thing.TryGetInfusedComp(out var comp))
             return;
+        if (comp.InitialIntegrity <= 0)
+            return;
 
         var rowRect = new Rect(0.0f, y, width, 28f);
         var buttonLabel = "JAI.Printer.SelectThing.Select".Translate();
@@ -95,11 +95,17 @@ public class ThingSelectorWindow : Window
         thing.Draw(thingRect, true, " " + "JAI.instruction.integrity.value".Translate(comp.Integrity), comp);
 
         Text.Anchor = TextAnchor.MiddleCenter;
+
+        if (comp.Integrity <= 0)
+            GUI.color = ArchotechInfusionsMod.ButtonWarningColor;
+
         if (Widgets.ButtonText(buttonRect, buttonLabel))
         {
             SoundDefOf.Crunch.PlayOneShotOnCamera();
             _selector.OnThingSelected(_pawn, thing);
         }
+
+        GUI.color = Color.white;
 
         y += 28f;
     }

@@ -46,7 +46,7 @@ public class JobDriver_Print : JobDriver
         workToil.FailOnCannotTouch(TargetIndex.A, PathEndMode.InteractionCell);
         workToil.FailOn(() => !Building.PrinterComp.CanWork());
         workToil.initAction = () => Building.PrinterComp.DoJobStarted(this);
-        workToil.tickAction = () => Building.PrinterComp.DoJobTick(this);
+        workToil.tickAction = () => Building.PrinterComp.DoJobTick(this, pawn);
         workToil.AddFinishAction(() => Building.PrinterComp.DoJobFinished());
         workToil.WithProgressBar(TargetIndex.A, () => Building.PrinterComp.GetPercentComplete());
         yield return workToil;

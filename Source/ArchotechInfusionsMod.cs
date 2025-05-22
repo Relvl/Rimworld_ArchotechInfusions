@@ -4,6 +4,7 @@ using System.Reflection;
 using ArchotechInfusions.injected;
 using HarmonyLib;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace ArchotechInfusions;
@@ -11,6 +12,8 @@ namespace ArchotechInfusions;
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public class ArchotechInfusionsMod : Mod
 {
+    public static readonly Color ButtonWarningColor = new(1f, 0.3f, 0.35f);
+
     public ArchotechInfusionsMod(ModContentPack content) : base(content)
     {
         new Harmony("johnson1893.archotech.infusions")

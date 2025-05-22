@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using ArchotechInfusions.comps.comp_base;
 using ArchotechInfusions.instructions;
-using ArchotechInfusions.statprocessor;
 using ArchotechInfusions.ui;
 using UnityEngine;
 using Verse;
@@ -88,11 +87,43 @@ public class Comp_Database : CompBase_Grid<CompProps_Database>
             yield return new Command_Action
             {
                 defaultLabel = "Force make random",
+                defaultDesc = "Hold LeftControl to select generator",
                 action = () =>
                 {
-                    _instructions.Add(StatProcessor.GenerateInstruction());
-                    RecalcSpaceUsed();
+                    if (Input.GetKey(KeyCode.LeftControl))
+                        Find.WindowStack.Add(new FloatMenu(FirstLevelDebugOptions().ToList()));
+                    else
+                        ForceAddInstruction(StatProcessor.GenerateInstruction());
                 }
             };
+    }
+
+    private IEnumerable<FloatMenuOption> FirstLevelDebugOptions()
+    {
+        yield return new FloatMenuOption("Random instruction (same as natural)", () => ForceAddInstruction(StatProcessor.GenerateInstruction()));
+
+        yield return new FloatMenuOption("Select special...", () =>
+        {
+            Find.WindowStack.Add(new FloatMenu(
+                StatProcessor.GetSpecialGenerators()
+                    .Select(g => new FloatMenuOption(g.Name, () => ForceAddInstruction(g.GenerateInstruction())))
+                    .ToList()
+            ));
+        });
+
+        yield return new FloatMenuOption("Select stat...", () =>
+        {
+            Find.WindowStack.Add(new FloatMenu(
+                StatProcessor.GetStatGenerators()
+                    .Select(g => new FloatMenuOption(g.Name, () => ForceAddInstruction(g.GenerateInstruction())))
+                    .ToList()
+            ));
+        });
+    }
+
+    private void ForceAddInstruction(AInstruction instruction)
+    {
+        _instructions.Add(instruction);
+        RecalcSpaceUsed();
     }
 }

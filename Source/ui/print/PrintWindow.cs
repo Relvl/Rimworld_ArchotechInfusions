@@ -1,9 +1,11 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using ArchotechInfusions.comps;
 using ArchotechInfusions.injected;
 using ArchotechInfusions.instructions;
 using ArchotechInfusions.ui.component;
+using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -13,7 +15,7 @@ namespace ArchotechInfusions.ui.print;
 
 public class PrintWindow : Window
 {
-    private static readonly Color ButtonWarningColor = new(1f, 0.3f, 0.35f);
+    private readonly Comp_ArchInfused _comp;
 
     private readonly InstructionView.ButtonData _dequeueButton;
     private readonly InstructionView.ButtonData _enqueueButton;
@@ -21,7 +23,6 @@ public class PrintWindow : Window
     private readonly Comp_Printer _printer;
     private readonly PrintWindowSelector _selector;
     private readonly Thing _thing;
-    private readonly Comp_ArchInfused _comp;
     private AInstruction _instruction;
 
     public PrintWindow(PrintWindowSelector selector, Comp_Printer printer, Thing thing)
@@ -79,13 +80,13 @@ public class PrintWindow : Window
         Text.Font = GameFont.Medium;
         GUI.color = Color.cyan;
         Widgets.Label(titleRect, "JAI.Printer.Print.Title".Translate());
-        
+
         _thing.Draw(thingRect, false, $", HP: {_thing.HitPoints}/{_thing.MaxHitPoints}, Integrity: {_comp.Integrity:0.00}"); // todo integrity or not used
 
         var instructions = _printer.Member.Grid
             .GetComps<Comp_Database>()
             .SelectMany(database => database.Instructions)
-            .Where(instruction => instruction.IsThingApplicable(_thing));
+            .Where(instruction => instruction.IsThingApplicable(_thing, _comp));
         instructions.Draw(inRect, i => _instruction == i, i => _instruction == i ? [_dequeueButton] : [_enqueueButton]);
 
         DrawTotals(totalsRect);
@@ -106,24 +107,34 @@ public class PrintWindow : Window
 
         var confirmButtonRect = buttonsRect with { xMin = buttonsRect.width - 100 };
 
-        if (_comp.Integrity < _instruction.Complexity)
-            GUI.color = ButtonWarningColor;
+        var (damageAmount, breakChance) = _comp.GetApplyDamageFor(_instruction);
+
+        if (breakChance > 0f)
+            GUI.color = ArchotechInfusionsMod.ButtonWarningColor;
 
         if (Widgets.ButtonText(confirmButtonRect, "JAI.Printer.Print.Confirm".Translate(), true, true, true, TextAnchor.MiddleCenter))
         {
-            if (_comp.Integrity < _instruction.Complexity)
+            var parts = new List<string>
             {
-                Find.WindowStack.Add(
-                    Dialog_MessageBox.CreateConfirmation(
-                        "JAI.Printer.Print.Confirm".Translate(),
-                        Print,
-                        true,
-                        "JAI.Printer.Print.Confirm.Title".Translate()
-                    )
-                );
+                "JAI.Printer.Print.Desc".Translate(),
+                _comp.IsUnbreakable ? "JAI.Printer.Print.Damage.Unbreakable".Translate() : "JAI.Printer.Print.Damage".Translate(damageAmount)
+            };
+
+            if (breakChance > 0f)
+            {
+                var rounding = 10f + Random.value * 20f;
+                var estimateChance = Mathf.Round(breakChance * 100f / rounding) * rounding;
+                parts.Add("JAI.Printer.Print.BreakChance".Translate(estimateChance));
             }
-            else
-                Print();
+
+            Find.WindowStack.Add(
+                Dialog_MessageBox.CreateConfirmation(
+                    parts.Join(null, "\n\n"),
+                    Print,
+                    true,
+                    "JAI.Printer.Print.Confirm.Title".Translate()
+                )
+            );
         }
 
         GUI.color = Color.white;

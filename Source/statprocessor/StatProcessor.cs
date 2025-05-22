@@ -4,7 +4,7 @@ using System.Linq;
 using ArchotechInfusions.instructions;
 using Verse;
 
-namespace ArchotechInfusions.statprocessor;
+namespace ArchotechInfusions;
 
 public static class StatProcessor
 {
@@ -27,7 +27,23 @@ public static class StatProcessor
         }
     }
 
-    private static IInstructionProcessor<AInstruction> GetRandomProcessor() => Processors.RandomElementByWeight(p => p.TotalWeight);
+    private static IInstructionProcessor<AInstruction> GetRandomProcessor()
+    {
+        return Processors.RandomElementByWeight(p => p.TotalWeight);
+    }
 
-    public static AInstruction GenerateInstruction() => GetRandomProcessor().GenerateInstruction();
+    public static AInstruction GenerateInstruction()
+    {
+        return GetRandomProcessor().GenerateInstruction();
+    }
+
+    public static IEnumerable<IInstructionProcessor<AInstruction>> GetSpecialGenerators()
+    {
+        return Processors.Where(p => p.IsSpecial());
+    }
+
+    public static IEnumerable<InstructionGeneratorStats> GetStatGenerators()
+    {
+        return Processors.Where(p => p is InstructionGeneratorStats).Cast<InstructionGeneratorStats>();
+    }
 }

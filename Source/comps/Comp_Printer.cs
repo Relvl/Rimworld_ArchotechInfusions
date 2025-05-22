@@ -1,6 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
 using ArchotechInfusions.comps.comp_base;
-using ArchotechInfusions.injected;
 using ArchotechInfusions.instructions;
 using ArchotechInfusions.ui.print;
 using RimWorld;
@@ -84,7 +83,7 @@ public class Comp_Printer : CompBase_Grid<CompProps_Printer>
         _ticksCurrentCycle = 0;
     }
 
-    public void DoJobTick(JobDriver driver)
+    public void DoJobTick(JobDriver driver, Pawn pawn)
     {
         if (_targetThing is null || _instruction is null)
         {
@@ -94,8 +93,7 @@ public class Comp_Printer : CompBase_Grid<CompProps_Printer>
 
         if (_ticksCurrentCycle >= Props.PrintTicks)
         {
-            var comp = _targetThing.TryGetComp<Comp_ArchInfused>();
-            if (comp is null)
+            if (!_targetThing.TryGetInfusedComp(out var comp))
             {
                 Log.ErrorOnce($"JAI: Thing {_targetThing} has no ArchInfused comp", _targetThing.def.defName.GetHashCode());
                 driver.EndJobWith(JobCondition.Errored);
@@ -119,6 +117,41 @@ public class Comp_Printer : CompBase_Grid<CompProps_Printer>
                 driver.EndJobWith(JobCondition.Errored);
                 return;
             }
+
+            var (damageAmount, breakChance) = comp.GetApplyDamageFor(_instruction);
+
+            if (breakChance > 0f)
+            {
+                var random = comp.TakeBreakRandom();
+                if (random <= breakChance)
+                {
+                    Find.LetterStack.ReceiveLetter(
+                        "JAI.Printer.Print.ThingDestroyed".Translate(),
+                        "JAI.Printer.Print.ThingDestroyed.Desc".Translate(pawn.NameShortColored, _targetThing.LabelShort, GenLabel.ThingLabel(_targetThing, 1, true, false)),
+                        LetterDefOf.ThreatSmall, parent
+                    );
+                    _targetThing.Destroy();
+                    driver.EndJobWith(JobCondition.Succeeded); // ;]
+                    return;
+                }
+            }
+
+            if (damageAmount > 0)
+                _targetThing.TakeDamage(new DamageInfo(
+                    DamageDefOf.Deterioration,
+                    damageAmount,
+                    instigator: parent,
+                    spawnFilth: false,
+                    checkForJobOverride: false
+                ));
+
+            _targetThing.TakeDamage(new DamageInfo(
+                DamageDefOf.Deterioration,
+                damageAmount,
+                instigator: parent,
+                spawnFilth: false,
+                checkForJobOverride: false
+            ));
 
             comp.Apply(_instruction);
             _instruction = null;
