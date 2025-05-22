@@ -154,6 +154,7 @@ public class StatDefinitionDef : Def
     public class ExtraArchiteData
     {
         /// <summary>
+        ///     (base + fixed) * factor
         /// </summary>
         public float Factor = 1f;
 

@@ -16,16 +16,17 @@ public class Comp_ArchInfused : ThingComp
     private float _breakRandom;
     private float _complexityCached;
     private string _descriptionPartCached;
+
+    private float _initialIntegrity;
     private List<InstructionStat> _instructions = [];
+    private float _integrityQualityFactorCached;
     private bool _isUnbreakable;
     private string _labelAdditionCached;
-
     private float ExtraComplexity;
-    public float InitialIntegrity;
 
     public bool HasInstructions => _instructions.Count > 0 || _isUnbreakable;
-
     public float Integrity => InitialIntegrity - _complexityCached;
+    public float InitialIntegrity => _initialIntegrity * _integrityQualityFactorCached;
 
     public bool IsUnbreakable => _isUnbreakable;
 
@@ -66,6 +67,7 @@ public class Comp_ArchInfused : ThingComp
         _complexityCached = _instructions.Sum(s => s.Complexity) + ExtraComplexity;
         _descriptionPartCached = default;
         _labelAdditionCached = default;
+        _integrityQualityFactorCached = IntegrityQualityFactor();
         PostSpawnSetup(false);
     }
 
@@ -73,7 +75,7 @@ public class Comp_ArchInfused : ThingComp
     {
         Scribe_Values.Look(ref _isUnbreakable, nameof(IsUnbreakable));
         Scribe_Values.Look(ref ExtraComplexity, nameof(ExtraComplexity));
-        Scribe_Values.Look(ref InitialIntegrity, nameof(InitialIntegrity));
+        Scribe_Values.Look(ref _initialIntegrity, nameof(InitialIntegrity));
         Scribe_Values.Look(ref _breakRandom, "BreakRandom");
         Scribe_Collections.Look(ref _instructions, nameof(Instructions), LookMode.Deep);
         Invalidate();
@@ -81,8 +83,8 @@ public class Comp_ArchInfused : ThingComp
 
     public override void PostSpawnSetup(bool respawningAfterLoad)
     {
-        if (Mathf.Approximately(InitialIntegrity, default))
-            InitialIntegrity = parent.MaxHitPoints;
+        if (Mathf.Approximately(_initialIntegrity, default))
+            _initialIntegrity = parent.MaxHitPoints;
         if (Mathf.Approximately(_breakRandom, default))
             _breakRandom = Rand.Value;
     }
@@ -140,7 +142,7 @@ public class Comp_ArchInfused : ThingComp
     {
         var damagePercent = instruction.Complexity / InitialIntegrity;
         var damageAmount = parent.MaxHitPoints * damagePercent;
-        damageAmount = Math.Max(1, Math.Min(parent.HitPoints - 1, damageAmount));
+        damageAmount = Math.Max(0, Math.Min(parent.HitPoints - 1, damageAmount));
         if (IsUnbreakable) damageAmount = 0;
 
         var breakChance = 0f;
@@ -162,5 +164,29 @@ public class Comp_ArchInfused : ThingComp
         var result = _breakRandom;
         _breakRandom = Rand.Value;
         return result;
+    }
+
+    protected float IntegrityQualityFactor()
+    {
+        if (parent.TryGetQuality(out var qc))
+            switch (qc)
+            {
+                case QualityCategory.Awful:
+                    return 0.5f;
+                case QualityCategory.Poor:
+                    return 0.8f;
+                case QualityCategory.Normal:
+                    return 1f;
+                case QualityCategory.Good:
+                    return 1.2f;
+                case QualityCategory.Excellent:
+                    return 1.5f;
+                case QualityCategory.Masterwork:
+                    return 1.8f;
+                case QualityCategory.Legendary:
+                    return 2f;
+            }
+
+        return 1f;
     }
 }

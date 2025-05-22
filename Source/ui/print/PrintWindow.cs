@@ -23,6 +23,9 @@ public class PrintWindow : Window
     private readonly Comp_Printer _printer;
     private readonly PrintWindowSelector _selector;
     private readonly Thing _thing;
+    private float _architeLeft;
+
+    private float _architeNeeded;
     private AInstruction _instruction;
 
     public PrintWindow(PrintWindowSelector selector, Comp_Printer printer, Thing thing)
@@ -37,8 +40,8 @@ public class PrintWindow : Window
         resizeable = true;
         forcePause = true;
 
-        _dequeueButton = new InstructionView.ButtonData { Tooltip = "Do not print this instruction", Texture = TexButton.CloseXSmall, OnClick = OnDequeue };
-        _enqueueButton = new InstructionView.ButtonData { Tooltip = "Print this instruction", Texture = TexButton.Play, OnClick = OnEnqueue };
+        _dequeueButton = new InstructionView.ButtonData { Tooltip = "Cancel".Translate(), Texture = TexButton.CloseXSmall, OnClick = OnDequeue };
+        _enqueueButton = new InstructionView.ButtonData { Tooltip = "JAI.Printer.Print.Title".Translate(), Texture = TexButton.Play, OnClick = OnEnqueue };
     }
 
     public override Vector2 InitialSize => new(800, 600);
@@ -60,6 +63,19 @@ public class PrintWindow : Window
         _instruction = null;
     }
 
+    public override void WindowUpdate()
+    {
+        base.WindowUpdate();
+
+        if (_instruction is not null)
+        {
+            var archite = (float)_printer.Props.PrintArchiteCost;
+            _instruction.ModifyArchiteConsumed(ref archite);
+            _architeLeft = _printer.Grid.GetTotalArchite();
+            _architeNeeded = archite;
+        }
+    }
+
     public override void DoWindowContents(Rect inRect)
     {
         Text.Font = GameFont.Medium;
@@ -71,7 +87,7 @@ public class PrintWindow : Window
         var buttonsRect = new Rect(0, inRect.yMax - Widgets.BackButtonHeight, inRect.width, Widgets.BackButtonHeight);
 
         Text.Font = GameFont.Small;
-        var totalsHeight = Text.LineHeight * 1.2f;
+        var totalsHeight = Text.LineHeight * 2f * 1.1f + 8f;
         var totalsRect = new Rect(0, buttonsRect.yMin - totalsHeight - StandardMargin / 2, inRect.width, totalsHeight);
 
         inRect.yMin = thingRect.yMax + StandardMargin;
@@ -81,7 +97,7 @@ public class PrintWindow : Window
         GUI.color = Color.cyan;
         Widgets.Label(titleRect, "JAI.Printer.Print.Title".Translate());
 
-        _thing.Draw(thingRect, false, $", HP: {_thing.HitPoints}/{_thing.MaxHitPoints}, Integrity: {_comp.Integrity:0.00}"); // todo integrity or not used
+        _thing.Draw(thingRect, false, $", HP: {_thing.HitPoints}/{_thing.MaxHitPoints}, Integrity: {_comp.Integrity:0.00}");
 
         var instructions = _printer.Member.Grid
             .GetComps<Comp_Database>()
@@ -112,7 +128,12 @@ public class PrintWindow : Window
         if (breakChance > 0f)
             GUI.color = ArchotechInfusionsMod.ButtonWarningColor;
 
-        if (Widgets.ButtonText(confirmButtonRect, "JAI.Printer.Print.Confirm".Translate(), true, true, true, TextAnchor.MiddleCenter))
+        var isOutOfArchite = _architeLeft < _architeNeeded;
+
+        if (isOutOfArchite)
+            GUI.color = Color.grey;
+
+        if (Widgets.ButtonText(confirmButtonRect, "JAI.Printer.Print.Confirm".Translate(), true, true, !isOutOfArchite, TextAnchor.MiddleCenter))
         {
             var parts = new List<string>
             {
@@ -137,6 +158,8 @@ public class PrintWindow : Window
             );
         }
 
+        if (isOutOfArchite) TooltipHandler.TipRegion(confirmButtonRect, "JAI.Printer.Print.NoArchite".Translate(_architeNeeded, _architeLeft));
+
         GUI.color = Color.white;
     }
 
@@ -159,7 +182,11 @@ public class PrintWindow : Window
         var textRect = inRect.ContractedBy(4);
 
         var sb = new StringBuilder();
-        sb.Append("Complexity: ").Append(_instruction.Complexity.ToString("0.00")).Append(". Archite needed: ").Append(_printer.Props.PrintArchiteCost).AppendLine(".");
+        sb.Append(_instruction.Label).AppendLine(". ");
+
+        sb.Append("JAI.instruction.complexity".Translate()).Append(": ").Append(_instruction.Complexity.ToString("0.00")).Append(". ")
+            .Append("JAI.Printer.Print.ArchiteUsed".Translate(_architeNeeded, _architeLeft)).AppendLine(".");
+
         Widgets.Label(textRect, sb.ToString());
     }
 }

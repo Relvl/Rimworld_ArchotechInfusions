@@ -110,6 +110,7 @@ public class Comp_Printer : CompBase_Grid<CompProps_Printer>
             }
 
             float archite = Props.PrintArchiteCost;
+            _instruction.ModifyArchiteConsumed(ref archite);
             Grid.ConsumeArchite(ref archite);
             if (archite > 0)
             {
@@ -140,18 +141,9 @@ public class Comp_Printer : CompBase_Grid<CompProps_Printer>
                 _targetThing.TakeDamage(new DamageInfo(
                     DamageDefOf.Deterioration,
                     damageAmount,
-                    instigator: parent,
                     spawnFilth: false,
                     checkForJobOverride: false
                 ));
-
-            _targetThing.TakeDamage(new DamageInfo(
-                DamageDefOf.Deterioration,
-                damageAmount,
-                instigator: parent,
-                spawnFilth: false,
-                checkForJobOverride: false
-            ));
 
             comp.Apply(_instruction);
             _instruction = null;

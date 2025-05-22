@@ -98,14 +98,19 @@ public class ThingSelectorWindow : Window
 
         if (comp.Integrity <= 0)
             GUI.color = ArchotechInfusionsMod.ButtonWarningColor;
+        var tooBad = thing.HitPoints <= 10;
+        if (tooBad)
+            GUI.color = Color.gray;
 
-        if (Widgets.ButtonText(buttonRect, buttonLabel))
+        if (Widgets.ButtonText(buttonRect, buttonLabel, active: !tooBad))
         {
             SoundDefOf.Crunch.PlayOneShotOnCamera();
             _selector.OnThingSelected(_pawn, thing);
         }
 
         GUI.color = Color.white;
+
+        if (tooBad) TooltipHandler.TipRegion(buttonRect, "JAI.Printer.SelectThing.TooBad".Translate());
 
         y += 28f;
     }

@@ -107,6 +107,12 @@ public abstract class AInstruction(StatDefinitionDef definition, StatDefinitionD
         return Mathf.Lerp(-Definition.Complexity / /*todo config? def? */10f, Definition.Complexity, (factor + 1f) / 2f);
     }
 
+    public void ModifyArchiteConsumed(ref float archite)
+    {
+        archite += Definition.ExtraArchite?.Fixed ?? 0f;
+        archite *= Definition.ExtraArchite?.Factor ?? 1f;
+    }
+
     public virtual bool IsThingApplicable(Thing thing, Comp_ArchInfused comp)
     {
         if (!thing.def.useHitPoints) return false;
