@@ -116,6 +116,7 @@
         <Compile Include="instructions\EInstructionTarget.cs"/>
         <Compile Include="instructions\EInstructionType.cs"/>
         <Compile Include="instructions\InstructionIntegrity.cs"/>
+        <Compile Include="instructions\InstructionNop.cs"/>
         <Compile Include="instructions\InstructionQuality.cs"/>
         <Compile Include="instructions\InstructionStat.cs"/>
         <Compile Include="instructions\InstructionUnbreakable.cs"/>
@@ -130,6 +131,7 @@
         <Compile Include="statprocessor\AInstructionGenerator.cs"/>
         <Compile Include="statprocessor\IInstructionProcessor.cs"/>
         <Compile Include="statprocessor\InstructionGeneratorIntegrity.cs"/>
+        <Compile Include="statprocessor\InstructionGeneratorNop.cs"/>
         <Compile Include="statprocessor\InstructionGeneratorQuality.cs"/>
         <Compile Include="statprocessor\InstructionGeneratorStats.cs"/>
         <Compile Include="statprocessor\InstructionGeneratorUnbreakable.cs"/>

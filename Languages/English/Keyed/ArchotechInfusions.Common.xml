@@ -29,4 +29,7 @@ It can still be destroyed by recycling.
     <JAI.Printer.Print.ThingDestroyed.Desc>{0} tried to print instruction, the complexity of which exceeded the integrity of the {1}, and failed. The {2} was destroyed.</JAI.Printer.Print.ThingDestroyed.Desc>
 
     <JAI.statpart.title><![CDATA[<color=yellow>Archotech infusions</color>:]]></JAI.statpart.title>
+    
+    <JAI.instruction.nop>Broken instruction</JAI.instruction.nop>
+    <JAI.instruction.nop.Desc>This instruction has been corrupted or received incorrectly. You can delete it without hesitation.</JAI.instruction.nop.Desc>
 </LanguageData>

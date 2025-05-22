@@ -23,6 +23,7 @@ public static class InstructionView
         Text.Anchor = TextAnchor.UpperLeft;
 
         var hover = Mouse.IsOver(cellRect);
+        var hoverRect = cellRect;
 
         GUI.color = active ? Color.yellow : instruction.BgColor;
         GUI.DrawTexture(cellRect, TexUI.HighlightTex);
@@ -59,7 +60,7 @@ public static class InstructionView
             instruction.RenderTooltip(Builder);
             var tooltip = Builder.ToString();
             if (!tooltip.NullOrEmpty())
-                TooltipHandler.TipRegion(cellRect, tooltip);
+                TooltipHandler.TipRegion(hoverRect, tooltip);
         }
     }
 

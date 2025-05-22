@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Defs>
+    <ArchotechInfusions.StatDefinitionDef>
+        <defName>Nop</defName>
+        <Target>Any</Target>
+        <Worker>ArchotechInfusions.InstructionGeneratorNop</Worker>
+        <Complexity>50</Complexity>
+        <OperationSet>
+            <Weight>20</Weight>
+            <Default>0</Default>
+        </OperationSet>
+    </ArchotechInfusions.StatDefinitionDef>
+</Defs>
