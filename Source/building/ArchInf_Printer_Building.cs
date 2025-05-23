@@ -21,23 +21,23 @@ public class ArchInf_Printer_Building : AddInf_Building
 
         if (!PrinterComp.HasEnoughPower())
         {
-            yield return new FloatMenuOption("JAI.Printer.Error.NoPower", null);
+            yield return new FloatMenuOption("JAI.FloatMenu.Printer.NoPower".Translate(), null);
             yield break;
         }
 
         if (!PrinterComp.HasEnoughArchite())
         {
-            yield return new FloatMenuOption("JAI.Printer.Error.NoArchite", null);
+            yield return new FloatMenuOption("JAI.FloatMenu.Printer.NoArchite".Translate(), null);
             yield break;
         }
 
         if (!PrinterComp.HasAnyInstruction())
         {
-            yield return new FloatMenuOption("JAI.Error.Printer.NoINstructions", null);
+            yield return new FloatMenuOption("JAI.FloatMenu.Printer.NoInstructions".Translate(), null);
             yield break;
         }
 
-        yield return new FloatMenuOption("Print stat instruction...", () => OrderStartPrinting(selPawn));
+        yield return new FloatMenuOption("JAI.FloatMenu.Printer.Start".Translate(), () => OrderStartPrinting(selPawn));
     }
 
     public void OrderStartPrinting(Pawn pawn)

@@ -15,8 +15,11 @@ namespace ArchotechInfusions;
 public class ArchotechInfusionsMod : Mod
 {
     public static readonly Color ButtonWarningColor = new(1f, 0.3f, 0.35f);
+    public static readonly Material AccumulatorBarFilledMat = SolidColorMaterials.SimpleSolidColorMaterial(new Color(0.2f, 0.85f, 0.85f));
+    public static readonly Material AccumulatorBarUnfilledMat = SolidColorMaterials.SimpleSolidColorMaterial(new Color(0.3f, 0.3f, 0.3f));
+    public static readonly Material ContainerFuelBarFilledMat = SolidColorMaterials.SimpleSolidColorMaterial(new Color(0.6f, 0.56f, 0.13f));
+    public static readonly Material ContainerFuelBarUnfilledMat = SolidColorMaterials.SimpleSolidColorMaterial(new Color(0.3f, 0.3f, 0.3f));
 
-    // todo def-generated
     public static readonly GraphicGridOverlay Overlay = new(
         GraphicDatabase.Get<Graphic_Single>( //
             "ArchotechInfusions/Things/GridOverlay_Atlas",

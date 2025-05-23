@@ -14,9 +14,15 @@
     <JAI.Gizmo.Mute.Desc>Drowns out all the sounds of the {0}.</JAI.Gizmo.Mute.Desc>
 
     <JAI.Gizmo.Repairer.Title>Repair targets</JAI.Gizmo.Repairer.Title>
-    <JAI.Gizmo.Repairer.Title.Desc>HP levels:\n For new jobs: using MIN value - it thing's HP is lesser than MIN, the pawn will repair it.\n For current job - the pawn will repair the thing until MAX value.
-    </JAI.Gizmo.Repairer.Title.Desc>
+    <JAI.Gizmo.Repairer.Title.Desc><![CDATA[
+HP levels:\n For new jobs: using MIN value - it thing's HP is lesser than MIN, the pawn will repair it.\n For current job - the pawn will repair the thing until MAX value.
+    ]]></JAI.Gizmo.Repairer.Title.Desc>
 
     <JAI.Gizmo.Accumulator.MarkToDischarge>Discharge</JAI.Gizmo.Accumulator.MarkToDischarge>
     <JAI.Gizmo.Accumulator.MarkToDischarge.Desc>Mark the accumulator to be discharged and move its energy to another accumulators if possible.</JAI.Gizmo.Accumulator.MarkToDischarge.Desc>
+
+    <JAI.FloatMenu.Printer.NoPower>Not enough grid power</JAI.FloatMenu.Printer.NoPower>
+    <JAI.FloatMenu.Printer.NoArchite>Not enough archite</JAI.FloatMenu.Printer.NoArchite>
+    <JAI.FloatMenu.Printer.NoInstructions>Have no any instruction stored</JAI.FloatMenu.Printer.NoInstructions>
+    <JAI.FloatMenu.Printer.Start>Use printer...</JAI.FloatMenu.Printer.Start>
 </LanguageData>
