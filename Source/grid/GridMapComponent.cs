@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using ArchotechInfusions.comps.comp_base;
-using ArchotechInfusions.graphic;
-using UnityEngine;
 using Verse;
 
 namespace ArchotechInfusions;
@@ -13,22 +11,12 @@ namespace ArchotechInfusions;
 [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
 public class GridMapComponent : MapComponent
 {
-    // todo def-generated
-    private static readonly GraphicGridOverlay Overlay = new(
-        GraphicDatabase.Get<Graphic_Single>( //
-            "ArchotechInfusions/Things/GridOverlay_Atlas",
-            ShaderDatabase.MetaOverlay,
-            Vector2.one,
-            new Color32(159, 217, 60, 190)
-        )
-    );
-
     public static Grid GridToDebug;
 
     private static (int, GridMapComponent) _cachedGridComponent = (-1, null);
 
     private readonly List<Grid> _grids = [];
-    private readonly Dictionary<IntVec3, IBaseGridComp<CompPropertiesBase_Grid>> _registeredMembers = new();
+    private readonly Dictionary<IntVec3, IBaseGridComp<CompPropertiesBase_Grid>> _members = new();
 
     public GridMapComponent(Map map) : base(map)
     {
@@ -69,7 +57,8 @@ public class GridMapComponent : MapComponent
     {
         try
         {
-            foreach (var c in member.Parent.OccupiedRect()) _registeredMembers.Add(c, member);
+            foreach (var c in member.Parent.OccupiedRect())
+                _members.Add(c, member);
         }
         catch (Exception)
         {
@@ -87,7 +76,7 @@ public class GridMapComponent : MapComponent
     public void Unregister(IBaseGridComp<CompPropertiesBase_Grid> member)
     {
         foreach (var c in member.Parent.OccupiedRect())
-            _registeredMembers.Remove(c);
+            _members.Remove(c);
         RebuildGrids();
     }
 
@@ -95,56 +84,57 @@ public class GridMapComponent : MapComponent
     {
         _grids.ForEach(g => g.Invalidate());
         _grids.Clear();
-        foreach (var (_, member) in _registeredMembers)
+        foreach (var (_, member) in _members)
             member.Grid = null;
-        
-        
+
         var watchdog = 1000;
         while (true)
         {
             if (--watchdog <= 0) throw new Exception("ArchInf: too many RebuildGrids loops... Something went wrong!");
 
-            var initial = _registeredMembers.Values.FirstOrDefault(m => m.Grid == null);
-            if (initial is null) break;
-            initial.Grid = new Grid();
-            initial.Grid.AddMember(initial);
-            _grids.Add(initial.Grid);
+            var gridStarter = _members.Values.FirstOrDefault(m => m.Grid == null);
+            if (gridStarter is null) break;
 
-            map.floodFiller.FloodFill(initial.Parent.Position, PassCheck, _ => { });
+            gridStarter.Grid = new Grid();
+            gridStarter.Grid.AddMember(gridStarter);
+            _grids.Add(gridStarter.Grid);
+
+            map.floodFiller.FloodFill(gridStarter.Parent.Position, PassCheck, PassProcessor);
             continue;
 
             bool PassCheck(IntVec3 c)
             {
-                var another = _registeredMembers.TryGetValue(c);
+                var another = _members.TryGetValue(c);
                 if (another is null) return false;
-                if (another == initial) return true;
-                if (another.Grid != null) return another.Grid == initial.Grid;
-                initial.Grid.AddMember(another);
+                if (another == gridStarter) return true;
+                if (another.Grid != null) return another.Grid == gridStarter.Grid;
+                gridStarter.Grid.AddMember(another);
                 return true;
             }
-        }
 
-        if (Prefs.DevMode)
-            Log.Warning($"ArchInf: rebuilt {_grids.Count} grids");
+            void PassProcessor(IntVec3 c)
+            {
+            }
+        }
     }
 
     public bool IsSameGrid(IntVec3 c, IBaseGridComp<CompPropertiesBase_Grid> comp)
     {
-        return _registeredMembers.ContainsKey(c) && _registeredMembers[c].Grid == comp.Grid;
+        return _members.ContainsKey(c) && _members[c].Grid == comp.Grid;
     }
 
     public void RenderOverlay(SectionLayer layer, IntVec3 c)
     {
-        if (_registeredMembers.TryGetValue(c, out var comp))
+        if (_members.TryGetValue(c, out var comp))
         {
             if (GridToDebug is not null && comp.Grid.Guid != GridToDebug.Guid) return;
-            Overlay.Print(layer, comp.Parent, 0.0f);
+            ArchotechInfusionsMod.Overlay.Print(layer, comp.Parent, 0.0f);
         }
     }
 
     public bool ShouldConnect(IntVec3 c, IBaseGridComp<CompPropertiesBase_Grid> comp)
     {
-        return comp != null && _registeredMembers.ContainsKey(c);
+        return comp != null && _members.ContainsKey(c);
     }
 
     public IEnumerable<T> Get<T>() where T : IBaseGridComp<CompPropertiesBase_Grid>

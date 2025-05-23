@@ -13,7 +13,6 @@ public class GraphicGridOverlay(Graphic subGraphic) : Graphic_Linked(subGraphic)
         if (!c.InBounds(parent.Map)) return false;
         var comp = thingWithComps.AllComps.FirstOrDefault(thingComp => thingComp is IBaseGridComp<CompPropertiesBase_Grid>) as IBaseGridComp<CompPropertiesBase_Grid>;
         if (comp is null) return false;
-        // todo bull's shit! just check if this is one of mod buildings
         return parent.Map.ArchInfGrid().IsSameGrid(c, comp);
     }
 

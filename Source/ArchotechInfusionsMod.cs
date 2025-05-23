@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
+using ArchotechInfusions.graphic;
 using ArchotechInfusions.injected;
 using HarmonyLib;
 using RimWorld;
@@ -10,9 +11,20 @@ using Verse;
 namespace ArchotechInfusions;
 
 [SuppressMessage("ReSharper", "UnusedType.Global")]
+[SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
 public class ArchotechInfusionsMod : Mod
 {
     public static readonly Color ButtonWarningColor = new(1f, 0.3f, 0.35f);
+
+    // todo def-generated
+    public static readonly GraphicGridOverlay Overlay = new(
+        GraphicDatabase.Get<Graphic_Single>( //
+            "ArchotechInfusions/Things/GridOverlay_Atlas",
+            ShaderDatabase.MetaOverlay,
+            Vector2.one,
+            new Color32(159, 217, 60, 190)
+        )
+    );
 
     public ArchotechInfusionsMod(ModContentPack content) : base(content)
     {
