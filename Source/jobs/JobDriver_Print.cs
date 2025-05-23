@@ -10,7 +10,7 @@ namespace ArchotechInfusions.jobs;
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public class JobDriver_Print : JobDriver
 {
-    private ArchInf_Printer_Building Building => TargetA.Thing as ArchInf_Printer_Building;
+    private ArchInf_Printer_Building Printer => TargetA.Thing as ArchInf_Printer_Building;
 
     public override bool TryMakePreToilReservations(bool errorOnFailed)
     {
@@ -21,7 +21,7 @@ public class JobDriver_Print : JobDriver
 
     protected override IEnumerable<Toil> MakeNewToils()
     {
-        this.FailOn(() => TargetA.Thing is not ArchInf_Printer_Building || Building.PrinterComp is null);
+        this.FailOn(() => TargetA.Thing is not ArchInf_Printer_Building || Printer is null);
         this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
         this.FailOnBurningImmobile(TargetIndex.A);
 
@@ -32,7 +32,7 @@ public class JobDriver_Print : JobDriver
             .FailOnDespawnedNullOrForbidden(TargetIndex.A);
 
         // open print window
-        var openInterface = Toils_General.DoAtomic(() => Building.PrinterComp.OpenSelectThingWindow(pawn));
+        var openInterface = Toils_General.DoAtomic(() => Printer.OpenSelectThingWindow(pawn));
         yield return openInterface;
 
         // just some delay
@@ -44,11 +44,11 @@ public class JobDriver_Print : JobDriver
         workToil.activeSkill = () => SkillDefOf.Intellectual;
         workToil.WithEffect(EffecterDefOf.Research, TargetIndex.A);
         workToil.FailOnCannotTouch(TargetIndex.A, PathEndMode.InteractionCell);
-        workToil.FailOn(() => !Building.PrinterComp.CanWork());
-        workToil.initAction = () => Building.PrinterComp.DoJobStarted(this);
-        workToil.tickAction = () => Building.PrinterComp.DoJobTick(this, pawn);
-        workToil.AddFinishAction(() => Building.PrinterComp.DoJobFinished());
-        workToil.WithProgressBar(TargetIndex.A, () => Building.PrinterComp.GetPercentComplete());
+        workToil.FailOn(() => !Printer.CanWork());
+        workToil.initAction = () => Printer.DoJobStarted(this);
+        workToil.tickAction = () => Printer.DoJobTick(this, pawn);
+        workToil.AddFinishAction(() => Printer.DoJobFinished());
+        workToil.WithProgressBar(TargetIndex.A, () => Printer.GetPercentComplete());
         yield return workToil;
 
         yield return Toils_General.Do(() => Log.Warning("-- last toil"));

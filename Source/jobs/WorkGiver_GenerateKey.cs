@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
-using ArchotechInfusions.comps;
+using System.Diagnostics.CodeAnalysis;
+using ArchotechInfusions.building;
 using RimWorld;
 using Verse;
 using Verse.AI;
 
 namespace ArchotechInfusions.jobs;
 
+[SuppressMessage("ReSharper", "UnusedType.Global")]
 public class WorkGiver_GenerateKey : WorkGiver_Scanner
 {
     public override PathEndMode PathEndMode => PathEndMode.InteractionCell;
@@ -17,9 +19,9 @@ public class WorkGiver_GenerateKey : WorkGiver_Scanner
 
     public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn)
     {
-        foreach (var generator in pawn.Map.ArchInfGrid().Get<Comp_KeyGenerator>())
+        foreach (var generator in pawn.Map.ArchInfGrid().Get<ArchInf_KeyGenerator_Building>())
             if (generator.CanGenerateNewKey())
-                yield return generator.Parent;
+                yield return generator;
     }
 
     public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)

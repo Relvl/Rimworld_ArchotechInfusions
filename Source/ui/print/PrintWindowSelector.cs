@@ -1,12 +1,12 @@
-﻿using ArchotechInfusions.comps;
+﻿using ArchotechInfusions.building;
 using Verse;
 
 namespace ArchotechInfusions.ui.print;
 
-public class PrintWindowSelector(Comp_Printer comp)
+public class PrintWindowSelector(ArchInf_Printer_Building printer)
 {
-    private ThingSelectorWindow _thingSelectorWindow;
     private PrintWindow _printWindow;
+    private ThingSelectorWindow _thingSelectorWindow;
 
     public void OpenThingSelector(Pawn pawn)
     {
@@ -17,7 +17,7 @@ public class PrintWindowSelector(Comp_Printer comp)
             Find.WindowStack.TryRemove(typeof(ThingSelectorWindow));
         }
 
-        _thingSelectorWindow = new ThingSelectorWindow(this, pawn, comp);
+        _thingSelectorWindow = new ThingSelectorWindow(this, pawn, printer);
         Find.WindowStack.Add(_thingSelectorWindow);
     }
 
@@ -31,7 +31,7 @@ public class PrintWindowSelector(Comp_Printer comp)
     public void OnThingSelected(Pawn pawn, Thing thing)
     {
         Find.WindowStack.TryRemove(typeof(ThingSelectorWindow));
-        _printWindow = new PrintWindow(this, comp, thing);
+        _printWindow = new PrintWindow(this, printer, thing);
         Find.WindowStack.Add(_printWindow);
     }
 

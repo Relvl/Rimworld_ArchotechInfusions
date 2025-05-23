@@ -77,6 +77,7 @@
         <Compile Include="building\ArchInf_Repairer_Building.cs"/>
         <Compile Include="building\ArchInf_Transceiver_Building.cs"/>
         <Compile Include="building\proto\AddInf_Building.cs"/>
+        <Compile Include="building\proto\AddInf_Building_Stateful.cs"/>
         <Compile Include="building\proto\ArchInf_BuildingLink.cs"/>
         <Compile Include="comps\Comp_ArchiteRepairer.cs"/>
         <Compile Include="comps\comp_base\CompBase_Grid.cs"/>
@@ -137,7 +138,7 @@
         <Compile Include="statprocessor\InstructionGeneratorStats.cs"/>
         <Compile Include="statprocessor\InstructionGeneratorUnbreakable.cs"/>
         <Compile Include="statprocessor\StatProcessor.cs"/>
-        <Compile Include="ui\CompDatabaseWindow.cs"/>
+        <Compile Include="ui\DatabaseWindow.cs"/>
         <Compile Include="ui\component\InstructionListView.cs"/>
         <Compile Include="ui\component\InstructionView.cs"/>
         <Compile Include="ui\print\PrintWindow.cs"/>

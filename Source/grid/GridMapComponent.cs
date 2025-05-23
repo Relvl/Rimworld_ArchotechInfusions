@@ -2,7 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using ArchotechInfusions.building.proto;
 using ArchotechInfusions.comps.comp_base;
+using ArchotechInfusions.graphic;
+using UnityEngine;
 using Verse;
 
 namespace ArchotechInfusions;
@@ -11,12 +14,21 @@ namespace ArchotechInfusions;
 [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
 public class GridMapComponent : MapComponent
 {
+    public static readonly GraphicGridOverlay Overlay = new(
+        GraphicDatabase.Get<Graphic_Single>( //
+            "ArchotechInfusions/Things/GridOverlay_Atlas",
+            ShaderDatabase.MetaOverlay,
+            Vector2.one,
+            new Color32(159, 217, 60, 190)
+        )
+    );
+
     public static Grid GridToDebug;
 
     private static (int, GridMapComponent) _cachedGridComponent = (-1, null);
 
     private readonly List<Grid> _grids = [];
-    private readonly Dictionary<IntVec3, IBaseGridComp<CompPropertiesBase_Grid>> _members = new();
+    private readonly Dictionary<IntVec3, AddInf_Building> _members = new();
 
     public GridMapComponent(Map map) : base(map)
     {
@@ -53,11 +65,11 @@ public class GridMapComponent : MapComponent
         base.MapRemoved();
     }
 
-    public void Register(IBaseGridComp<CompPropertiesBase_Grid> member, bool respawningAfterLoad)
+    public void Register(AddInf_Building member, bool respawningAfterLoad)
     {
         try
         {
-            foreach (var c in member.Parent.OccupiedRect())
+            foreach (var c in member.OccupiedRect())
                 _members.Add(c, member);
         }
         catch (Exception)
@@ -73,9 +85,9 @@ public class GridMapComponent : MapComponent
             RebuildGrids();
     }
 
-    public void Unregister(IBaseGridComp<CompPropertiesBase_Grid> member)
+    public void Unregister(AddInf_Building member)
     {
-        foreach (var c in member.Parent.OccupiedRect())
+        foreach (var c in member.OccupiedRect())
             _members.Remove(c);
         RebuildGrids();
     }
@@ -99,7 +111,7 @@ public class GridMapComponent : MapComponent
             gridStarter.Grid.AddMember(gridStarter);
             _grids.Add(gridStarter.Grid);
 
-            map.floodFiller.FloodFill(gridStarter.Parent.Position, PassCheck, PassProcessor);
+            map.floodFiller.FloodFill(gridStarter.Position, PassCheck, PassProcessor);
             continue;
 
             bool PassCheck(IntVec3 c)
@@ -125,10 +137,10 @@ public class GridMapComponent : MapComponent
 
     public void RenderOverlay(SectionLayer layer, IntVec3 c)
     {
-        if (_members.TryGetValue(c, out var comp))
+        if (_members.TryGetValue(c, out var member))
         {
-            if (GridToDebug is not null && comp.Grid.Guid != GridToDebug.Guid) return;
-            ArchotechInfusionsMod.Overlay.Print(layer, comp.Parent, 0.0f);
+            if (GridToDebug is not null && member.Grid.Guid != GridToDebug.Guid) return;
+            Overlay.Print(layer, member, 0.0f);
         }
     }
 
@@ -137,7 +149,7 @@ public class GridMapComponent : MapComponent
         return comp != null && _members.ContainsKey(c);
     }
 
-    public IEnumerable<T> Get<T>() where T : IBaseGridComp<CompPropertiesBase_Grid>
+    public IEnumerable<T> Get<T>() where T : AddInf_Building
     {
         foreach (var grid in _grids)
         foreach (var comp in grid.Get<T>())

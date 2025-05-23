@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ArchotechInfusions.comps;
-using ArchotechInfusions.comps.comp_base;
+using ArchotechInfusions.building;
+using ArchotechInfusions.building.proto;
 using ArchotechInfusions.instructions;
 using UnityEngine;
 using Verse;
@@ -11,10 +11,10 @@ namespace ArchotechInfusions;
 
 public class Grid
 {
-    private readonly Dictionary<Type, List<IBaseGridComp<CompPropertiesBase_Grid>>> _gridCache = new();
+    private readonly Dictionary<Type, List<AddInf_Building>> _gridCache = new();
 
     public readonly Guid Guid = Guid.NewGuid();
-    public readonly List<IBaseGridComp<CompPropertiesBase_Grid>> Members = [];
+    public readonly List<AddInf_Building> Members = [];
 
     private int _skipAccumBalance;
 
@@ -23,17 +23,12 @@ public class Grid
         BalanceAccumulators();
     }
 
-    public void AddMember(IBaseGridComp<CompPropertiesBase_Grid> member)
+    public void AddMember(AddInf_Building member)
     {
         member.Grid = this;
         Members.Add(member);
-
-        foreach (var thingComp in member.Parent.AllComps)
-        {
-            if (thingComp is not IBaseGridComp<CompPropertiesBase_Grid> gridComp) continue;
-            if (!_gridCache.ContainsKey(gridComp.GetType())) _gridCache[gridComp.GetType()] = [];
-            _gridCache[thingComp.GetType()].Add(gridComp);
-        }
+        if (!_gridCache.ContainsKey(member.GetType())) _gridCache[member.GetType()] = [];
+        _gridCache[member.GetType()].Add(member);
     }
 
     public void Invalidate()
@@ -42,7 +37,7 @@ public class Grid
         Members.Clear();
     }
 
-    public List<T> Get<T>() where T : IBaseGridComp<CompPropertiesBase_Grid>
+    public List<T> Get<T>() where T : AddInf_Building
     {
         if (!_gridCache.ContainsKey(typeof(T))) _gridCache[typeof(T)] = [];
         return _gridCache[typeof(T)].Cast<T>().ToList();
@@ -50,17 +45,17 @@ public class Grid
 
     public float GetTotalEnergy()
     {
-        return Get<Comp_Accumulator>().Sum(a => a.Stored);
+        return Get<ArchInf_Accumulator_Building>().Sum(a => a.Stored);
     }
 
     public float GetTotalArchite()
     {
-        return Get<Comp_ArchiteContainer>().Sum(a => a.Stored);
+        return Get<ArchInf_Container_Building>().Sum(a => a.Stored);
     }
 
     public void ConsumeEnergy(ref float wantedAmount)
     {
-        foreach (var accumulator in Get<Comp_Accumulator>())
+        foreach (var accumulator in Get<ArchInf_Accumulator_Building>())
         {
             accumulator.Consume(ref wantedAmount);
             if (wantedAmount <= 0) break;
@@ -69,7 +64,7 @@ public class Grid
 
     public void ConsumeArchite(ref float wantedAmount)
     {
-        foreach (var container in Get<Comp_ArchiteContainer>().OrderBy(c => c.Stored))
+        foreach (var container in Get<ArchInf_Container_Building>().OrderBy(c => c.Stored))
         {
             container.Consume(ref wantedAmount);
             if (wantedAmount <= 0) break;
@@ -79,7 +74,7 @@ public class Grid
     public bool TryPutInstruction(AInstruction instruction)
     {
         if (instruction == default) return false;
-        foreach (var database in Get<Comp_Database>())
+        foreach (var database in Get<ArchInf_Database_Building>())
             if (database.MakeDatabaseRecord(instruction))
                 return true;
         return false;
@@ -88,7 +83,7 @@ public class Grid
     public bool TryRemoveInstruction(AInstruction instruction)
     {
         if (instruction == default) return false;
-        foreach (var database in Get<Comp_Database>())
+        foreach (var database in Get<ArchInf_Database_Building>())
             if (database.TryRemoveInstruction(instruction))
                 return true;
         return false;
@@ -99,7 +94,7 @@ public class Grid
         if (--_skipAccumBalance > 0)
             return;
 
-        var accumulators = Get<Comp_Accumulator>().ToList();
+        var accumulators = Get<ArchInf_Accumulator_Building>().ToList();
         if (accumulators.Count <= 1)
         {
             _skipAccumBalance = 50;
@@ -114,7 +109,7 @@ public class Grid
 
         if (accumulators.Where(a => a.MarkedToDischarge && a.Stored > 0).TryMaxBy(a => a.Stored, out var toDischarge))
         {
-            var toTransfer = toDischarge.Props.MaxStored * 0.005f;
+            var toTransfer = toDischarge.Comp.Props.MaxStored * 0.005f;
             toCharge.Stored += toTransfer;
             toDischarge.Stored -= toTransfer;
             return;

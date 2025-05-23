@@ -1,5 +1,5 @@
 using System.Linq;
-using ArchotechInfusions.comps;
+using ArchotechInfusions.building;
 using ArchotechInfusions.instructions;
 using ArchotechInfusions.ui.component;
 using UnityEngine;
@@ -7,18 +7,18 @@ using Verse;
 
 namespace ArchotechInfusions.ui;
 
-public class CompDatabaseWindow : Window
+public class DatabaseWindow : Window
 {
-    private readonly Comp_Database _comp;
+    private readonly ArchInf_Database_Building _database;
     private readonly InstructionView.ButtonData _deleteButton;
 
-    public CompDatabaseWindow(Comp_Database comp)
+    public DatabaseWindow(ArchInf_Database_Building database)
     {
         draggable = true;
         resizeable = true;
         doCloseX = true;
 
-        _comp = comp;
+        _database = database;
         _deleteButton = new InstructionView.ButtonData { Tooltip = "Delete this instruction", Texture = TexButton.CloseXSmall, OnClick = OnDelete };
     }
 
@@ -27,12 +27,12 @@ public class CompDatabaseWindow : Window
     private void OnDelete(AInstruction instruction)
     {
         if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
-            _comp.RemoveModifier(instruction);
+            _database.RemoveModifier(instruction);
         else
             Find.WindowStack.Add(
                 Dialog_MessageBox.CreateConfirmation(
                     "ArchInf.Message.RemoveInstruction".Translate(),
-                    () => _comp.RemoveModifier(instruction),
+                    () => _database.RemoveModifier(instruction),
                     true,
                     "ArchInf.Message.RemoveInstruction.Title".Translate()
                 )
@@ -45,7 +45,7 @@ public class CompDatabaseWindow : Window
         var titleRect = new Rect(0, 0, inRect.width, Text.LineHeight);
 
         GUI.color = Color.cyan;
-        Widgets.Label(titleRect, _comp.Parent.LabelCap);
+        Widgets.Label(titleRect, _database.LabelCap);
 
         inRect.yMin = titleRect.yMax + StandardMargin;
 
@@ -53,7 +53,7 @@ public class CompDatabaseWindow : Window
         Text.WordWrap = false;
         GUI.color = Color.white;
 
-        var instructions = _comp.Instructions.ToList();
+        var instructions = _database.Instructions.ToList();
         instructions.Draw(inRect, _ => false, _ => [_deleteButton]);
 
         GUI.color = Color.white;

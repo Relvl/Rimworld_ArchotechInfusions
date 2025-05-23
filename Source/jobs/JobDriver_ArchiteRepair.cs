@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using ArchotechInfusions.comps;
+using ArchotechInfusions.building;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -10,8 +10,7 @@ namespace ArchotechInfusions.jobs;
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public class JobDriver_ArchiteRepair : JobDriver
 {
-    private Comp_ArchiteRepairer _repairer;
-    private Comp_ArchiteRepairer Repairer => _repairer ??= TargetA.Thing.TryGetComp<Comp_ArchiteRepairer>();
+    private ArchInf_Repairer_Building Repairer => TargetA.Thing as ArchInf_Repairer_Building;
 
 
     public override bool TryMakePreToilReservations(bool errorOnFailed)
@@ -34,8 +33,8 @@ public class JobDriver_ArchiteRepair : JobDriver
         toil.FailOnCannotTouch(TargetIndex.A, PathEndMode.InteractionCell);
         toil.FailOn(() => !Repairer.CanWork());
         toil.tickAction = () => Repairer.DoJobTick(GetActor(), this, pawn.GetStatValue(StatDefOf.WorkSpeedGlobal));
-        toil.WithProgressBar(TargetIndex.A, () => TargetA.Thing.TryGetComp<Comp_ArchiteRepairer>()?.GetPercentComplete() ?? 0f);
-        
+        toil.WithProgressBar(TargetIndex.A, () => Repairer.GetPercentComplete());
+
         yield return toil;
 
         yield return Toils_General.Wait(2);

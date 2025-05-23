@@ -1,15 +1,17 @@
 using System.Collections.Generic;
-using ArchotechInfusions.comps;
+using System.Diagnostics.CodeAnalysis;
+using ArchotechInfusions.building;
 using Verse;
 using Verse.AI;
 
 namespace ArchotechInfusions.jobs;
 
-// ReSharper disable UnusedType.Global,InconsistentNaming -- def reflective
+[SuppressMessage("ReSharper", "UnusedType.Global")]
 public class JobDriver_RefuelContainer : JobDriver
 {
     private Thing FuelThing => job.GetTarget(TargetIndex.B).Thing;
-    
+    private ArchInf_Container_Building Container => TargetA.Thing as ArchInf_Container_Building;
+
     public override bool TryMakePreToilReservations(bool errorOnFailed)
     {
         return pawn.Reserve(job.targetA, job, errorOnFailed: errorOnFailed)
@@ -21,15 +23,14 @@ public class JobDriver_RefuelContainer : JobDriver
         this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
         this.FailOnBurningImmobile(TargetIndex.A);
 
-        var comp = TargetA.Thing.TryGetComp<Comp_ArchiteContainer>();
-        this.FailOn(() => comp is null || !comp.CanStoreMore());
+        this.FailOn(() => Container is null || !Container.CanStoreMore());
 
         yield return Toils_Reserve.Reserve(TargetIndex.A);
 
         var reserveFuel = Toils_Reserve.Reserve(TargetIndex.B);
         yield return reserveFuel;
 
-        yield return Toils_General.DoAtomic(() => job.count = comp.CountToFullyRefuel(FuelThing));
+        yield return Toils_General.DoAtomic(() => job.count = Container.CountToFullyRefuel(FuelThing));
 
         yield return Toils_Goto.GotoThing(TargetIndex.B, PathEndMode.ClosestTouch) //
             .FailOnDespawnedNullOrForbidden(TargetIndex.B)
@@ -54,7 +55,7 @@ public class JobDriver_RefuelContainer : JobDriver
         finalToil.initAction = () =>
         {
             var thing = job.GetTarget(TargetIndex.B).Thing;
-            comp.InsertFuel(thing);
+            Container.InsertFuel(thing);
             pawn.carryTracker.innerContainer.Remove(thing);
         };
         yield return finalToil;

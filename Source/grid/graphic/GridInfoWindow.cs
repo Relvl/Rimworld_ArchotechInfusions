@@ -1,5 +1,5 @@
 using System;
-using ArchotechInfusions.comps.comp_base;
+using ArchotechInfusions.building.proto;
 using UnityEngine;
 using Verse;
 
@@ -9,12 +9,12 @@ public class GridInfoWindow : Window
 {
     private static readonly string ColorHtmlGreen = ColorUtility.ToHtmlStringRGBA(Color.green);
 
-    private readonly IBaseGridComp<CompPropertiesBase_Grid> _member;
+    private readonly AddInf_Building _member;
 
     private Vector2 _lastFrameSize;
     private Vector2 _scroll = Vector2.zero;
 
-    public GridInfoWindow(IBaseGridComp<CompPropertiesBase_Grid> member)
+    public GridInfoWindow(AddInf_Building member)
     {
         doCloseX = true;
         resizeable = true;
@@ -26,14 +26,14 @@ public class GridInfoWindow : Window
     {
         base.PreOpen();
         GridMapComponent.GridToDebug = _member.Grid;
-        _member?.Parent?.Map?.mapDrawer?.RegenerateEverythingNow();
+        _member?.Map?.mapDrawer?.RegenerateEverythingNow();
     }
 
     public override void PreClose()
     {
         base.PreClose();
         GridMapComponent.GridToDebug = null;
-        _member?.Parent?.Map?.mapDrawer?.RegenerateEverythingNow();
+        _member?.Map?.mapDrawer?.RegenerateEverythingNow();
     }
 
     public override void DoWindowContents(Rect inRect)
@@ -50,7 +50,8 @@ public class GridInfoWindow : Window
         RenderLine(ref inner, $"Grid ID: <color={ColorHtmlGreen}>{grid.Guid}</color>");
         RenderLine(ref inner, $"Grid members: {grid.Members.Count}");
 
-        foreach (var member in grid.Members) RenderLine(ref inner, $"\t+ {member.Parent.Label} [{member.Parent.ThingID}] pos:({member.Parent.Position})");
+        foreach (var member in grid.Members)
+            RenderLine(ref inner, $"\t+ {member.Label} [{member.ThingID}] pos:({member.Position})");
 
         // RenderLine(ref inner, $"");
         Widgets.EndScrollView();

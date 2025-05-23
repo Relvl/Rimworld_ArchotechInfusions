@@ -2,7 +2,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using ArchotechInfusions.building;
-using ArchotechInfusions.comps;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -21,10 +20,10 @@ public class WorkGiver_ArchiteRepair : WorkGiver_Scanner
 
     public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn)
     {
-        foreach (var repairer in pawn.Map.ArchInfGrid().Get<Comp_ArchiteRepairer>())
+        foreach (var repairer in pawn.Map.ArchInfGrid().Get<ArchInf_Repairer_Building>())
         {
             if (!repairer.CanWork()) continue;
-            yield return repairer.Parent;
+            yield return repairer;
         }
     }
 
@@ -40,7 +39,7 @@ public class WorkGiver_ArchiteRepair : WorkGiver_Scanner
         if (!pawn.CanReserveSittableOrSpot(t.InteractionCell, forced)) return false;
 
         if (t is not ArchInf_Repairer_Building repairer) return false;
-        var item = repairer.RepairerComp?.GetAllRepairableThings(pawn).FirstOrDefault();
+        var item = repairer.GetAllRepairableThings(pawn).FirstOrDefault();
         if (item == null)
         {
             JobFailReason.Is("JAI.Error.NoDamagedThings".Translate());

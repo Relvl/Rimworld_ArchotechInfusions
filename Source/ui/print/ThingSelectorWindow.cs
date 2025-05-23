@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using ArchotechInfusions.comps;
+using ArchotechInfusions.building;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -9,17 +9,17 @@ namespace ArchotechInfusions.ui.print;
 
 public class ThingSelectorWindow : Window
 {
-    private readonly Comp_Printer _comp;
     private readonly Pawn _pawn;
+    private readonly ArchInf_Printer_Building _printer;
     private readonly PrintWindowSelector _selector;
     private float listHeight;
     private Vector2 scrollPosition = Vector2.zero;
 
-    public ThingSelectorWindow(PrintWindowSelector selector, Pawn pawn, Comp_Printer comp)
+    public ThingSelectorWindow(PrintWindowSelector selector, Pawn pawn, ArchInf_Printer_Building printer)
     {
         _selector = selector;
         _pawn = pawn;
-        _comp = comp;
+        _printer = printer;
 
         draggable = true;
         doCloseX = true;

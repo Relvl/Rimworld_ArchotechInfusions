@@ -1,15 +1,19 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 
 <LanguageData>
-    <JAI.Progress>Progress: {0}</JAI.Progress>
+    <JAI.Progress>Progress: {0}%</JAI.Progress>
     <JAI.KeyGenerator.KeysCount>Keys generated: {0}</JAI.KeyGenerator.KeysCount>
-    <JAI.Decoder.StoredBackup><![CDATA[<color=yellow>Stored a backup with progress: {0}%</color>]]></JAI.Decoder.StoredBackup>
+
+    <JAI.Decoder.StoredBackup>Stored a backup with progress: {0}%</JAI.Decoder.StoredBackup>
+    <JAI.Decoder.Decoding>Decoding progress: {0}%</JAI.Decoder.Decoding>
+
     <JAI.Database.ShowInstructions>Show instructions</JAI.Database.ShowInstructions>
 
-    <JAI.Transceiver.PowerConsumption><![CDATA[<color=yellow>Grid energy for a full cycle: {0}</color>]]></JAI.Transceiver.PowerConsumption>
-    <JAI.Transceiver.PowerGain><![CDATA[<color=yellow>Current grid energy drain: {0}</color>]]></JAI.Transceiver.PowerGain>
+    <JAI.Transceiver.PowerConsumption>Grid energy for a full cycle: {0}W ({1} W stored)</JAI.Transceiver.PowerConsumption>
+    <JAI.Transceiver.PowerGain>Grid energy drain: {0} W</JAI.Transceiver.PowerGain>
     <JAI.Transceiver.Stop.NoEnergyToTransmit>Transmission stopped due to lack of power</JAI.Transceiver.Stop.NoEnergyToTransmit>
     <JAI.Transceiver.Stop.NoEnergyToReceive>Receiving stopped due to lack of power</JAI.Transceiver.Stop.NoEnergyToReceive>
+    <JAI.Transceiver.Locked>To next decoding try: {0}</JAI.Transceiver.Locked>
 
     <JAI.Printer.SelectThing.Title>Select thing to print</JAI.Printer.SelectThing.Title>
     <JAI.Printer.SelectThing.Select>Select</JAI.Printer.SelectThing.Select>

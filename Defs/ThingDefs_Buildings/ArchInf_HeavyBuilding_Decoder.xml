@@ -49,6 +49,9 @@
                     <min>1000</min>
                     <max>6000</max>
                 </DecodeTicks>
+                <IdleEnergyGain>0.3</IdleEnergyGain>
+                <StartupEnergyGain>1</StartupEnergyGain>
+                <DecodingEnergyGain>3</DecodingEnergyGain>
             </li>
         </comps>
     </ThingDef>

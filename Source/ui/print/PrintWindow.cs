@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ArchotechInfusions.comps;
+using ArchotechInfusions.building;
 using ArchotechInfusions.injected;
 using ArchotechInfusions.instructions;
 using ArchotechInfusions.ui.component;
@@ -20,7 +20,7 @@ public class PrintWindow : Window
     private readonly InstructionView.ButtonData _dequeueButton;
     private readonly InstructionView.ButtonData _enqueueButton;
 
-    private readonly Comp_Printer _printer;
+    private readonly ArchInf_Printer_Building _printer;
     private readonly PrintWindowSelector _selector;
     private readonly Thing _thing;
     private float _architeLeft;
@@ -28,7 +28,7 @@ public class PrintWindow : Window
     private float _architeNeeded;
     private AInstruction _instruction;
 
-    public PrintWindow(PrintWindowSelector selector, Comp_Printer printer, Thing thing)
+    public PrintWindow(PrintWindowSelector selector, ArchInf_Printer_Building printer, Thing thing)
     {
         _selector = selector;
         _printer = printer;
@@ -69,7 +69,7 @@ public class PrintWindow : Window
 
         if (_instruction is not null)
         {
-            var archite = (float)_printer.Props.PrintArchiteCost;
+            var archite = (float)_printer.PrinterComp.Props.PrintArchiteCost;
             _instruction.ModifyArchiteConsumed(ref archite);
             _architeLeft = _printer.Grid.GetTotalArchite();
             _architeNeeded = archite;
@@ -100,7 +100,7 @@ public class PrintWindow : Window
         _thing.Draw(thingRect, false, $", HP: {_thing.HitPoints}/{_thing.MaxHitPoints}, Integrity: {_comp.Integrity:0.00}");
 
         var instructions = _printer.Grid
-            .Get<Comp_Database>()
+            .Get<ArchInf_Database_Building>()
             .SelectMany(database => database.Instructions)
             .Where(instruction => instruction.IsThingApplicable(_thing, _comp));
         instructions.Draw(inRect, i => _instruction == i, i => _instruction == i ? [_dequeueButton] : [_enqueueButton]);
