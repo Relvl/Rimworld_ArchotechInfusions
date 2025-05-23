@@ -1,8 +1,8 @@
-using ArchotechInfusions.grid.graphic;
+using ArchotechInfusions.graphic;
 using HarmonyLib;
 using Verse;
 
-namespace ArchotechInfusions.grid.harmony;
+namespace ArchotechInfusions.harmony;
 
 // ReSharper disable once InconsistentNaming, UnusedType.Global
 [HarmonyPatch(typeof(GraphicUtility), nameof(GraphicUtility.WrapLinked))]

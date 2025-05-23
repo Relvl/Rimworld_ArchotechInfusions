@@ -1,19 +1,20 @@
 using System;
+using ArchotechInfusions.comps.comp_base;
 using UnityEngine;
 using Verse;
 
-namespace ArchotechInfusions.grid.graphic;
+namespace ArchotechInfusions.graphic;
 
 public class GridInfoWindow : Window
 {
-    private static string ColorHtmlGreen = ColorUtility.ToHtmlStringRGBA(Color.green);
+    private static readonly string ColorHtmlGreen = ColorUtility.ToHtmlStringRGBA(Color.green);
 
-    private readonly GridMemberComp _member;
+    private readonly IBaseGridComp<CompPropertiesBase_Grid> _member;
 
     private Vector2 _lastFrameSize;
     private Vector2 _scroll = Vector2.zero;
 
-    public GridInfoWindow(GridMemberComp member)
+    public GridInfoWindow(IBaseGridComp<CompPropertiesBase_Grid> member)
     {
         doCloseX = true;
         resizeable = true;
@@ -24,15 +25,15 @@ public class GridInfoWindow : Window
     public override void PreOpen()
     {
         base.PreOpen();
-        GridMapComponent.DebudGrid = _member.Grid;
-        _member.parent.Map.mapDrawer.RegenerateEverythingNow();
+        GridMapComponent.GridToDebug = _member.Grid;
+        _member?.Parent?.Map?.mapDrawer?.RegenerateEverythingNow();
     }
 
     public override void PreClose()
     {
         base.PreClose();
-        GridMapComponent.DebudGrid = null;
-        _member.parent.Map.mapDrawer.RegenerateEverythingNow();
+        GridMapComponent.GridToDebug = null;
+        _member?.Parent?.Map?.mapDrawer?.RegenerateEverythingNow();
     }
 
     public override void DoWindowContents(Rect inRect)
@@ -47,13 +48,9 @@ public class GridInfoWindow : Window
 
         var grid = _member.Grid;
         RenderLine(ref inner, $"Grid ID: <color={ColorHtmlGreen}>{grid.Guid}</color>");
-        RenderLine(ref inner, $"Grid type: <color={ColorHtmlGreen}>{grid.GridType}</color>");
         RenderLine(ref inner, $"Grid members: {grid.Members.Count}");
 
-        foreach (var member in grid.Members)
-        {
-            RenderLine(ref inner, $"\t+ {member.parent.Label} [{member.parent.ThingID}] pos:({member.parent.Position})");
-        }
+        foreach (var member in grid.Members) RenderLine(ref inner, $"\t+ {member.Parent.Label} [{member.Parent.ThingID}] pos:({member.Parent.Position})");
 
         // RenderLine(ref inner, $"");
         Widgets.EndScrollView();

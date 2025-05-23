@@ -1,11 +1,14 @@
 using Verse;
 
-namespace ArchotechInfusions.grid;
+namespace ArchotechInfusions;
 
 public static class GridExtensions
 {
     /// <summary>
-    ///  Returns current map's grid component. Dont need to cached all of it, it needs only on current map.
+    ///     Returns current map's grid component. Don't need to be cached all of it, it needs only on current map?
     /// </summary>
-    public static GridMapComponent ArchInfGrid(this Map map) => GridMapComponent.GetInstance(map);
+    public static GridMapComponent ArchInfGrid(this Map map)
+    {
+        return GridMapComponent.GetInstance(map);
+    }
 }

@@ -6,10 +6,15 @@
     <JAI.Decoder.StoredBackup><![CDATA[<color=yellow>Stored a backup with progress: {0}%</color>]]></JAI.Decoder.StoredBackup>
     <JAI.Database.ShowInstructions>Show instructions</JAI.Database.ShowInstructions>
 
+    <JAI.Transceiver.PowerConsumption><![CDATA[<color=yellow>Grid energy for a full cycle: {0}</color>]]></JAI.Transceiver.PowerConsumption>
+    <JAI.Transceiver.PowerGain><![CDATA[<color=yellow>Current grid energy drain: {0}</color>]]></JAI.Transceiver.PowerGain>
+    <JAI.Transceiver.Stop.NoEnergyToTransmit>Transmission stopped due to lack of power</JAI.Transceiver.Stop.NoEnergyToTransmit>
+    <JAI.Transceiver.Stop.NoEnergyToReceive>Receiving stopped due to lack of power</JAI.Transceiver.Stop.NoEnergyToReceive>
+
     <JAI.Printer.SelectThing.Title>Select thing to print</JAI.Printer.SelectThing.Title>
     <JAI.Printer.SelectThing.Select>Select</JAI.Printer.SelectThing.Select>
-    <JAI.Printer.Print.Title>Select instruction to print</JAI.Printer.Print.Title>
 
+    <JAI.Printer.Print.Title>Select instruction to print</JAI.Printer.Print.Title>
     <JAI.Printer.Print.Desc>Confirm the start of printing.</JAI.Printer.Print.Desc>
     <JAI.Printer.Print.Damage>Upon completion, the item will take {0} damage.</JAI.Printer.Print.Damage>
     <JAI.Printer.Print.Damage.Unbreakable>Upon completion, the item will no take damage.</JAI.Printer.Print.Damage.Unbreakable>

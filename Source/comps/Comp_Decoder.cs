@@ -8,8 +8,7 @@ using Verse.Sound;
 
 namespace ArchotechInfusions.comps;
 
-// ReSharper disable UnassignedField.Global, InconsistentNaming, ClassNeverInstantiated.Global -- comp reflective
-public class CompProps_Decoder : CompProperties
+public class CompProps_Decoder : CompPropertiesBase_Grid
 {
     public IntRange DecodeTicks;
     public int StartupTicks;
@@ -55,11 +54,11 @@ public class Comp_Decoder : CompBase_GridState<Comp_Decoder, CompProps_Decoder>
     public override AcceptanceReport TryRun(bool silent = false)
     {
         if (CurrentState != Idle)
-            return Message("JAI.Error.IsBusy".Translate(parent.LabelCap), silent);
+            return Message("JAI.Error.IsBusy".Translate(Parent.LabelCap), silent);
         if (!Power.PowerOn)
-            return Message("JAI.Error.IsPoweredOff".Translate(parent.LabelCap), silent);
+            return Message("JAI.Error.IsPoweredOff".Translate(Parent.LabelCap), silent);
         if (_instruction is not null)
-            return Message("JAI.Error.Decoder.StoredInstruction".Translate(parent.LabelCap), silent);
+            return Message("JAI.Error.Decoder.StoredInstruction".Translate(Parent.LabelCap), silent);
 
         CurrentState = new StateDecode(Props.DecodeTicks.RandomInRange);
         return true;
@@ -70,7 +69,7 @@ public class Comp_Decoder : CompBase_GridState<Comp_Decoder, CompProps_Decoder>
         _instruction ??= StatProcessor.GenerateInstruction();
 
         var anyDatabasePresent = false;
-        foreach (var compDatabase in Member.Grid.GetComps<Comp_Database>())
+        foreach (var compDatabase in Grid.Get<Comp_Database>())
         {
             anyDatabasePresent = true;
             if (compDatabase.MakeDatabaseRecord(_instruction))
@@ -95,7 +94,7 @@ public class Comp_Decoder : CompBase_GridState<Comp_Decoder, CompProps_Decoder>
         yield return new Command_Action
         {
             defaultLabel = _mute ? "JAI.Gizmo.Mute.ON".Translate() : "Mute: OFF".Translate(), // todo render checkbox
-            defaultDesc = "JAI.Gizmo.Mute.Desc".Translate(parent.LabelCap),
+            defaultDesc = "JAI.Gizmo.Mute.Desc".Translate(Parent.LabelCap),
             action = () => _mute = !_mute
         };
 
@@ -158,7 +157,7 @@ public class Comp_Decoder : CompBase_GridState<Comp_Decoder, CompProps_Decoder>
         public override void OnFirstTick(Comp_Decoder owner)
         {
             if (owner._mute) return;
-            ArchInfSoundDefOf.ArchInfDecoderStart.PlayOneShot(owner.parent);
+            ArchInfSoundDefOf.ArchInfDecoderStart.PlayOneShot(owner.Parent);
         }
 
         public override void OnProgressComplete(Comp_Decoder owner)

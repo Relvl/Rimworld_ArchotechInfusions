@@ -35,11 +35,8 @@
         <castEdgeShadows>false</castEdgeShadows>
         <rotatable>false</rotatable>
         <comps>
-            <li Class="ArchotechInfusions.grid.GridMemberCompProps">
-                <GridType>ArchInfGrid</GridType>
-            </li>
-            <li Class="CompProperties_Breakdownable" />
-            <li Class="CompProperties_Flickable" />
+            <li Class="CompProperties_Breakdownable"/>
+            <li Class="CompProperties_Flickable"/>
             <li Class="CompProperties_Power">
                 <compClass>CompPowerTrader</compClass>
                 <transmitsPower>true</transmitsPower>

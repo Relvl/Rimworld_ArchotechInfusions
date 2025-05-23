@@ -12,7 +12,7 @@ namespace ArchotechInfusions.comps;
 [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
 [SuppressMessage("ReSharper", "FieldCanBeMadeReadOnly.Global")]
 [SuppressMessage("ReSharper", "ConvertToConstant.Global")]
-public class CompProps_KeyGenerator : CompProperties
+public class CompProps_KeyGenerator : CompPropertiesBase_Grid
 {
     public int AccumulatorRecacheTicks = 60;
     public int MaxStoredKeys = 3;
@@ -48,7 +48,7 @@ public class Comp_KeyGenerator : CompBase_Grid<CompProps_KeyGenerator>
 
     public override void CompTick()
     {
-        _chargeCache = Member.Grid.GetTotalEnergy();
+        _chargeCache = Grid.GetTotalEnergy();
     }
 
     public bool IsPowerEnough()
@@ -73,7 +73,7 @@ public class Comp_KeyGenerator : CompBase_Grid<CompProps_KeyGenerator>
 
         var wantedEnergy = (float)Props.TotalEnergyCost / Props.WorkAmount * speed;
 
-        Member.Grid.ConsumeEnergy(ref wantedEnergy);
+        Grid.ConsumeEnergy(ref wantedEnergy);
 
         // Just dirty cache fix, it will be actualized in the next tick.
         _chargeCache -= wantedEnergy;

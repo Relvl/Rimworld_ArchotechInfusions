@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
+
 <Defs>
 
     <ThingDef ParentName="ArchInf_HeavyBuilding_Base">
@@ -44,9 +45,6 @@
             <ai_chillDestination>false</ai_chillDestination>
         </building>
         <comps>
-            <li Class="ArchotechInfusions.grid.GridMemberCompProps">
-                <GridType>ArchInfGrid</GridType>
-            </li>
             <li Class="CompProperties_Breakdownable"/>
             <li Class="CompProperties_Flickable"/>
             <li Class="CompProperties_Power">
@@ -62,5 +60,5 @@
             </li>
         </comps>
     </ThingDef>
-    
+
 </Defs>

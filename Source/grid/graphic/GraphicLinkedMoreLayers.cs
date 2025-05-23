@@ -1,7 +1,7 @@
 using UnityEngine;
 using Verse;
 
-namespace ArchotechInfusions.grid.graphic;
+namespace ArchotechInfusions.graphic;
 
 public class GraphicLinkedMoreLayers : Graphic_Linked
 {

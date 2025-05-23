@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using ArchotechInfusions.comps;
-using ArchotechInfusions.grid;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -13,9 +12,9 @@ public class WorkGiver_RefuelContainer : WorkGiver_Scanner
 
     public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn)
     {
-        foreach (var container in pawn.Map.ArchInfGrid().GetComps<Comp_ArchiteContainer>())
+        foreach (var container in pawn.Map.ArchInfGrid().Get<Comp_ArchiteContainer>())
             if (container.CanStoreMore())
-                yield return container.parent;
+                yield return container.Parent;
     }
 
     public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)

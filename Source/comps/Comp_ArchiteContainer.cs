@@ -9,8 +9,7 @@ using Verse;
 
 namespace ArchotechInfusions.comps;
 
-// ReSharper disable UnassignedField.Global,FieldCanBeMadeReadOnly.Global,InconsistentNaming,ClassNeverInstantiated.Global -- def reflective
-public class CompProps_ArchiteContainer : CompProperties
+public class CompProps_ArchiteContainer : CompPropertiesBase_Grid
 {
     public List<ItemData> AvailableItems = [];
     public int MaxStored = 10000;
@@ -64,9 +63,9 @@ public class Comp_ArchiteContainer : CompBase_Grid<CompProps_ArchiteContainer>
     public override void PostDraw()
     {
         if (!_allowAutoRefuel)
-            parent.Map.overlayDrawer.DrawOverlay(parent, OverlayTypes.ForbiddenRefuel);
+            Parent.Map.overlayDrawer.DrawOverlay(Parent, OverlayTypes.ForbiddenRefuel);
         if (Stored <= 0)
-            parent.Map.overlayDrawer.DrawOverlay(parent, OverlayTypes.OutOfFuel);
+            Parent.Map.overlayDrawer.DrawOverlay(Parent, OverlayTypes.OutOfFuel);
     }
 
     public IEnumerable<Thing> GetAvailableFuels(Map map)
@@ -131,7 +130,7 @@ public class Comp_ArchiteContainer : CompBase_Grid<CompProps_ArchiteContainer>
                 var thing = _maxUnloadableContainer.ThingDef.MadeFromStuff //
                     ? ThingMaker.MakeThing(_maxUnloadableContainer.ThingDef, GenStuff.DefaultStuffFor(_maxUnloadableContainer.ThingDef))
                     : ThingMaker.MakeThing(_maxUnloadableContainer.ThingDef);
-                GenDrop.TryDropSpawn(thing, parent.InteractionCell, parent.Map, ThingPlaceMode.Near, out var dropped);
+                GenDrop.TryDropSpawn(thing, Parent.InteractionCell, Parent.Map, ThingPlaceMode.Near, out var dropped);
                 if (dropped != null) Stored -= _maxUnloadableContainer.ArchiteCount;
 
                 // SoundDefOf.DropPod_Open.PlayOneShot(parent);

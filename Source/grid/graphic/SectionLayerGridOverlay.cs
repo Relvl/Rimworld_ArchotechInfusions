@@ -1,8 +1,9 @@
-using System.Linq;
+using ArchotechInfusions.comps.comp_base;
+using ArchotechInfusions.grid;
 using RimWorld;
 using Verse;
 
-namespace ArchotechInfusions.grid.graphic;
+namespace ArchotechInfusions.graphic;
 
 // ReSharper disable once UnusedType.Global -- reflective: Verse.Section:ctor -- generates always with ctor(Section)
 public class SectionLayerGridOverlay : SectionLayer
@@ -17,20 +18,16 @@ public class SectionLayerGridOverlay : SectionLayer
         if (Find.DesignatorManager.SelectedDesignator is Designator_Build designator)
         {
             if (designator.PlacingDef is not ThingDef thingDef) return;
-            if (!thingDef.comps.OfType<GridMemberCompProps>().Any()) return;
+            if (!thingDef.comps.Any(cp => cp is CompPropertiesBase_Grid)) return;
             base.DrawLayer();
             return;
         }
 
-        if (GridMapComponent.DebudGrid != null)
-        {
-            base.DrawLayer();
-            return;
-        }
+        if (GridMapComponent.GridToDebug != null) base.DrawLayer();
     }
 
     /// <summary>
-    /// Calls only when terrain data changed
+    ///     Calls only when terrain data changed
     /// </summary>
     public override void Regenerate()
     {

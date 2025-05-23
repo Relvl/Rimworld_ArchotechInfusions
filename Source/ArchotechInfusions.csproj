@@ -83,9 +83,12 @@
         <Compile Include="comps\comp_base\CompBase_GridState.cs"/>
         <Compile Include="comps\Comp_Accumulator.cs"/>
         <Compile Include="comps\Comp_ArchiteContainer.cs"/>
+        <Compile Include="comps\comp_base\CompPropertiesBase_Grid.cs"/>
+        <Compile Include="comps\comp_base\IBaseGridComp.cs"/>
         <Compile Include="comps\Comp_Database.cs"/>
         <Compile Include="comps\Comp_Decoder.cs"/>
         <Compile Include="comps\Comp_KeyGenerator.cs"/>
+        <Compile Include="comps\Comp_Loom.cs"/>
         <Compile Include="comps\Comp_Printer.cs"/>
         <Compile Include="comps\Comp_Transceiver.cs"/>
         <Compile Include="def\ArchInfSoundDefOf.cs"/>
@@ -102,10 +105,8 @@
         <Compile Include="grid\Grid.cs"/>
         <Compile Include="grid\GridExtensions.cs"/>
         <Compile Include="grid\GridMapComponent.cs"/>
-        <Compile Include="grid\GridMemberComp.cs"/>
-        <Compile Include="grid\GridMemberCompProps.cs"/>
-        <Compile Include="grid\harmony\Patch_GraphicUtility_WrapLinked.cs"/>
         <Compile Include="harmony\Patch_GenLabel.cs"/>
+        <Compile Include="harmony\Patch_GraphicUtility_WrapLinked.cs"/>
         <Compile Include="harmony\Patch_StatReportUtility.cs"/>
         <Compile Include="harmony\Patch_Thing.cs"/>
         <Compile Include="injected\Comp_ArchInfused.cs"/>

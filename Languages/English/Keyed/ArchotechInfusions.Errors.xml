@@ -12,7 +12,6 @@
     <JAI.Error.BatteriesUncharged>The batteries are undercharged ({0} / {1})</JAI.Error.BatteriesUncharged>
     <JAI.Error.GridHasNoDecoder><![CDATA[<color=yellow>Grid has no decoder</color>]]></JAI.Error.GridHasNoDecoder>
     <JAI.Error.WaitingForDecoder><![CDATA[<color=yellow>Waiting for available decoder...</color>]]></JAI.Error.WaitingForDecoder>
-    <JAI.Error.Transmitter.NoPowerForRecharge>Not enough power to recharge the Transmitter!</JAI.Error.Transmitter.NoPowerForRecharge>
     <JAI.Error.Breakdown><![CDATA[<color=yellow>Broken</color>]]></JAI.Error.Breakdown>
     <JAI.Error.Decoder.StoredInstruction><![CDATA[<color=yellow>{0} already stores the data packet</color>]]></JAI.Error.Decoder.StoredInstruction>
     <JAI.Error.WaitingForDatabase><![CDATA[<color=yellow>Waiting for available database...</color>]]></JAI.Error.WaitingForDatabase>

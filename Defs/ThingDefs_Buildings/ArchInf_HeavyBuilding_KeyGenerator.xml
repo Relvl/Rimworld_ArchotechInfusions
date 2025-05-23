@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
+
 <Defs>
 
     <ThingDef ParentName="ArchInf_HeavyBuilding_Base">
@@ -37,9 +38,6 @@
         <castEdgeShadows>True</castEdgeShadows>
         <rotatable>true</rotatable>
         <comps>
-            <li Class="ArchotechInfusions.grid.GridMemberCompProps">
-                <GridType>ArchInfGrid</GridType>
-            </li>
             <li Class="CompProperties_Breakdownable"/>
             <li Class="CompProperties_Flickable"/>
             <li Class="CompProperties_Forbiddable"/>

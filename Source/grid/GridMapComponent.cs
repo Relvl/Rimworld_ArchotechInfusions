@@ -1,15 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using ArchotechInfusions.grid.graphic;
+using ArchotechInfusions.comps.comp_base;
+using ArchotechInfusions.graphic;
 using UnityEngine;
 using Verse;
 
-namespace ArchotechInfusions.grid;
+namespace ArchotechInfusions;
 
 [StaticConstructorOnStartup]
-// ReSharper disable once UnusedType.Global -- reflective: Verse.Map:FillComponents
-// ReSharper disable once ClassNeverInstantiated.Global
+[SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
 public class GridMapComponent : MapComponent
 {
     // todo def-generated
@@ -22,22 +23,25 @@ public class GridMapComponent : MapComponent
         )
     );
 
-    public static Grid DebudGrid;
+    public static Grid GridToDebug;
 
     private static (int, GridMapComponent) _cachedGridComponent = (-1, null);
 
     private readonly List<Grid> _grids = [];
-    private readonly Dictionary<IntVec3, GridMemberComp> _registeredMembers = new();
+    private readonly Dictionary<IntVec3, IBaseGridComp<CompPropertiesBase_Grid>> _registeredMembers = new();
 
     public GridMapComponent(Map map) : base(map)
     {
         _cachedGridComponent = (map.uniqueID, this);
     }
 
-    public override void MapComponentTick() => _grids.ForEach(g => g.OnTick());
+    public override void MapComponentTick()
+    {
+        _grids.ForEach(g => g.OnTick());
+    }
 
     /// <summary>
-    /// After all things spawned
+    ///     After all things spawned
     /// </summary>
     public override void FinalizeInit()
     {
@@ -45,7 +49,7 @@ public class GridMapComponent : MapComponent
     }
 
     /// <summary>
-    /// After FinalizeInit
+    ///     After FinalizeInit
     /// </summary>
     public override void MapGenerated()
     {
@@ -53,7 +57,7 @@ public class GridMapComponent : MapComponent
     }
 
     /// <summary>
-    /// ??? Why don't called when exit to main menu?
+    ///     ??? Why don't called when exit to main menu?
     /// </summary>
     public override void MapRemoved()
     {
@@ -61,11 +65,11 @@ public class GridMapComponent : MapComponent
         base.MapRemoved();
     }
 
-    public void Register(GridMemberComp member, bool respawningAfterLoad)
+    public void Register(IBaseGridComp<CompPropertiesBase_Grid> member, bool respawningAfterLoad)
     {
         try
         {
-            foreach (var c in member.parent.OccupiedRect()) _registeredMembers.Add(c, member);
+            foreach (var c in member.Parent.OccupiedRect()) _registeredMembers.Add(c, member);
         }
         catch (Exception)
         {
@@ -74,83 +78,79 @@ public class GridMapComponent : MapComponent
         }
 
         if (!respawningAfterLoad)
-        {
             // todo подумать как добавить к существующей сети без полной регенерации, если не после респавна
             // todo возможно, надо обыскать все прилежащие к parent.OccupiedRect() клетки на предмет _registeredMembers
             // todo а если нету - то регистрировать новую сеть
             RebuildGrids();
-        }
     }
 
-    public void Unregister(GridMemberComp member)
+    public void Unregister(IBaseGridComp<CompPropertiesBase_Grid> member)
     {
-        foreach (var c in member.parent.OccupiedRect()) _registeredMembers.Remove(c);
+        foreach (var c in member.Parent.OccupiedRect())
+            _registeredMembers.Remove(c);
         RebuildGrids();
     }
 
     private void RebuildGrids()
     {
+        _grids.ForEach(g => g.Invalidate());
         _grids.Clear();
-        foreach (var (_, member) in _registeredMembers) member.Grid = null;
-
+        foreach (var (_, member) in _registeredMembers)
+            member.Grid = null;
+        
+        
         var watchdog = 1000;
-
         while (true)
         {
             if (--watchdog <= 0) throw new Exception("ArchInf: too many RebuildGrids loops... Something went wrong!");
 
             var initial = _registeredMembers.Values.FirstOrDefault(m => m.Grid == null);
             if (initial is null) break;
-            initial.Grid = InitializeGrid(initial);
+            initial.Grid = new Grid();
+            initial.Grid.AddMember(initial);
             _grids.Add(initial.Grid);
+
+            map.floodFiller.FloodFill(initial.Parent.Position, PassCheck, _ => { });
+            continue;
 
             bool PassCheck(IntVec3 c)
             {
-                // Ищем другого свободного члена сети
                 var another = _registeredMembers.TryGetValue(c);
                 if (another is null) return false;
                 if (another == initial) return true;
-                if (another.Props.GridType != initial.Props.GridType) return false;
                 if (another.Grid != null) return another.Grid == initial.Grid;
-                // Добавляем его к той же сети
                 initial.Grid.AddMember(another);
                 return true;
             }
-
-            map.floodFiller.FloodFill(initial.parent.Position, PassCheck, _ => { });
         }
 
-        if (Prefs.DevMode) Log.Warning($"ArchInf: rebuilded {_grids.Count} grids");
+        if (Prefs.DevMode)
+            Log.Warning($"ArchInf: rebuilt {_grids.Count} grids");
     }
 
-    private Grid InitializeGrid(GridMemberComp member)
+    public bool IsSameGrid(IntVec3 c, IBaseGridComp<CompPropertiesBase_Grid> comp)
     {
-        var grid = new Grid(this, member.Props.GridType);
-        grid.AddMember(member);
-        return grid;
+        return _registeredMembers.ContainsKey(c) && _registeredMembers[c].Grid == comp.Grid;
     }
-
-    public bool IsSameGrid(IntVec3 c, GridMemberComp comp) => _registeredMembers.ContainsKey(c) && _registeredMembers[c].Grid == comp.Grid;
 
     public void RenderOverlay(SectionLayer layer, IntVec3 c)
     {
-        if (_registeredMembers.ContainsKey(c))
+        if (_registeredMembers.TryGetValue(c, out var comp))
         {
-            var comp = _registeredMembers[c];
-            if (DebudGrid is not null && comp.Grid.Guid != DebudGrid.Guid) return;
-            Overlay.Print(layer, comp.parent, 0.0f);
+            if (GridToDebug is not null && comp.Grid.Guid != GridToDebug.Guid) return;
+            Overlay.Print(layer, comp.Parent, 0.0f);
         }
     }
 
-    public bool ShouldConnect(IntVec3 c, GridMemberComp comp)
+    public bool ShouldConnect(IntVec3 c, IBaseGridComp<CompPropertiesBase_Grid> comp)
     {
-        return comp != null && _registeredMembers.ContainsKey(c) && _registeredMembers[c].Props.GridType == comp.Props.GridType;
+        return comp != null && _registeredMembers.ContainsKey(c);
     }
 
-    public IEnumerable<T> GetComps<T>() where T : ThingComp
+    public IEnumerable<T> Get<T>() where T : IBaseGridComp<CompPropertiesBase_Grid>
     {
         foreach (var grid in _grids)
-        foreach (var comp in grid.GetComps<T>())
+        foreach (var comp in grid.Get<T>())
             yield return comp;
     }
 

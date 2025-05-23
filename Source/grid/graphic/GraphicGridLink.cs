@@ -1,17 +1,16 @@
 using ArchotechInfusions.building.proto;
+using ArchotechInfusions.comps.comp_base;
+using ArchotechInfusions.grid;
+using ArchotechInfusions.grid.graphic;
 using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace ArchotechInfusions.grid.graphic;
+namespace ArchotechInfusions.graphic;
 
-public class GraphicGridLink : GraphicLinkedMoreLayers
+public class GraphicGridLink(Graphic subGraphic) : GraphicLinkedMoreLayers(subGraphic)
 {
     private static readonly Vector2 Size = new(1f, 1f);
-
-    public GraphicGridLink(Graphic subGraphic) : base(subGraphic)
-    {
-    }
 
     public override Graphic GetColoredVersion(Shader newShader, Color newColor, Color newColorTwo)
     {
@@ -20,16 +19,17 @@ public class GraphicGridLink : GraphicLinkedMoreLayers
 
     public override bool ShouldLinkWith(IntVec3 c, Thing parent)
     {
+        if (parent is not ThingWithComps thingWithComps) return false;
         if (!c.InBounds(parent.Map)) return false;
-        var parentComp = parent.TryGetComp<GridMemberComp>();
-        if (!parent.Map.ArchInfGrid().ShouldConnect(c, parentComp)) return false;
-        return true;
+        var comp = thingWithComps.AllComps.FirstOrDefault(thingComp => thingComp is IBaseGridComp<CompPropertiesBase_Grid>) as IBaseGridComp<CompPropertiesBase_Grid>;
+        return parent.Map.ArchInfGrid().ShouldConnect(c, comp);
     }
 
     public void PrintLinkable(SectionLayer layer, ArchInf_BuildingLink thing)
     {
+        var comp = thing.AllComps.FirstOrDefault(thingComp => thingComp is IBaseGridComp<CompPropertiesBase_Grid>) as IBaseGridComp<CompPropertiesBase_Grid>;
+        if (comp is null) return;
         var position = thing.Position;
-        var comp = thing.TryGetComp<GridMemberComp>();
         if (comp.Props.Visibility == GridVisibility.Never) return;
         if (comp.Props.Visibility == GridVisibility.HideUnderTiling && position.GetTerrain(thing.Map).layerable) return;
 
@@ -44,7 +44,7 @@ public class GraphicGridLink : GraphicLinkedMoreLayers
         }
     }
 
-    private static bool ShouldDrawTo(IntVec3 c, Thing thing, GridMemberComp comp)
+    private static bool ShouldDrawTo(IntVec3 c, Thing thing, IBaseGridComp<CompPropertiesBase_Grid> comp)
     {
         if (!c.InBounds(thing.Map)) return false;
         if (comp.Props.Visibility == GridVisibility.HideUnderTiling && c.GetTerrain(thing.Map).layerable) return false;

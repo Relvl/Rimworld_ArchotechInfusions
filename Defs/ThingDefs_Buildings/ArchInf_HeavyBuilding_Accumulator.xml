@@ -45,9 +45,6 @@
                 <idlePowerDraw>5</idlePowerDraw>
                 <shortCircuitInRain>true</shortCircuitInRain>
             </li>
-            <li Class="ArchotechInfusions.grid.GridMemberCompProps">
-                <GridType>ArchInfGrid</GridType>
-            </li>
             <li Class="ArchotechInfusions.comps.CompProps_Accumulator">
                 <MaxStored>20000</MaxStored>
             </li>

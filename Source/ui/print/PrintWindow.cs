@@ -99,8 +99,8 @@ public class PrintWindow : Window
 
         _thing.Draw(thingRect, false, $", HP: {_thing.HitPoints}/{_thing.MaxHitPoints}, Integrity: {_comp.Integrity:0.00}");
 
-        var instructions = _printer.Member.Grid
-            .GetComps<Comp_Database>()
+        var instructions = _printer.Grid
+            .Get<Comp_Database>()
             .SelectMany(database => database.Instructions)
             .Where(instruction => instruction.IsThingApplicable(_thing, _comp));
         instructions.Draw(inRect, i => _instruction == i, i => _instruction == i ? [_dequeueButton] : [_enqueueButton]);

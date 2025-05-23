@@ -11,7 +11,7 @@ namespace ArchotechInfusions.comps;
 [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
 [SuppressMessage("ReSharper", "FieldCanBeMadeReadOnly.Global")]
 [SuppressMessage("ReSharper", "ConvertToConstant.Global")]
-public class CompProps_Printer : CompProperties
+public class CompProps_Printer : CompPropertiesBase_Grid
 {
     public int PrintArchiteCost = 250;
     public int PrintEnergyCost = 1000;
@@ -52,7 +52,7 @@ public class Comp_Printer : CompBase_Grid<CompProps_Printer>
 
     public bool HasAnyInstruction()
     {
-        return Grid.GetComps<Comp_Database>().Any(db => db.Instructions.Count > 0);
+        return Grid.Get<Comp_Database>().Any(db => db.Instructions.Count > 0);
     }
 
     public bool CanWork()
@@ -104,7 +104,7 @@ public class Comp_Printer : CompBase_Grid<CompProps_Printer>
             Grid.ConsumeEnergy(ref energy);
             if (energy > 0)
             {
-                Messages.Message("AI Printer: not enough energy", parent, MessageTypeDefOf.TaskCompletion, false);
+                Messages.Message("AI Printer: not enough energy", Parent, MessageTypeDefOf.TaskCompletion, false);
                 driver.EndJobWith(JobCondition.Errored);
                 return;
             }
@@ -114,7 +114,7 @@ public class Comp_Printer : CompBase_Grid<CompProps_Printer>
             Grid.ConsumeArchite(ref archite);
             if (archite > 0)
             {
-                Messages.Message("JAI.Printer.Print.Error.NoArchite".Translate(), parent, MessageTypeDefOf.TaskCompletion, false);
+                Messages.Message("JAI.Printer.Print.Error.NoArchite".Translate(), Parent, MessageTypeDefOf.TaskCompletion, false);
                 driver.EndJobWith(JobCondition.Errored);
                 return;
             }
@@ -129,7 +129,7 @@ public class Comp_Printer : CompBase_Grid<CompProps_Printer>
                     Find.LetterStack.ReceiveLetter(
                         "JAI.Printer.Print.ThingDestroyed".Translate(),
                         "JAI.Printer.Print.ThingDestroyed.Desc".Translate(pawn.NameShortColored, _targetThing.LabelShort, GenLabel.ThingLabel(_targetThing, 1, true, false)),
-                        LetterDefOf.ThreatSmall, parent
+                        LetterDefOf.ThreatSmall, Parent
                     );
                     _targetThing.Destroy();
                     driver.EndJobWith(JobCondition.Succeeded); // ;]

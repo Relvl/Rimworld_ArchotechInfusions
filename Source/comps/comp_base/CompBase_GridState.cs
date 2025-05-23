@@ -1,6 +1,5 @@
 using System;
 using System.Text;
-using ArchotechInfusions.grid;
 using RimWorld;
 using Verse;
 
@@ -8,13 +7,13 @@ namespace ArchotechInfusions.comps.comp_base;
 
 // ReSharper disable once InconsistentNaming
 public abstract class CompBase_GridState<T, TP> : CompBase_Grid<TP>
-    where TP : CompProperties
+    where TP : CompPropertiesBase_Grid
     where T : CompBase_GridState<T, TP>
 {
     protected static readonly StateIdle Idle = new();
-    protected string Error;
 
     private State _currentState;
+    protected string Error;
 
     public int progress;
 
@@ -32,10 +31,7 @@ public abstract class CompBase_GridState<T, TP> : CompBase_Grid<TP>
 
     public override void PostExposeData()
     {
-        if (ScribeState(ref _currentState, "currentState"))
-        {
-            Scribe_Values.Look(ref progress, "progress");
-        }
+        if (ScribeState(ref _currentState, "currentState")) Scribe_Values.Look(ref progress, "progress");
     }
 
     public bool ScribeState(ref State state, string name)
@@ -59,7 +55,6 @@ public abstract class CompBase_GridState<T, TP> : CompBase_Grid<TP>
             Scribe_Values.Look(ref stateClass, $"{name}Name");
             Scribe_Values.Look(ref stateTicks, $"{name}Ticks");
             if (stateClass != default)
-            {
                 try
                 {
                     state = Activator.CreateInstance(Type.GetType(stateClass)!, stateTicks) as State;
@@ -70,7 +65,6 @@ public abstract class CompBase_GridState<T, TP> : CompBase_Grid<TP>
                     Log.Error($"ArchInf: Can't load current state for {nameof(GetType)}:\n{e.Message}");
                     state = Idle;
                 }
-            }
         }
 
         return false;
@@ -80,18 +74,20 @@ public abstract class CompBase_GridState<T, TP> : CompBase_Grid<TP>
     {
         base.PostSpawnSetup(respawningAfterLoad);
         if (Power is null) throw new Exception($"ArchInf: {GetType().FullName} can't work without {nameof(CompPowerTrader)}");
-        if (Member is null) throw new Exception($"ArchInf: {GetType().FullName} can't work without {nameof(GridMemberComp)}");
     }
 
     protected AcceptanceReport Message(string message, bool silent)
     {
-        if (!silent) Messages.Message(message, parent, MessageTypeDefOf.RejectInput);
+        if (!silent) Messages.Message(message, Parent, MessageTypeDefOf.RejectInput);
         return message;
     }
 
     public abstract AcceptanceReport TryRun(bool silent = false);
 
-    public virtual bool OnComplete() => false;
+    public virtual bool OnComplete()
+    {
+        return false;
+    }
 
     protected virtual AcceptanceReport Stop(string reason, bool silent)
     {
@@ -102,7 +98,7 @@ public abstract class CompBase_GridState<T, TP> : CompBase_Grid<TP>
             if (silent)
                 Error = reason;
             else
-                Messages.Message(reason, parent, MessageTypeDefOf.RejectInput);
+                Messages.Message(reason, Parent, MessageTypeDefOf.RejectInput);
         }
 
         return reason;
@@ -116,7 +112,7 @@ public abstract class CompBase_GridState<T, TP> : CompBase_Grid<TP>
 
         if (progress >= CurrentState.Ticks)
         {
-            if (parent.IsHashIntervalTick(50))
+            if (Parent.IsHashIntervalTick(50))
                 CurrentState.OnProgressComplete((T)this);
             return;
         }
@@ -136,16 +132,26 @@ public abstract class CompBase_GridState<T, TP> : CompBase_Grid<TP>
             return Error;
 
         var sb = new StringBuilder();
+        FillInstectStringExtra(sb);
         CurrentState.CompInspectStringExtra(sb, (T)this);
         return sb.TrimEnd().ToString();
     }
 
+    protected virtual void FillInstectStringExtra(StringBuilder sb)
+    {
+    }
+
     public abstract class State(int ticks) : IExposable
     {
+        public int Ticks = ticks;
         public abstract string Label { get; }
         public virtual string Color => "green";
         public virtual bool ShowProgress => true;
-        public int Ticks = ticks;
+
+        public virtual void ExposeData()
+        {
+            Scribe_Values.Look(ref Ticks, "ticks");
+        }
 
         public virtual void OnProgressComplete(T owner)
         {
@@ -157,11 +163,6 @@ public abstract class CompBase_GridState<T, TP> : CompBase_Grid<TP>
 
         public virtual void OnFirstTick(T owner)
         {
-        }
-
-        public virtual void ExposeData()
-        {
-            Scribe_Values.Look(ref Ticks, "ticks");
         }
 
         public virtual void CompInspectStringExtra(StringBuilder sb, T owner)

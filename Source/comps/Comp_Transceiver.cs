@@ -1,21 +1,18 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using ArchotechInfusions.comps.comp_base;
-using RimWorld;
 using Verse;
 using Verse.Sound;
 
 namespace ArchotechInfusions.comps;
 
-// ReSharper disable UnassignedField.Global, InconsistentNaming, ClassNeverInstantiated.Global -- comp reflective
-public class CompProps_Transceiver : CompProperties
+public class CompProps_Transceiver : CompPropertiesBase_Grid
 {
-    public int ReceiveConsumption;
-
+    public float ReceivePowerGain;
     public int ReceiveTicks;
-    public int RechargeTicks;
-    public int TransceiveTicks;
-    public int TranscieveConsumption;
+    public float TransmitPowerGain;
+    public int TransmitTicks;
 
     public CompProps_Transceiver()
     {
@@ -27,6 +24,8 @@ public class Comp_Transceiver : CompBase_GridState<Comp_Transceiver, CompProps_T
 {
     private bool _autostart;
     private bool _mute;
+
+    private float TotalEnergy => Props.TransmitTicks * Props.TransmitPowerGain + Props.ReceiveTicks * Props.ReceivePowerGain;
 
     public override void PostExposeData()
     {
@@ -59,7 +58,7 @@ public class Comp_Transceiver : CompBase_GridState<Comp_Transceiver, CompProps_T
 
     public override void CompTick()
     {
-        if (CurrentState == Idle && _autostart && parent.IsHashIntervalTick(100))
+        if (CurrentState == Idle && _autostart && Parent.IsHashIntervalTick(100) && Grid.GetTotalEnergy() >= TotalEnergy * 1.1f)
             TryRun(true);
         base.CompTick();
     }
@@ -67,34 +66,33 @@ public class Comp_Transceiver : CompBase_GridState<Comp_Transceiver, CompProps_T
     public override AcceptanceReport TryRun(bool silent = false)
     {
         if (CurrentState != Idle)
-            return Message("JAI.Error.IsBusy".Translate(parent.LabelCap), silent);
+            return Message("JAI.Error.IsBusy".Translate(Parent.LabelCap), silent);
 
         if (!Power.PowerOn)
-            return Stop("JAI.Error.IsPoweredOff".Translate(parent.LabelCap), silent);
+            return Stop("JAI.Error.IsPoweredOff".Translate(Parent.LabelCap), silent);
 
-        if (Member.Grid.GetComps<Comp_Accumulator>().Empty())
+        if (Grid.Get<Comp_Accumulator>().Empty())
             return Stop("JAI.Error.GridHasNoAccumulator".Translate(), silent);
 
-        var totalStored = Member.Grid.GetTotalEnergy();
-        var totalNeeded = Props.TranscieveConsumption + Props.ReceiveConsumption;
-        if (totalStored < totalNeeded)
-            return Stop("JAI.Error.BatteriesUncharged".Translate(totalStored.ToString("0"), totalNeeded.ToString("0")), silent);
+        var totalStored = Grid.GetTotalEnergy();
+        if (totalStored < TotalEnergy)
+            return Stop("JAI.Error.BatteriesUncharged".Translate(totalStored.ToString("0"), TotalEnergy.ToString("0")), silent);
 
-        var keyGenerators = Member.Grid.GetComps<Comp_KeyGenerator>();
+        var keyGenerators = Grid.Get<Comp_KeyGenerator>();
         if (keyGenerators.Count == 0)
             return Stop("JAI.Error.GridHasNoKeyGenerator".Translate(), silent);
 
         if (!Enumerable.Any(keyGenerators, generator => generator.TryConsumeKey()))
             return Stop("JAI.Error.GridHasNoGeneratedKeys".Translate(), silent);
 
-        CurrentState = new StageRecharge(Props.RechargeTicks);
+        CurrentState = new StageTransmit(Props.TransmitTicks);
         return true;
     }
 
     public override bool OnComplete()
     {
         var anyDecoderPresent = false;
-        foreach (var decoder in Member.Grid.GetComps<Comp_Decoder>())
+        foreach (var decoder in Grid.Get<Comp_Decoder>())
         {
             anyDecoderPresent = true;
             var started = decoder.TryRun(true);
@@ -151,7 +149,7 @@ public class Comp_Transceiver : CompBase_GridState<Comp_Transceiver, CompProps_T
         yield return new Command_Action
         {
             defaultLabel = _mute ? "JAI.Gizmo.Mute.ON".Translate() : "Mute: OFF".Translate(), // todo render checkbox
-            defaultDesc = "JAI.Gizmo.Mute.Desc".Translate(parent.LabelCap),
+            defaultDesc = "JAI.Gizmo.Mute.Desc".Translate(Parent.LabelCap),
             action = () => _mute = !_mute
         };
 
@@ -159,29 +157,9 @@ public class Comp_Transceiver : CompBase_GridState<Comp_Transceiver, CompProps_T
             yield return gizmo;
     }
 
-    private class StageRecharge(int ticks) : State(ticks)
+    protected override void FillInstectStringExtra(StringBuilder sb)
     {
-        public override string Label => "JAI.State.Recharging".Translate();
-
-        public override void OnFirstTick(Comp_Transceiver owner)
-        {
-            if (owner._mute) return;
-            ArchInfSoundDefOf.ArchInfTransceiverRecharge.PlayOneShot(owner.parent);
-        }
-
-        public override void OnCompTick(Comp_Transceiver owner)
-        {
-            var totalNeeded = (float)(owner.Props.TranscieveConsumption + owner.Props.ReceiveConsumption) / owner.Props.RechargeTicks;
-            owner.Member.Grid.ConsumeEnergy(ref totalNeeded);
-
-            if (totalNeeded > 0)
-                owner.Stop("JAI.Error.Transmitter.NoPowerForRecharge".Translate(), true);
-        }
-
-        public override void OnProgressComplete(Comp_Transceiver owner)
-        {
-            owner.CurrentState = new StageTransmit(owner.Props.TransceiveTicks);
-        }
+        sb.AppendLine("JAI.Transceiver.PowerConsumption".Translate(TotalEnergy));
     }
 
     private class StageTransmit(int ticks) : State(ticks)
@@ -190,13 +168,28 @@ public class Comp_Transceiver : CompBase_GridState<Comp_Transceiver, CompProps_T
 
         public override void OnFirstTick(Comp_Transceiver owner)
         {
-            if (owner._mute) return;
-            ArchInfSoundDefOf.ArchInfTransceiverStart.PlayOneShot(owner.parent);
+            if (!owner._mute)
+                ArchInfSoundDefOf.ArchInfTransceiverStart.PlayOneShot(owner.Parent);
         }
+
+        public override void OnCompTick(Comp_Transceiver owner)
+        {
+            var energy = owner.Props.TransmitPowerGain;
+            owner.Grid.ConsumeEnergy(ref energy);
+            if (energy > 0)
+                owner.Stop("JAI.Transceiver.Stop.NoEnergyToTransmit".Translate(), false);
+        }
+
 
         public override void OnProgressComplete(Comp_Transceiver owner)
         {
             owner.CurrentState = new StageReceive(owner.Props.ReceiveTicks);
+        }
+
+        public override void CompInspectStringExtra(StringBuilder sb, Comp_Transceiver owner)
+        {
+            sb.AppendLine("JAI.Transceiver.PowerGain".Translate(owner.Props.TransmitPowerGain));
+            base.CompInspectStringExtra(sb, owner);
         }
     }
 
@@ -206,13 +199,27 @@ public class Comp_Transceiver : CompBase_GridState<Comp_Transceiver, CompProps_T
 
         public override void OnFirstTick(Comp_Transceiver owner)
         {
-            if (owner._mute) return;
-            ArchInfSoundDefOf.ArchInfTransceiverReceive.PlayOneShot(owner.parent);
+            if (!owner._mute)
+                ArchInfSoundDefOf.ArchInfTransceiverReceive.PlayOneShot(owner.Parent);
+        }
+
+        public override void OnCompTick(Comp_Transceiver owner)
+        {
+            var energy = owner.Props.ReceivePowerGain;
+            owner.Grid.ConsumeEnergy(ref energy);
+            if (energy > 0)
+                owner.Stop("JAI.Transceiver.Stop.NoEnergyToReceive".Translate(), false);
         }
 
         public override void OnProgressComplete(Comp_Transceiver owner)
         {
             owner.OnComplete();
+        }
+
+        public override void CompInspectStringExtra(StringBuilder sb, Comp_Transceiver owner)
+        {
+            sb.AppendLine("JAI.Transceiver.PowerGain".Translate(owner.Props.ReceivePowerGain));
+            base.CompInspectStringExtra(sb, owner);
         }
     }
 }

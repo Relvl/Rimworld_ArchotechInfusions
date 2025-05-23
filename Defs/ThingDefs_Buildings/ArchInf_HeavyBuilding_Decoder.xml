@@ -35,9 +35,6 @@
         <size>(3,3)</size>
         <castEdgeShadows>True</castEdgeShadows>
         <comps>
-            <li Class="ArchotechInfusions.grid.GridMemberCompProps">
-                <GridType>ArchInfGrid</GridType>
-            </li>
             <li Class="CompProperties_Breakdownable"/>
             <li Class="CompProperties_Flickable"/>
             <li Class="CompProperties_Power">

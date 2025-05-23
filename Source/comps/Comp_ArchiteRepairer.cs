@@ -10,10 +10,10 @@ using Verse.AI;
 namespace ArchotechInfusions.comps;
 
 [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
-public class CompProps_ArchiteRepairer : CompProperties
+public class CompProps_ArchiteRepairer : CompPropertiesBase_Grid
 {
-    public float EnergyPerHp;
     public float ArchitePerHp;
+    public float EnergyPerHp;
     public float HpPerTick;
 
     public CompProps_ArchiteRepairer()
@@ -24,26 +24,26 @@ public class CompProps_ArchiteRepairer : CompProperties
 
 public class Comp_ArchiteRepairer : CompBase_Grid<CompProps_ArchiteRepairer>
 {
-    /// <summary>
-    /// Item's HP level from which pawn will repair it.
-    /// Item's HP level to which pawn will repair it.
-    /// </summary>
-    private FloatRange _repairLevel = new(0.8f, 1f);
+    private float _architeCache;
+
+    private float _chargeCache;
+    private RepairerGizmo _gizmo;
+    private float _progressCache;
 
     /// <summary>
-    /// 
     /// </summary>
     private QualityRange _qualityRange = new(QualityCategory.Good, QualityCategory.Legendary);
 
     /// <summary>
-    /// Ticks to new repair cycle
+    ///     Item's HP level from which pawn will repair it.
+    ///     Item's HP level to which pawn will repair it.
+    /// </summary>
+    private FloatRange _repairLevel = new(0.8f, 1f);
+
+    /// <summary>
+    ///     Ticks to new repair cycle
     /// </summary>
     private int _ticksCurrentCycle;
-
-    private float _chargeCache;
-    private float _architeCache;
-    private float _progressCache;
-    private RepairerGizmo _gizmo;
 
     public override void PostExposeData()
     {
@@ -55,8 +55,8 @@ public class Comp_ArchiteRepairer : CompBase_Grid<CompProps_ArchiteRepairer>
 
     public override void CompTick()
     {
-        _chargeCache = Member.Grid.GetTotalEnergy();
-        _architeCache = Member.Grid.GetTotalArchite();
+        _chargeCache = Grid.GetTotalEnergy();
+        _architeCache = Grid.GetTotalArchite();
     }
 
     public bool CanWork()
@@ -65,7 +65,7 @@ public class Comp_ArchiteRepairer : CompBase_Grid<CompProps_ArchiteRepairer>
         if (!Power.PowerOn) return false;
         if (_chargeCache < Props.EnergyPerHp * 10) return false;
         if (_architeCache < Props.ArchitePerHp * 10) return false;
-        if (!Member.Grid.GetComps<Comp_ArchiteContainer>().Any(c => c.Stored >= Props.ArchitePerHp)) return false;
+        if (!Grid.Get<Comp_ArchiteContainer>().Any(c => c.Stored >= Props.ArchitePerHp)) return false;
         return true;
     }
 
@@ -146,7 +146,7 @@ public class Comp_ArchiteRepairer : CompBase_Grid<CompProps_ArchiteRepairer>
             return;
         }
 
-        Member.Grid.ConsumeEnergy(ref energy);
+        Grid.ConsumeEnergy(ref energy);
         // still want after consume
         if (energy > 0)
         {
@@ -155,7 +155,7 @@ public class Comp_ArchiteRepairer : CompBase_Grid<CompProps_ArchiteRepairer>
             return;
         }
 
-        Member.Grid.ConsumeArchite(ref archite);
+        Grid.ConsumeArchite(ref archite);
         // still want after consume
         if (archite > 0)
         {
@@ -177,13 +177,11 @@ public class Comp_ArchiteRepairer : CompBase_Grid<CompProps_ArchiteRepairer>
             {
                 defaultLabel = "Damage all apparel", action = () =>
                 {
-                    foreach (var pawn in parent.Map.mapPawns.AllPawnsSpawned.Where(c => c.IsColonist))
+                    foreach (var pawn in Parent.Map.mapPawns.AllPawnsSpawned.Where(c => c.IsColonist))
                     foreach (var apparel in pawn.apparel.WornApparel.Where(apparel => apparel.def.useHitPoints))
-                    {
                         apparel.HitPoints = apparel.MaxHitPoints / 2;
-                    }
 
-                    Messages.Message("All apparel damaged", parent, MessageTypeDefOf.CautionInput, false);
+                    Messages.Message("All apparel damaged", Parent, MessageTypeDefOf.CautionInput, false);
                 }
             };
 
@@ -191,14 +189,14 @@ public class Comp_ArchiteRepairer : CompBase_Grid<CompProps_ArchiteRepairer>
             {
                 defaultLabel = "Log stats", action = () =>
                 {
-                    Log.Warning($"{parent.LabelCap}: can work: {CanWork()}");
-                    Log.Warning($"{parent.LabelCap}: charge cache: {_chargeCache}");
-                    Log.Warning($"{parent.LabelCap}: archite cache: {_architeCache}");
-                    Log.Warning($"{parent.LabelCap}: progress cache: {_progressCache}");
-                    Log.Warning($"{parent.LabelCap}: Props.HpPerTick: {Props.HpPerTick}");
-                    Log.Warning($"{parent.LabelCap}: Props.ArchitePerHp: {Props.ArchitePerHp}");
-                    Log.Warning($"{parent.LabelCap}: Props.EnergyPerHp: {Props.EnergyPerHp}");
-                    foreach (var pawn in parent.Map.mapPawns.AllPawnsSpawned.Where(p => p.IsColonist))
+                    Log.Warning($"{Parent.LabelCap}: can work: {CanWork()}");
+                    Log.Warning($"{Parent.LabelCap}: charge cache: {_chargeCache}");
+                    Log.Warning($"{Parent.LabelCap}: archite cache: {_architeCache}");
+                    Log.Warning($"{Parent.LabelCap}: progress cache: {_progressCache}");
+                    Log.Warning($"{Parent.LabelCap}: Props.HpPerTick: {Props.HpPerTick}");
+                    Log.Warning($"{Parent.LabelCap}: Props.ArchitePerHp: {Props.ArchitePerHp}");
+                    Log.Warning($"{Parent.LabelCap}: Props.EnergyPerHp: {Props.EnergyPerHp}");
+                    foreach (var pawn in Parent.Map.mapPawns.AllPawnsSpawned.Where(p => p.IsColonist))
                     {
                         var thing = GetAllRepairableThings(pawn).MinBy(t => (float)t.HitPoints / t.MaxHitPoints);
                         Log.Warning($"Pawn: {pawn.LabelCap}: {thing?.LabelCap} - {thing?.HitPoints}/{thing?.MaxHitPoints}");
@@ -221,10 +219,7 @@ public class Comp_ArchiteRepairer : CompBase_Grid<CompProps_ArchiteRepairer>
             var contentRect = innerRect.ContractedBy(6f);
             var sliderHeight = contentRect.height / 2.5f + 2f;
 
-            if (Mouse.IsOver(innerRect))
-            {
-                TooltipHandler.TipRegion(innerRect, "JAI.Gizmo.Repairer.Title.Desc".Translate());
-            }
+            if (Mouse.IsOver(innerRect)) TooltipHandler.TipRegion(innerRect, "JAI.Gizmo.Repairer.Title.Desc".Translate());
 
             Widgets.DrawWindowBackground(innerRect);
             GUI.BeginGroup(contentRect);
@@ -239,6 +234,9 @@ public class Comp_ArchiteRepairer : CompBase_Grid<CompProps_ArchiteRepairer>
             return new GizmoResult(GizmoState.Clear);
         }
 
-        public override float GetWidth(float maxWidth) => 180f;
+        public override float GetWidth(float maxWidth)
+        {
+            return 180f;
+        }
     }
 }

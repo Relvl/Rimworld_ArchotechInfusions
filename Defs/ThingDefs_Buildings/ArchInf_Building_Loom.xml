@@ -24,7 +24,7 @@
             <isInert>true</isInert>
             <isEdifice>false</isEdifice>
             <blueprintGraphicData>
-                <graphicClass>ArchotechInfusions.grid.graphic.GraphicLinkedMoreLayers</graphicClass>
+                <graphicClass>ArchotechInfusions.graphic.GraphicLinkedMoreLayers</graphicClass>
                 <texPath>ArchotechInfusions/Things/Buildings/ArchInf_Loom_AtlasBP</texPath>
             </blueprintGraphicData>
         </building>
@@ -48,8 +48,8 @@
         <neverMultiSelect>true</neverMultiSelect>
         <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
         <comps>
-            <li Class="ArchotechInfusions.grid.GridMemberCompProps">
-                <GridType>ArchInfGrid</GridType>
+            <li Class="ArchotechInfusions.comps.CompProperties_Loom">
+                <Visibility>HideUnderTiling</Visibility>
             </li>
             <li Class="CompProperties_Power">
                 <compClass>CompPowerTransmitter</compClass>

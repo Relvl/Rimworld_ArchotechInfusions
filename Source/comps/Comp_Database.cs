@@ -9,8 +9,7 @@ using Verse;
 
 namespace ArchotechInfusions.comps;
 
-// ReSharper disable UnassignedField.Global,FieldCanBeMadeReadOnly.Global,InconsistentNaming,ClassNeverInstantiated.Global -- def reflective
-public class CompProps_Database : CompProperties
+public class CompProps_Database : CompPropertiesBase_Grid
 {
     public int MaxSpace = 1000;
 

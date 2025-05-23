@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
+
 <Defs>
     <ThingDef ParentName="ArchInf_HeavyBuilding_Base">
         <defName>ArchInf_HeavyBuilding_Transceiver</defName>
@@ -40,9 +41,6 @@
             <li>PlaceWorker_NotUnderRoof</li>
         </placeWorkers>
         <comps>
-            <li Class="ArchotechInfusions.grid.GridMemberCompProps">
-                <GridType>ArchInfGrid</GridType>
-            </li>
             <li Class="CompProperties_Breakdownable"/>
             <li Class="CompProperties_Flickable"/>
             <li Class="CompProperties_Power">
@@ -51,11 +49,12 @@
                 <basePowerConsumption>100</basePowerConsumption>
             </li>
             <li Class="ArchotechInfusions.comps.CompProps_Transceiver">
-                <RechargeTicks>360</RechargeTicks>
-                <TransceiveTicks>360</TransceiveTicks>
+                <!-- Ticks*PowerGain -> it total consumption for whole stage -->
+                <TransmitTicks>360</TransmitTicks>
+                <TransmitPowerGain>35</TransmitPowerGain>
+                <!-- Ticks*PowerGain -> it total consumption for whole stage -->
                 <ReceiveTicks>10000</ReceiveTicks>
-                <TranscieveConsumption>5000</TranscieveConsumption>
-                <ReceiveConsumption>1000</ReceiveConsumption>
+                <ReceivePowerGain>1</ReceivePowerGain>
             </li>
         </comps>
     </ThingDef>

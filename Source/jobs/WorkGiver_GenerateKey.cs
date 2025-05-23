@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using ArchotechInfusions.comps;
-using ArchotechInfusions.grid;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -10,13 +9,17 @@ namespace ArchotechInfusions.jobs;
 public class WorkGiver_GenerateKey : WorkGiver_Scanner
 {
     public override PathEndMode PathEndMode => PathEndMode.InteractionCell;
-    public override Danger MaxPathDanger(Pawn pawn) => Danger.Deadly;
+
+    public override Danger MaxPathDanger(Pawn pawn)
+    {
+        return Danger.Deadly;
+    }
 
     public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn)
     {
-        foreach (var generator in pawn.Map.ArchInfGrid().GetComps<Comp_KeyGenerator>())
+        foreach (var generator in pawn.Map.ArchInfGrid().Get<Comp_KeyGenerator>())
             if (generator.CanGenerateNewKey())
-                yield return generator.parent;
+                yield return generator.Parent;
     }
 
     public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
@@ -32,5 +35,8 @@ public class WorkGiver_GenerateKey : WorkGiver_Scanner
         return new HistoryEvent(HistoryEventDefOf.Researching, pawn.Named(HistoryEventArgsNames.Doer)).Notify_PawnAboutToDo_Job();
     }
 
-    public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false) => JobMaker.MakeJob(JobDriverDefOf.ArchInf_GenerateKey, t, 1500, true);
+    public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
+    {
+        return JobMaker.MakeJob(JobDriverDefOf.ArchInf_GenerateKey, t, 1500, true);
+    }
 }

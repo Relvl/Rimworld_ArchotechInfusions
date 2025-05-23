@@ -3,7 +3,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using ArchotechInfusions.building;
 using ArchotechInfusions.comps;
-using ArchotechInfusions.grid;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -14,14 +13,18 @@ namespace ArchotechInfusions.jobs;
 public class WorkGiver_ArchiteRepair : WorkGiver_Scanner
 {
     public override PathEndMode PathEndMode => PathEndMode.InteractionCell;
-    public override Danger MaxPathDanger(Pawn pawn) => Danger.Deadly;
+
+    public override Danger MaxPathDanger(Pawn pawn)
+    {
+        return Danger.Deadly;
+    }
 
     public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn)
     {
-        foreach (var repairer in pawn.Map.ArchInfGrid().GetComps<Comp_ArchiteRepairer>())
+        foreach (var repairer in pawn.Map.ArchInfGrid().Get<Comp_ArchiteRepairer>())
         {
             if (!repairer.CanWork()) continue;
-            yield return repairer.parent;
+            yield return repairer.Parent;
         }
     }
 
@@ -47,5 +50,8 @@ public class WorkGiver_ArchiteRepair : WorkGiver_Scanner
         return new HistoryEvent(HistoryEventDefOf.Researching, pawn.Named(HistoryEventArgsNames.Doer)).Notify_PawnAboutToDo_Job();
     }
 
-    public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false) => JobMaker.MakeJob(JobDriverDefOf.ArchInf_RepairInventory, t, 1500, true);
+    public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
+    {
+        return JobMaker.MakeJob(JobDriverDefOf.ArchInf_RepairInventory, t, 1500, true);
+    }
 }
