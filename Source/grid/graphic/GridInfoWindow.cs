@@ -9,12 +9,12 @@ public class GridInfoWindow : Window
 {
     private static readonly string ColorHtmlGreen = ColorUtility.ToHtmlStringRGBA(Color.green);
 
-    private readonly AddInf_Building _member;
+    private readonly AGridBuilding _member;
 
     private Vector2 _lastFrameSize;
     private Vector2 _scroll = Vector2.zero;
 
-    public GridInfoWindow(AddInf_Building member)
+    public GridInfoWindow(AGridBuilding member)
     {
         doCloseX = true;
         resizeable = true;

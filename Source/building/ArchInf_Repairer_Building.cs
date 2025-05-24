@@ -11,7 +11,7 @@ using Verse.AI;
 namespace ArchotechInfusions.building;
 
 [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
-public class ArchInf_Repairer_Building : AddInf_Building
+public class ArchInf_Repairer_Building : AGridBuilding
 {
     private float _architeCache;
 
@@ -99,7 +99,7 @@ public class ArchInf_Repairer_Building : AddInf_Building
     public bool CanWork()
     {
         if (RepairerComp.Props.HpPerTick == 0) return false;
-        if (!Power.PowerOn) return false;
+        if (!Grid.PowerOn) return false;
         if (_chargeCache < RepairerComp.Props.EnergyPerHp * 10) return false;
         if (_architeCache < RepairerComp.Props.ArchitePerHp * 10) return false;
         if (!Grid.Get<ArchInf_Container_Building>().Any(c => c.Stored >= RepairerComp.Props.ArchitePerHp)) return false;

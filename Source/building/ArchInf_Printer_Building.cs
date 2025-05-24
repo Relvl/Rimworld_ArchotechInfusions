@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using ArchotechInfusions.building.proto;
 using ArchotechInfusions.comps;
 using ArchotechInfusions.instructions;
@@ -12,7 +13,7 @@ namespace ArchotechInfusions.building;
 
 [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
 [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
-public class ArchInf_Printer_Building : AddInf_Building
+public class ArchInf_Printer_Building : AGridBuilding
 {
     private AInstruction _instruction;
     private Comp_Printer _printerComp;
@@ -30,6 +31,11 @@ public class ArchInf_Printer_Building : AddInf_Building
 
         Scribe_Deep.Look(ref _instruction, "PrintingInstruction", LookMode.Deep);
         Scribe_Values.Look(ref _ticksCurrentCycle, "TicksCurrentCycle");
+    }
+
+    protected override void FillInspectStringExtra(StringBuilder sb)
+    {
+        sb.AppendLine("JAI.Printer.InspectString".Translate());
     }
 
 
@@ -50,7 +56,7 @@ public class ArchInf_Printer_Building : AddInf_Building
 
     public bool CanWork()
     {
-        return Power.PowerOn && HasEnoughPower() && HasEnoughArchite();
+        return Grid.PowerOn && HasEnoughPower() && HasEnoughArchite();
     }
 
     public void OpenSelectThingWindow(Pawn pawn)

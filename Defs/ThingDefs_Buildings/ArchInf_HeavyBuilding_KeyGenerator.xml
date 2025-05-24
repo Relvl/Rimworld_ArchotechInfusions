@@ -39,14 +39,7 @@
         <rotatable>true</rotatable>
         <comps>
             <li Class="CompProperties_Breakdownable"/>
-            <li Class="CompProperties_Flickable"/>
             <li Class="CompProperties_Forbiddable"/>
-            <li Class="CompProperties_Power">
-                <compClass>CompPowerTrader</compClass>
-                <transmitsPower>true</transmitsPower>
-                <basePowerConsumption>1500</basePowerConsumption>
-                <idlePowerDraw>100</idlePowerDraw>
-            </li>
             <li Class="ArchotechInfusions.comps.CompProps_KeyGenerator">
                 <WorkAmount>1500</WorkAmount>
                 <MaxStoredKeys>3</MaxStoredKeys>

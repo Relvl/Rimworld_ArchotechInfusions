@@ -76,9 +76,9 @@
         <Compile Include="building\ArchInf_Printer_Building.cs"/>
         <Compile Include="building\ArchInf_Repairer_Building.cs"/>
         <Compile Include="building\ArchInf_Transceiver_Building.cs"/>
-        <Compile Include="building\proto\AddInf_Building.cs"/>
-        <Compile Include="building\proto\AddInf_Building_Stateful.cs"/>
-        <Compile Include="building\proto\ArchInf_BuildingLink.cs"/>
+        <Compile Include="building\proto\AGridBuilding.cs"/>
+        <Compile Include="building\proto\AGridBuildingStateful.cs"/>
+        <Compile Include="building\proto\AGridBuildingLinkable.cs"/>
         <Compile Include="comps\Comp_ArchiteRepairer.cs"/>
         <Compile Include="comps\comp_base\CompBase_Grid.cs"/>
         <Compile Include="comps\comp_base\CompBase_GridState.cs"/>

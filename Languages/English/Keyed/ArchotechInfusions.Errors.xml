@@ -16,5 +16,4 @@
     <JAI.Error.Decoder.StoredInstruction><![CDATA[<color=yellow>{0} already stores the data packet</color>]]></JAI.Error.Decoder.StoredInstruction>
     <JAI.Error.WaitingForDatabase><![CDATA[<color=yellow>Waiting for available database...</color>]]></JAI.Error.WaitingForDatabase>
     <JAI.Error.GridHasNoDatabase><![CDATA[<color=yellow>Grid has no database</color>]]></JAI.Error.GridHasNoDatabase>
-    <JAI.Error.><![CDATA[]]></JAI.Error.>
 </LanguageData>

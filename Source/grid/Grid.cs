@@ -11,19 +11,21 @@ namespace ArchotechInfusions;
 
 public class Grid
 {
-    private readonly Dictionary<Type, List<AddInf_Building>> _gridCache = new();
+    private readonly Dictionary<Type, List<AGridBuilding>> _gridCache = new();
 
     public readonly Guid Guid = Guid.NewGuid();
-    public readonly List<AddInf_Building> Members = [];
+    public readonly List<AGridBuilding> Members = [];
 
     private int _skipAccumBalance;
+
+    public bool PowerOn => true; // todo
 
     public void OnTick()
     {
         BalanceAccumulators();
     }
 
-    public void AddMember(AddInf_Building member)
+    public void AddMember(AGridBuilding member)
     {
         member.Grid = this;
         Members.Add(member);
@@ -37,7 +39,7 @@ public class Grid
         Members.Clear();
     }
 
-    public List<T> Get<T>() where T : AddInf_Building
+    public List<T> Get<T>() where T : AGridBuilding
     {
         if (!_gridCache.ContainsKey(typeof(T))) _gridCache[typeof(T)] = [];
         return _gridCache[typeof(T)].Cast<T>().ToList();

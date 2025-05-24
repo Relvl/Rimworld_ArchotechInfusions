@@ -42,12 +42,6 @@
         </placeWorkers>
         <comps>
             <li Class="CompProperties_Breakdownable"/>
-            <li Class="CompProperties_Flickable"/>
-            <li Class="CompProperties_Power">
-                <compClass>CompPowerTrader</compClass>
-                <transmitsPower>true</transmitsPower>
-                <basePowerConsumption>100</basePowerConsumption>
-            </li>
             <li Class="ArchotechInfusions.comps.CompProps_Transceiver">
                 <!-- Ticks*PowerGain -> it total consumption for whole stage -->
                 <TransmitTicks>360</TransmitTicks>

@@ -1,6 +1,4 @@
 using ArchotechInfusions.building.proto;
-using ArchotechInfusions.comps.comp_base;
-using ArchotechInfusions.grid;
 using ArchotechInfusions.grid.graphic;
 using RimWorld;
 using UnityEngine;
@@ -19,36 +17,31 @@ public class GraphicGridLink(Graphic subGraphic) : GraphicLinkedMoreLayers(subGr
 
     public override bool ShouldLinkWith(IntVec3 c, Thing parent)
     {
-        if (parent is not ThingWithComps thingWithComps) return false;
-        if (!c.InBounds(parent.Map)) return false;
-        var comp = thingWithComps.AllComps.FirstOrDefault(thingComp => thingComp is IBaseGridComp<CompPropertiesBase_Grid>) as IBaseGridComp<CompPropertiesBase_Grid>;
-        return parent.Map.ArchInfGrid().ShouldConnect(c, comp);
+        if (parent is not AGridBuilding gridBuilding) return false;
+        return c.InBounds(parent.Map) && parent.Map.ArchInfGrid().ShouldConnect(c, gridBuilding);
     }
 
-    public void PrintLinkable(SectionLayer layer, ArchInf_BuildingLink thing)
+    public void PrintLinkable(SectionLayer layer, AGridBuildingLinkable loom)
     {
-        var comp = thing.AllComps.FirstOrDefault(thingComp => thingComp is IBaseGridComp<CompPropertiesBase_Grid>) as IBaseGridComp<CompPropertiesBase_Grid>;
-        if (comp is null) return;
-        var position = thing.Position;
-        if (comp.Props.Visibility == GridVisibility.Never) return;
-        if (comp.Props.Visibility == GridVisibility.HideUnderTiling && position.GetTerrain(thing.Map).layerable) return;
+        if (loom.Visibility == GridVisibility.Never) return;
+        if (loom.Visibility == GridVisibility.HideUnderTiling && loom.Position.GetTerrain(loom.Map).layerable) return;
 
-        Printer_Plane.PrintPlane(layer, thing.TrueCenter(), Size, LinkedDrawMatFrom(thing, thing.Position));
+        Printer_Plane.PrintPlane(layer, loom.TrueCenter(), Size, LinkedDrawMatFrom(loom, loom.Position));
 
         // Print extenders
         for (var index = 0; index < 4; ++index)
         {
-            var sideCell = position + GenAdj.CardinalDirections[index];
-            if (ShouldDrawTo(sideCell, thing, comp))
-                Printer_Plane.PrintPlane(layer, sideCell.ToVector3ShiftedWithAltitude(thing.def.Altitude), Vector2.one, LinkedDrawMatFrom(thing, sideCell));
+            var sideCell = loom.Position + GenAdj.CardinalDirections[index];
+            if (ShouldDrawTo(sideCell, loom))
+                Printer_Plane.PrintPlane(layer, sideCell.ToVector3ShiftedWithAltitude(loom.def.Altitude), Vector2.one, LinkedDrawMatFrom(loom, sideCell));
         }
     }
 
-    private static bool ShouldDrawTo(IntVec3 c, Thing thing, IBaseGridComp<CompPropertiesBase_Grid> comp)
+    private static bool ShouldDrawTo(IntVec3 c, AGridBuildingLinkable loom)
     {
-        if (!c.InBounds(thing.Map)) return false;
-        if (comp.Props.Visibility == GridVisibility.HideUnderTiling && c.GetTerrain(thing.Map).layerable) return false;
-        if (!thing.Map.ArchInfGrid().ShouldConnect(c, comp)) return false;
+        if (!c.InBounds(loom.Map)) return false;
+        if (loom.Visibility == GridVisibility.HideUnderTiling && c.GetTerrain(loom.Map).layerable) return false;
+        if (!loom.Map.ArchInfGrid().ShouldConnect(c, loom)) return false;
         return true;
     }
 }

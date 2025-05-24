@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using ArchotechInfusions.building.proto;
 using ArchotechInfusions.comps;
 using RimWorld;
@@ -12,7 +13,7 @@ namespace ArchotechInfusions.building;
 [StaticConstructorOnStartup]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
-public class ArchInf_Accumulator_Building : AddInf_Building
+public class ArchInf_Accumulator_Building : AGridBuilding
 {
     private static readonly Vector2 BarSize = new(1.3f, 0.4f);
     public static readonly Material AccumulatorBarFilledMat = SolidColorMaterials.SimpleSolidColorMaterial(new Color(0.2f, 0.85f, 0.85f));
@@ -34,6 +35,16 @@ public class ArchInf_Accumulator_Building : AddInf_Building
     public bool MarkedToDischarge => _markedToDischarge;
 
     public bool IsFull => Stored >= Comp.Props.MaxStored;
+
+    public CompPowerTrader Power { get; private set; }
+
+    public override void SpawnSetup(Map map, bool respawningAfterLoad)
+    {
+        base.SpawnSetup(map, respawningAfterLoad);
+        Power = GetComp<CompPowerTrader>();
+        if (Power is null)
+            throw new Exception($"ArchInf: {GetType().FullName} can't work without {nameof(CompPowerTrader)}");
+    }
 
     protected override void DrawAt(Vector3 drawLoc, bool flip = false)
     {
@@ -75,9 +86,12 @@ public class ArchInf_Accumulator_Building : AddInf_Building
         }
     }
 
-    public override string GetInspectString()
+    protected override void FillInspectStringExtra(StringBuilder sb)
     {
-        return base.GetInspectString() + "\n" + $"Stored: {Stored:0.} / {Comp.Props.MaxStored:0.}";
+        base.FillInspectStringExtra(sb);
+        if (!Power.PowerOn)
+            sb.AppendLine("JAI.Error.PoweredOff".Translate());
+        sb.AppendLine($"Stored: {Stored:0.} / {Comp.Props.MaxStored:0.}");
     }
 
     public override IEnumerable<Gizmo> GetGizmos()

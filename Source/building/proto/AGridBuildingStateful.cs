@@ -4,7 +4,7 @@ using Verse;
 
 namespace ArchotechInfusions.building.proto;
 
-public abstract class AddInf_Building_Stateful : AddInf_Building
+public abstract class AGridBuildingStateful : AGridBuilding
 {
     protected const int StateIdle = 0;
 

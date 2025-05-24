@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using ArchotechInfusions.building.proto;
 using ArchotechInfusions.comps;
@@ -9,7 +10,8 @@ using Verse.AI;
 
 namespace ArchotechInfusions.building;
 
-public class ArchInf_KeyGenerator_Building : AddInf_Building
+[SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
+public class ArchInf_KeyGenerator_Building : AGridBuilding
 {
     private float _chargeCache;
     private Comp_KeyGenerator _comp;
@@ -32,23 +34,9 @@ public class ArchInf_KeyGenerator_Building : AddInf_Building
         _chargeCache = Grid.GetTotalEnergy();
     }
 
-    public override string GetInspectString()
+    protected override void FillInspectStringExtra(StringBuilder sb)
     {
-        return base.GetInspectString() + "\n" + CompInspectStringExtra();
-    }
-
-    protected override void ReceiveCompSignal(string signal)
-    {
-        base.ReceiveCompSignal(signal);
-        if (signal == "Breakdown")
-            Progress = 0;
-    }
-
-    public string CompInspectStringExtra()
-    {
-        var sb = new StringBuilder();
-
-        if (!Power.PowerOn)
+        if (!Grid.PowerOn)
             sb.AppendLine("JAI.Error.PoweredOff".Translate());
         if (!IsPowerEnough())
             sb.AppendLine("JAI.Error.BatteriesUncharged".Translate());
@@ -57,8 +45,13 @@ public class ArchInf_KeyGenerator_Building : AddInf_Building
             sb.AppendLine("JAI.Progress".Translate((GetPercentComplete() * 100f).ToString("0.")));
 
         sb.AppendLine("JAI.KeyGenerator.KeysCount".Translate(_keysStored));
+    }
 
-        return sb.TrimEnd().ToString();
+    protected override void ReceiveCompSignal(string signal)
+    {
+        base.ReceiveCompSignal(signal);
+        if (signal == "Breakdown")
+            Progress = 0;
     }
 
     public override IEnumerable<Gizmo> GetGizmos()
@@ -81,14 +74,14 @@ public class ArchInf_KeyGenerator_Building : AddInf_Building
 
     public bool CanGenerateNewKey()
     {
-        return Power.PowerOn
+        return Grid.PowerOn
                && _keysStored < Comp.Props.MaxStoredKeys
                && IsPowerEnough();
     }
 
     public void DoJobTick(Pawn pawn, JobDriver driver, float speed)
     {
-        if (!Power.PowerOn)
+        if (!Grid.PowerOn)
         {
             driver.EndJobWith(JobCondition.Incompletable);
             return;

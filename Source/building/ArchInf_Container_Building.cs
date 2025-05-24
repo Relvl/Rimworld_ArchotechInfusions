@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Text;
 using ArchotechInfusions.building.proto;
 using ArchotechInfusions.comps;
 using RimWorld;
@@ -12,7 +13,7 @@ namespace ArchotechInfusions.building;
 
 [StaticConstructorOnStartup]
 [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
-public class ArchInf_Container_Building : AddInf_Building
+public class ArchInf_Container_Building : AGridBuilding
 {
     private static readonly Vector3 Offset = Vector3.up * 0.1f + Vector3.back * 0.35f;
     private static readonly Vector2 FuelBarSize = new(0.75f, 0.2f);
@@ -79,9 +80,9 @@ public class ArchInf_Container_Building : AddInf_Building
             Map.overlayDrawer.DrawOverlay(this, OverlayTypes.OutOfFuel);
     }
 
-    public override string GetInspectString()
+    protected override void FillInspectStringExtra(StringBuilder sb)
     {
-        return base.GetInspectString() + "\n" + $"Archite stored: {Stored:0.##}/{Comp.Props.MaxStored:0.##} µU";
+        sb.AppendLine($"Archite stored: {Stored:0.##}/{Comp.Props.MaxStored:0.##} µU");
     }
 
     public override IEnumerable<Gizmo> GetGizmos()
@@ -137,7 +138,7 @@ public class ArchInf_Container_Building : AddInf_Building
 
     public bool CanStoreMore()
     {
-        return Power.PowerOn && FreeSpace >= _minContainer.ArchiteCount;
+        return Grid.PowerOn && FreeSpace >= _minContainer.ArchiteCount;
     }
 
     public int CountToFullyRefuel(Thing thing)

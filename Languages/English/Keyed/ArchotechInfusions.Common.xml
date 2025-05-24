@@ -25,6 +25,7 @@
     <JAI.Printer.Print.BreakChance><![CDATA[<color=yellow>Since the integrity is too low, the item may be destroyed upon completion. Approximate chance: {0}%.</color>]]></JAI.Printer.Print.BreakChance>
     <JAI.Printer.Print.Confirm>Print</JAI.Printer.Print.Confirm>
     <JAI.Printer.Print.ArchiteUsed>Archite needed: {0} / {1}</JAI.Printer.Print.ArchiteUsed>
+    <JAI.Printer.InspectString>Select your pawn and press right mouse button on this printer.</JAI.Printer.InspectString>
 
     <JAI.instruction.complexity>Complexity</JAI.instruction.complexity>
     <JAI.instruction.integrity>Integrity</JAI.instruction.integrity>

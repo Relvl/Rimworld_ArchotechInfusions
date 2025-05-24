@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Text;
 using ArchotechInfusions.building.proto;
 using ArchotechInfusions.comps;
 using ArchotechInfusions.instructions;
@@ -13,7 +14,7 @@ namespace ArchotechInfusions.building;
 
 [StaticConstructorOnStartup]
 [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
-public class ArchInf_Database_Building : AddInf_Building
+public class ArchInf_Database_Building : AGridBuilding
 {
     private static Texture2D ShowDbTex;
 
@@ -34,9 +35,9 @@ public class ArchInf_Database_Building : AddInf_Building
         RecalcSpaceUsed();
     }
 
-    public override string GetInspectString()
+    protected override void FillInspectStringExtra(StringBuilder sb)
     {
-        return base.GetInspectString() + $"\nInstructions stored: {_instructions.Count}\nSpace used: {_spaceUsed:0.##} / {Comp.Props.MaxSpace}";
+        sb.AppendLine($"\nInstructions stored: {_instructions.Count}\nSpace used: {_spaceUsed:0.##} / {Comp.Props.MaxSpace}");
     }
 
     public override IEnumerable<Gizmo> GetGizmos()
@@ -78,7 +79,7 @@ public class ArchInf_Database_Building : AddInf_Building
 
     public bool MakeDatabaseRecord(AInstruction modifier)
     {
-        if (!Power.PowerOn) return false;
+        if (!Grid.PowerOn) return false;
         if (FreeSpace < Math.Abs(modifier.Complexity)) return false;
 
         _instructions.Add(modifier);
@@ -88,7 +89,7 @@ public class ArchInf_Database_Building : AddInf_Building
 
     public bool TryRemoveInstruction(AInstruction modifier)
     {
-        if (!Power.PowerOn) return false;
+        if (!Grid.PowerOn) return false;
         return _instructions.Remove(modifier);
     }
 

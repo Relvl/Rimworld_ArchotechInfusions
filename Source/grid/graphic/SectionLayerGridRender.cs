@@ -18,7 +18,7 @@ public class SectionLayerGridRender : SectionLayer
         ClearSubMeshes(MeshParts.All);
 
         foreach (var c in section.CellRect)
-        foreach (var buildingPipe in Map.thingGrid.ThingsListAt(c).OfType<ArchInf_BuildingLink>())
+        foreach (var buildingPipe in Map.thingGrid.ThingsListAt(c).OfType<AGridBuildingLinkable>())
             buildingPipe.PrintLinkable(this);
 
         FinalizeMesh(MeshParts.All);

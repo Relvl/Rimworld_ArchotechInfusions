@@ -51,10 +51,6 @@
             <li Class="ArchotechInfusions.comps.CompProperties_Loom">
                 <Visibility>HideUnderTiling</Visibility>
             </li>
-            <li Class="CompProperties_Power">
-                <compClass>CompPowerTransmitter</compClass>
-                <transmitsPower>true</transmitsPower>
-            </li>
         </comps>
     </ThingDef>
 </Defs>

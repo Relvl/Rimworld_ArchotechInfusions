@@ -11,7 +11,7 @@ using Verse.Sound;
 namespace ArchotechInfusions.building;
 
 [SuppressMessage("ReSharper", "UnusedType.Global")]
-public class ArchInf_Transceiver_Building : AddInf_Building_Stateful
+public class ArchInf_Transceiver_Building : AGridBuildingStateful
 {
     private const int StateTransmit = 1;
     private const int StateReceive = 2;
@@ -223,9 +223,6 @@ public class ArchInf_Transceiver_Building : AddInf_Building_Stateful
     {
         if (State != StateIdle)
             return Message("JAI.Error.IsBusy".Translate(LabelCap), silent);
-
-        if (!Power.PowerOn)
-            return Stop("JAI.Error.IsPoweredOff".Translate(LabelCap), silent);
 
         if (Grid.Get<ArchInf_Accumulator_Building>().Empty())
             return Stop("JAI.Error.GridHasNoAccumulator".Translate(), silent);

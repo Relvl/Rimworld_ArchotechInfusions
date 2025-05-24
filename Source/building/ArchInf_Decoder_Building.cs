@@ -11,7 +11,7 @@ using Verse.Sound;
 namespace ArchotechInfusions.building;
 
 [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
-public class ArchInf_Decoder_Building : AddInf_Building_Stateful
+public class ArchInf_Decoder_Building : AGridBuildingStateful
 {
     private const int StateStartupKey = 1;
     private const int StateDecodingKey = 2;
@@ -34,7 +34,7 @@ public class ArchInf_Decoder_Building : AddInf_Building_Stateful
     public override void Tick()
     {
         base.Tick();
-        if (!Power.PowerOn)
+        if (!Grid.PowerOn)
         {
             if (State == StateDecodingKey && _backupProgress == default)
                 _backupProgress = Ticks;
@@ -120,7 +120,7 @@ public class ArchInf_Decoder_Building : AddInf_Building_Stateful
     {
         if (State != StateIdle)
             return Message("JAI.Error.IsBusy".Translate(Comp.Parent.LabelCap), silent);
-        if (!Power.PowerOn)
+        if (!Grid.PowerOn)
             return Message("JAI.Error.IsPoweredOff".Translate(Comp.Parent.LabelCap), silent);
         if (_instruction is not null)
             return Message("JAI.Error.Decoder.StoredInstruction".Translate(Comp.Parent.LabelCap), silent);

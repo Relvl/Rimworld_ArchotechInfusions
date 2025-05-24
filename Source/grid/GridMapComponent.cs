@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using ArchotechInfusions.building.proto;
-using ArchotechInfusions.comps.comp_base;
 using ArchotechInfusions.graphic;
 using UnityEngine;
 using Verse;
@@ -28,7 +27,7 @@ public class GridMapComponent : MapComponent
     private static (int, GridMapComponent) _cachedGridComponent = (-1, null);
 
     private readonly List<Grid> _grids = [];
-    private readonly Dictionary<IntVec3, AddInf_Building> _members = new();
+    private readonly Dictionary<IntVec3, AGridBuilding> _members = new();
 
     public GridMapComponent(Map map) : base(map)
     {
@@ -65,7 +64,7 @@ public class GridMapComponent : MapComponent
         base.MapRemoved();
     }
 
-    public void Register(AddInf_Building member, bool respawningAfterLoad)
+    public void Register(AGridBuilding member, bool respawningAfterLoad)
     {
         try
         {
@@ -85,7 +84,7 @@ public class GridMapComponent : MapComponent
             RebuildGrids();
     }
 
-    public void Unregister(AddInf_Building member)
+    public void Unregister(AGridBuilding member)
     {
         foreach (var c in member.OccupiedRect())
             _members.Remove(c);
@@ -130,7 +129,7 @@ public class GridMapComponent : MapComponent
         }
     }
 
-    public bool IsSameGrid(IntVec3 c, IBaseGridComp<CompPropertiesBase_Grid> comp)
+    public bool IsSameGrid(IntVec3 c, AGridBuilding comp)
     {
         return _members.ContainsKey(c) && _members[c].Grid == comp.Grid;
     }
@@ -144,12 +143,12 @@ public class GridMapComponent : MapComponent
         }
     }
 
-    public bool ShouldConnect(IntVec3 c, IBaseGridComp<CompPropertiesBase_Grid> comp)
+    public bool ShouldConnect(IntVec3 c, AGridBuilding member)
     {
-        return comp != null && _members.ContainsKey(c);
+        return member != null && _members.ContainsKey(c);
     }
 
-    public IEnumerable<T> Get<T>() where T : AddInf_Building
+    public IEnumerable<T> Get<T>() where T : AGridBuilding
     {
         foreach (var grid in _grids)
         foreach (var comp in grid.Get<T>())
