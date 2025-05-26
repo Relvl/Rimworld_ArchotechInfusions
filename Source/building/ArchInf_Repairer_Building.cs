@@ -65,7 +65,7 @@ public class ArchInf_Repairer_Building : AGridBuilding
             {
                 defaultLabel = "Damage all apparel", action = () =>
                 {
-                    foreach (var pawn in RepairerComp.Parent.Map.mapPawns.AllPawnsSpawned.Where(c => c.IsColonist))
+                    foreach (var pawn in RepairerComp.parent.Map.mapPawns.AllPawnsSpawned.Where(c => c.IsColonist))
                     foreach (var apparel in pawn.apparel.WornApparel.Where(apparel => apparel.def.useHitPoints))
                         apparel.HitPoints = apparel.MaxHitPoints / 2;
 

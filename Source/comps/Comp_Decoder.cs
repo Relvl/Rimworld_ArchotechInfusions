@@ -21,4 +21,4 @@ public class CompProps_Decoder : CompPropertiesBase_Grid
     }
 }
 
-public class Comp_Decoder : CompBase_GridState<Comp_Decoder, CompProps_Decoder>;
+public class Comp_Decoder : CompBase_Grid<CompProps_Decoder>;

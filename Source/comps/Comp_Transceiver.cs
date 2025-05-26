@@ -1,9 +1,10 @@
-using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using ArchotechInfusions.comps.comp_base;
-using Verse;
 
 namespace ArchotechInfusions.comps;
 
+[SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
+[SuppressMessage("ReSharper", "UnassignedField.Global")]
 public class CompProps_Transceiver : CompPropertiesBase_Grid
 {
     public float ReceivePowerGain;
@@ -17,11 +18,4 @@ public class CompProps_Transceiver : CompPropertiesBase_Grid
     }
 }
 
-public class Comp_Transceiver : CompBase_GridState<Comp_Transceiver, CompProps_Transceiver>
-{
-    public override IEnumerable<Gizmo> CompGetGizmosExtra()
-    {
-        foreach (var gizmo in base.CompGetGizmosExtra())
-            yield return gizmo;
-    }
-}
+public class Comp_Transceiver : CompBase_Grid<CompProps_Transceiver>;

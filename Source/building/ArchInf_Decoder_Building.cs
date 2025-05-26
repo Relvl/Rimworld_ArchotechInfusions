@@ -119,11 +119,11 @@ public class ArchInf_Decoder_Building : AGridBuildingStateful
     public virtual AcceptanceReport TryRun(bool silent = false)
     {
         if (State != StateIdle)
-            return Message("JAI.Error.IsBusy".Translate(Comp.Parent.LabelCap), silent);
+            return Message("JAI.Error.IsBusy".Translate(Comp.parent.LabelCap), silent);
         if (!Grid.PowerOn)
-            return Message("JAI.Error.IsPoweredOff".Translate(Comp.Parent.LabelCap), silent);
+            return Message("JAI.Error.IsPoweredOff".Translate(Comp.parent.LabelCap), silent);
         if (_instruction is not null)
-            return Message("JAI.Error.Decoder.StoredInstruction".Translate(Comp.Parent.LabelCap), silent);
+            return Message("JAI.Error.Decoder.StoredInstruction".Translate(Comp.parent.LabelCap), silent);
 
         if (TicksInitial == 0)
             TicksInitial = Comp.Props.DecodeTicks.RandomInRange;

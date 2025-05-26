@@ -16,9 +16,9 @@ namespace ArchotechInfusions.building;
 public class ArchInf_Accumulator_Building : AGridBuilding
 {
     private static readonly Vector2 BarSize = new(1.3f, 0.4f);
-    public static readonly Material AccumulatorBarFilledMat = SolidColorMaterials.SimpleSolidColorMaterial(new Color(0.2f, 0.85f, 0.85f));
-    public static readonly Material AccumulatorBarUnfilledMat = SolidColorMaterials.SimpleSolidColorMaterial(new Color(0.3f, 0.3f, 0.3f));
-    public static Texture2D DischargeTex;
+    private static readonly Material AccumulatorBarFilledMat = SolidColorMaterials.SimpleSolidColorMaterial(new Color(0.2f, 0.85f, 0.85f));
+    private static readonly Material AccumulatorBarUnfilledMat = SolidColorMaterials.SimpleSolidColorMaterial(new Color(0.3f, 0.3f, 0.3f));
+    private static Texture2D _dischargeTex;
 
     private Comp_Accumulator _comp;
 
@@ -99,13 +99,13 @@ public class ArchInf_Accumulator_Building : AGridBuilding
         foreach (var gizmo in base.GetGizmos())
             yield return gizmo;
 
-        DischargeTex ??= ContentFinder<Texture2D>.Get("ArchotechInfusions/UI/Gizmo/Discharge");
+        _dischargeTex ??= ContentFinder<Texture2D>.Get("ArchotechInfusions/UI/Gizmo/Discharge");
 
         yield return new Command_Toggle
         {
             defaultLabel = "JAI.Gizmo.Accumulator.MarkToDischarge".Translate(),
             defaultDesc = "JAI.Gizmo.Accumulator.MarkToDischarge.Desc".Translate(),
-            icon = DischargeTex,
+            icon = _dischargeTex,
             hotKey = KeyBindingDefOf.Command_ColonistDraft,
             isActive = () => _markedToDischarge,
             toggleAction = () => _markedToDischarge = !_markedToDischarge

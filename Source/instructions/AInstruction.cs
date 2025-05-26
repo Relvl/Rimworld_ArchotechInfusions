@@ -14,7 +14,7 @@ public abstract class AInstruction(StatDefinitionDef definition, StatDefinitionD
     protected StatDefinitionDef Definition = definition;
 
     public float Value;
-    public EInstructionType Type => _operationTypeCached;
+    public EInstructionType OperationType => _operationTypeCached;
     public StatDefinitionDef.Operation Operation { get; private set; } = operation;
 
     public virtual string Label => "";
@@ -32,7 +32,7 @@ public abstract class AInstruction(StatDefinitionDef definition, StatDefinitionD
     public virtual void ExposeData()
     {
         Scribe_Defs.Look(ref Definition, nameof(Definition));
-        Scribe_Values.Look(ref _operationTypeCached, nameof(Type));
+        Scribe_Values.Look(ref _operationTypeCached, nameof(OperationType));
         Scribe_Values.Look(ref Value, nameof(Value));
 
         Operation = Definition.GetOperation(_operationTypeCached);
@@ -48,7 +48,7 @@ public abstract class AInstruction(StatDefinitionDef definition, StatDefinitionD
 
     public virtual void RenderValue(StringBuilder sb)
     {
-        switch (Type)
+        switch (OperationType)
         {
             case EInstructionType.Add:
                 sb.Append("<color=#E57AFF>").Append(Value.ToString("+0.##;-0.##")).Append("</color> ");
@@ -82,7 +82,7 @@ public abstract class AInstruction(StatDefinitionDef definition, StatDefinitionD
     {
         // don't make the insane math anymore please... it makes me sick. old good conditions is more clear.
         float factor;
-        var operation = Definition.GetOperation(Type);
+        var operation = Definition.GetOperation(OperationType);
         // lesser is better and uses more complexity
         if (operation.IsInverted)
         {

@@ -33,7 +33,7 @@ public class InstructionStat(StatDefinitionDef definition, StatDefinitionDef.Ope
     public virtual void TransformStatValue(StatDef statDef, ref float value)
     {
         if (statDef != StatDef) return;
-        switch (Type)
+        switch (OperationType)
         {
             case EInstructionType.Add:
                 value += Value;
@@ -51,7 +51,7 @@ public class InstructionStat(StatDefinitionDef definition, StatDefinitionDef.Ope
     {
         if (statDef != StatDef) return false;
         sb.Append("\t").Append(Label);
-        switch (Type)
+        switch (OperationType)
         {
             case EInstructionType.Add:
                 sb.Append(Value > 0 ? ": +" : ": -").Append(statDef.ValueToString(Mathf.Abs(Value))).AppendLine();

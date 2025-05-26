@@ -81,11 +81,9 @@
         <Compile Include="building\proto\AGridBuildingLinkable.cs"/>
         <Compile Include="comps\Comp_ArchiteRepairer.cs"/>
         <Compile Include="comps\comp_base\CompBase_Grid.cs"/>
-        <Compile Include="comps\comp_base\CompBase_GridState.cs"/>
         <Compile Include="comps\Comp_Accumulator.cs"/>
         <Compile Include="comps\Comp_ArchiteContainer.cs"/>
         <Compile Include="comps\comp_base\CompPropertiesBase_Grid.cs"/>
-        <Compile Include="comps\comp_base\IBaseGridComp.cs"/>
         <Compile Include="comps\Comp_Database.cs"/>
         <Compile Include="comps\Comp_Decoder.cs"/>
         <Compile Include="comps\Comp_KeyGenerator.cs"/>
