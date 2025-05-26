@@ -154,8 +154,10 @@ public class ArchInf_Printer_Building : AGridBuilding
         _ticksCurrentCycle++;
     }
 
-    public void DoJobFinished()
+    public void DoJobReallyFinished(JobCondition condition)
     {
+        if (DebugSettings.ShowDevGizmos)
+            Log.Warning($"JAI: DoJobReallyFinished {condition} (instr: {_instruction}, thing: {_targetThing})");
         WindowSelector.ForceClose();
         _targetThing = null;
         if (Grid.TryPutInstruction(_instruction))

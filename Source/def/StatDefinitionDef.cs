@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using ArchotechInfusions.injected;
+using ArchotechInfusions.instructions;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -22,6 +23,11 @@ public class StatDefinitionDef : Def
     /// <summary>
     /// </summary>
     public ExtraArchiteData ExtraArchite;
+
+    /// <summary>
+    ///     This stat applies to the pawn. Otherwise, it applies to the thing itself.
+    /// </summary>
+    public bool IsPawnStat = true;
 
     /// <summary>
     /// </summary>

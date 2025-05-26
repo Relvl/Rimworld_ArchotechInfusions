@@ -3,16 +3,16 @@
     <ArchotechInfusions.StatDefinitionDef>
         <defName>MeleeDodgeChance</defName>
         <StatDef>MeleeDodgeChance</StatDef>
-        <Target>MeleeWeapon</Target>
+        <Target>Apparel</Target>
         <Complexity>100</Complexity>
         <OperationAdd>
-            <Weight>10</Weight>
+            <Weight>2</Weight>
             <Min>-0.5</Min>
             <Max>0.5</Max>
             <Default>0</Default>
         </OperationAdd>
         <OperationMul>
-            <Weight>10</Weight>
+            <Weight>2</Weight>
             <Min>0.5</Min>
             <Max>1.5</Max>
             <Default>1</Default>
@@ -20,7 +20,7 @@
         <OperationSet>
             <Weight>1</Weight>
             <Min>0.0</Min>
-            <Max>1.0</Max>
+            <Max>0.75</Max>
             <Default>0</Default>
         </OperationSet>
     </ArchotechInfusions.StatDefinitionDef>

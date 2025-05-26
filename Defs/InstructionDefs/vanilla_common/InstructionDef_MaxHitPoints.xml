@@ -4,6 +4,7 @@
         <defName>MaxHitPoints</defName>
         <StatDef>MaxHitPoints</StatDef>
         <Target>Any</Target>
+        <IsPawnStat>false</IsPawnStat>
         <Complexity>100</Complexity>
         <OperationAdd>
             <Weight>10</Weight>

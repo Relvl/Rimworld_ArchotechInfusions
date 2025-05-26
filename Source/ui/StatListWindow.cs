@@ -32,7 +32,6 @@ public class StatListWindow : Window
 
         Text.Font = GameFont.Small;
 
-        // Поле поиска и кнопка копирования списка
         var searchWidth = inRect.width - 100f;
         var searchRect = new Rect(inRect.x, inRect.y + 35f, searchWidth, 25f);
         _searchText = Widgets.TextField(searchRect, _searchText);
@@ -44,7 +43,7 @@ public class StatListWindow : Window
                 .Where(s => (s.defName?.ToLower() ?? "").Contains(_searchText.ToLower())
                             || (s.label?.ToLower() ?? "").Contains(_searchText.ToLower())
                             || (s.description?.ToLower() ?? "").Contains(_searchText.ToLower()))
-                .Select(s => s.defName));
+                .Select(s => $"{s.defName} ({s.category?.defName})"));
 
             GUIUtility.systemCopyBuffer = defsText;
             Messages.Message("Copied all filtered defNames to clipboard", MessageTypeDefOf.SilentInput, false);
@@ -70,7 +69,7 @@ public class StatListWindow : Window
 
             // Info button with tooltip
             var infoRect = new Rect(rowRect.x, rowRect.y, 24f, 24f);
-            TooltipHandler.TipRegion(infoRect, stat.description);
+            TooltipHandler.TipRegion(infoRect, (stat.description ?? "No description") + $"\n\n{stat.category?.defName ?? "No category"}");
             Widgets.InfoCardButton(infoRect.x, infoRect.y, stat);
 
             // Copy button on the right
@@ -78,7 +77,7 @@ public class StatListWindow : Window
             var copyButtonRect = new Rect(rowRect.xMax - copyButtonWidth, rowRect.y, copyButtonWidth, 24f);
             if (Widgets.ButtonText(copyButtonRect, "Copy"))
             {
-                GUIUtility.systemCopyBuffer = stat.defName;
+                GUIUtility.systemCopyBuffer = $"{stat.defName} (${stat.category?.defName})";
                 Messages.Message($"Copied '{stat.defName}' to clipboard", MessageTypeDefOf.SilentInput, false);
             }
 

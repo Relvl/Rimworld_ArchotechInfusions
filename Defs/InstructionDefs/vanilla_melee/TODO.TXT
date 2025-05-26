@@ -1,8 +1,0 @@
-﻿MeleeArmorPenetration
-MeleeCooldownFactor
-
-MeleeDPS
-MeleeWeapon_AverageArmorPenetration
-MeleeWeapon_AverageDPS
-MeleeWeapon_CooldownMultiplier
-MeleeWeapon_DamageMultiplier

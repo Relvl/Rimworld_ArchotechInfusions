@@ -158,7 +158,8 @@ public class PrintWindow : Window
             );
         }
 
-        if (isOutOfArchite) TooltipHandler.TipRegion(confirmButtonRect, "JAI.Printer.Print.NoArchite".Translate(_architeNeeded, _architeLeft));
+        if (isOutOfArchite)
+            TooltipHandler.TipRegion(confirmButtonRect, "JAI.Printer.Print.NoArchite".Translate(_architeNeeded, _architeLeft));
 
         GUI.color = Color.white;
     }

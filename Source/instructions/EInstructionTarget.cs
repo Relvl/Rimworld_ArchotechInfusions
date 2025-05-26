@@ -1,6 +1,6 @@
 using System;
 
-namespace ArchotechInfusions;
+namespace ArchotechInfusions.instructions;
 
 [Flags]
 public enum EInstructionTarget

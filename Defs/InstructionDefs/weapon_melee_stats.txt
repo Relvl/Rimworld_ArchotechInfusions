@@ -1,0 +1,2 @@
+﻿MeleeWeapon_AverageDPS (Weapon_Melee)
+MeleeWeapon_DamageMultiplier (Weapon_Melee)

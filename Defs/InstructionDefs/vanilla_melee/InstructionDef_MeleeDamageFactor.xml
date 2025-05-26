@@ -4,6 +4,7 @@
         <defName>MeleeDamageFactor</defName>
         <StatDef>MeleeDamageFactor</StatDef>
         <Target>MeleeWeapon</Target>
+        <IsPawnStat>true</IsPawnStat>
         <Complexity>100</Complexity>
         <OperationAdd>
             <Weight>10</Weight>

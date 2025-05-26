@@ -6,26 +6,25 @@
         <Target>Apparel</Target>
         <Complexity>100</Complexity>
         <ExtraArchite>
-            <Fixed>10</Fixed>
-            <Factor>1.05</Factor>
+            <Fixed>250</Fixed>
         </ExtraArchite>
         <OperationAdd>
-            <Weight>100</Weight>
+            <Weight>1</Weight>
             <Min>-10</Min>
             <Max>10</Max>
             <Default>0</Default>
         </OperationAdd>
         <OperationMul>
-            <Weight>100</Weight>
+            <Weight>1</Weight>
             <Min>0.1</Min>
-            <Max>10</Max>
+            <Max>2</Max>
             <Default>1</Default>
         </OperationMul>
         <OperationSet>
-            <Weight>100</Weight>
+            <Weight>1</Weight>
             <Min>0.2</Min>
             <Max>30</Max>
-            <Default>1</Default>
+            <Default>5</Default>
         </OperationSet>
     </ArchotechInfusions.StatDefinitionDef>
 </Defs>

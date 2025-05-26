@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <Defs>
-    <!-- Adds +1 to quality level, not a stat -->
+    <!-- Adds +1 to quality level, not a stat. todo think about -1 ql -->
     <ArchotechInfusions.StatDefinitionDef>
         <defName>Quality</defName>
         <Target>Any</Target>

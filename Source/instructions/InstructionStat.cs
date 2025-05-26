@@ -2,6 +2,7 @@
 using System.Text;
 using RimWorld;
 using UnityEngine;
+using Verse;
 
 namespace ArchotechInfusions.instructions;
 
@@ -30,9 +31,16 @@ public class InstructionStat(StatDefinitionDef definition, StatDefinitionDef.Ope
             sb.Append("Ranged ");
     }
 
-    public virtual void TransformStatValue(StatDef statDef, ref float value)
+    public bool IsValidFor(Thing requester)
+    {
+        return requester is Pawn == Definition.IsPawnStat;
+    }
+
+    public virtual void TransformStatValue(StatDef statDef, ref float value, Thing requester)
     {
         if (statDef != StatDef) return;
+        if (!IsValidFor(requester)) return;
+
         switch (OperationType)
         {
             case EInstructionType.Add:
@@ -47,9 +55,11 @@ public class InstructionStat(StatDefinitionDef definition, StatDefinitionDef.Ope
         }
     }
 
-    public virtual bool AddStatExplanation(StatDef statDef, StringBuilder sb)
+    public virtual bool AddStatExplanation(StatDef statDef, StringBuilder sb, Thing requester)
     {
         if (statDef != StatDef) return false;
+        if (!IsValidFor(requester)) return false;
+
         sb.Append("\t").Append(Label);
         switch (OperationType)
         {

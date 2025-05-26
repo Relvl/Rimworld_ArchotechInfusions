@@ -20,25 +20,24 @@ public class StatPart_ArchInfusion : StatPart
 
         if (req.Thing is Pawn pawn && req.Thing.def.race is not null)
         {
-            // todo blacklisted stats for pawns. some only apply to equipment.
             if (pawn.equipment?.Primary is not null)
                 if (pawn.equipment.Primary.TryGetInfusedComp(out var compPrimary))
-                    TransformValueInner(compPrimary, ref val);
+                    TransformValueInner(compPrimary, ref val, pawn);
 
             if (pawn.apparel?.WornApparel is not null)
                 foreach (var apparel in pawn.apparel.WornApparel)
                     if (apparel.TryGetInfusedComp(out var compApparel))
-                        TransformValueInner(compApparel, ref val);
+                        TransformValueInner(compApparel, ref val, pawn);
         }
 
         if (req.Thing.TryGetInfusedComp(out var compDirect))
-            TransformValueInner(compDirect, ref val);
+            TransformValueInner(compDirect, ref val, req.Thing);
     }
 
-    private void TransformValueInner(Comp_ArchInfused comp, ref float value)
+    private void TransformValueInner(Comp_ArchInfused comp, ref float value, Thing requester)
     {
         foreach (var instruction in comp.Instructions)
-            instruction.TransformStatValue(parentStat, ref value);
+            instruction.TransformStatValue(parentStat, ref value, requester);
     }
 
     public override string ExplanationPart(StatRequest req)
@@ -56,27 +55,27 @@ public class StatPart_ArchInfusion : StatPart
             // todo blacklisted stats? maybe no, bcz there is fully configurable via defs?..
             if (pawn.equipment.Primary is not null)
                 if (pawn.equipment.Primary.TryGetInfusedComp(out var compPrimary))
-                    anyChanged |= ExplanationPartInner(compPrimary, sb);
+                    anyChanged |= ExplanationPartInner(compPrimary, sb, pawn);
 
             if (pawn.apparel.WornApparel is not null)
                 foreach (var apparel in pawn.apparel.WornApparel)
                     if (apparel.TryGetInfusedComp(out var compApparel))
-                        anyChanged |= ExplanationPartInner(compApparel, sb);
+                        anyChanged |= ExplanationPartInner(compApparel, sb, pawn);
         }
 
         if (req.Thing.TryGetInfusedComp(out var compDirect))
-            anyChanged |= ExplanationPartInner(compDirect, sb);
+            anyChanged |= ExplanationPartInner(compDirect, sb, req.Thing);
 
         if (!anyChanged) return null;
 
         return sb.ToString();
     }
 
-    private bool ExplanationPartInner(Comp_ArchInfused comp, StringBuilder sb)
+    private bool ExplanationPartInner(Comp_ArchInfused comp, StringBuilder sb, Thing requester)
     {
         var anyChanged = false;
         foreach (var instruction in comp.Instructions)
-            anyChanged |= instruction.AddStatExplanation(parentStat, sb);
+            anyChanged |= instruction.AddStatExplanation(parentStat, sb, requester);
         return anyChanged;
     }
 }

@@ -1,28 +1,29 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <Defs>
+    <!-- NON-CE armor rating, in percentage -->
     <ArchotechInfusions.StatDefinitionDef>
-        <defName>Mass</defName>
-        <StatDef>Mass</StatDef>
-        <Target>Any</Target>
+        <defName>ArmorRating_Sharp</defName>
+        <StatDef>ArmorRating_Sharp</StatDef>
+        <Target>Apparel</Target>
         <IsPawnStat>false</IsPawnStat>
         <Complexity>100</Complexity>
         <OperationAdd>
-            <Weight>10</Weight>
-            <Min>20</Min>
-            <Max>-20</Max>
+            <Weight>1</Weight>
+            <Min>-0.3</Min>
+            <Max>0.3</Max>
             <Default>0</Default>
         </OperationAdd>
         <OperationMul>
-            <Weight>10</Weight>
-            <Min>1.2</Min>
-            <Max>0.5</Max>
+            <Weight>1</Weight>
+            <Min>0.2</Min>
+            <Max>2.0</Max>
             <Default>1</Default>
         </OperationMul>
         <OperationSet>
             <Weight>1</Weight>
-            <Min>50</Min>
-            <Max>0</Max>
-            <Default>10</Default>
+            <Min>0.0</Min>
+            <Max>0.5</Max>
+            <Default>0.1</Default>
         </OperationSet>
     </ArchotechInfusions.StatDefinitionDef>
 </Defs>

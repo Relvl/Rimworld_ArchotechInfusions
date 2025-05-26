@@ -47,8 +47,6 @@ public class Comp_ArchInfused : ThingComp
             ExtraComplexity += instruction.Complexity;
 
             if (instruction is InstructionUnbreakable) _isUnbreakable = true;
-            // todo extra durability
-            // todo extra weight
             if (instruction is InstructionQuality)
             {
                 // todo think about extra complexity for each QL

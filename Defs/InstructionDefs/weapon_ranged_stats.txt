@@ -1,0 +1,6 @@
+﻿AccuracyLong (Weapon_Ranged)
+AccuracyMedium (Weapon_Ranged)
+AccuracyShort (Weapon_Ranged)
+AccuracyTouch (Weapon_Ranged)
+RangedWeapon_Cooldown (Weapon_Ranged)
+RangedWeapon_DamageMultiplier (Weapon_Ranged)

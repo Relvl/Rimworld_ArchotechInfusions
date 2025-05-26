@@ -25,20 +25,21 @@ public class JobDriver_Print : JobDriver
         this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
         this.FailOnBurningImmobile(TargetIndex.A);
 
+        // Finish action. Not at last toil, because sometimes, e.g. interrupted, it will no call finish actions...
+        AddFinishAction(condition => Printer.DoJobReallyFinished(condition));
+
         yield return Toils_Reserve.Reserve(TargetIndex.A);
 
-        // go to the printer
         yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.InteractionCell)
             .FailOnDespawnedNullOrForbidden(TargetIndex.A);
 
-        // open print window
         var openInterface = Toils_General.DoAtomic(() => Printer.OpenSelectThingWindow(pawn));
         yield return openInterface;
 
-        // just some delay
-        yield return Toils_General.WaitWith(TargetIndex.A, 20);
+        // todo thing about no delay, and waiting for window closed?..
+        var someDelay = Toils_General.WaitWith(TargetIndex.A, 10);
+        yield return someDelay;
 
-        // work cycles
         var workToil = ToilMaker.MakeToil();
         workToil.defaultCompleteMode = ToilCompleteMode.Never;
         workToil.activeSkill = () => SkillDefOf.Intellectual;
@@ -47,10 +48,7 @@ public class JobDriver_Print : JobDriver
         workToil.FailOn(() => !Printer.CanWork());
         workToil.initAction = () => Printer.DoJobStarted(this);
         workToil.tickAction = () => Printer.DoJobTick(this, pawn);
-        workToil.AddFinishAction(() => Printer.DoJobFinished());
         workToil.WithProgressBar(TargetIndex.A, () => Printer.GetPercentComplete());
         yield return workToil;
-
-        yield return Toils_General.Do(() => Log.Warning("-- last toil"));
     }
 }

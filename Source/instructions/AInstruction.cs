@@ -104,7 +104,10 @@ public abstract class AInstruction(StatDefinitionDef definition, StatDefinitionD
                 factor = (Value - operation.Default) / (operation.Default - operation.Min);
         }
 
-        return Mathf.Lerp(-Definition.Complexity / /*todo config? def? */10f, Definition.Complexity, (factor + 1f) / 2f);
+        var resultingFactor = (factor + 1f) / 2f;
+        var resultingComplexity = Mathf.Lerp(-Definition.Complexity, Definition.Complexity, resultingFactor);
+        if (resultingFactor < 0.5f) resultingComplexity /= 10f; // todo config
+        return resultingComplexity;
     }
 
     public void ModifyArchiteConsumed(ref float archite)
