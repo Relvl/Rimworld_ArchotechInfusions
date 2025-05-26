@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using ArchotechInfusions.injected;
 using UnityEngine;
 using Verse;
@@ -7,6 +8,14 @@ namespace ArchotechInfusions.instructions;
 
 public class InstructionNop(StatDefinitionDef definition, StatDefinitionDef.Operation operation) : AInstruction(definition, operation)
 {
+    /// <summary>
+    ///     IExposable constructor
+    /// </summary>
+    [SuppressMessage("ReSharper", "UnusedMember.Local")]
+    private InstructionNop() : this(default, null)
+    {
+    }
+
     public override string Label => "JAI.instruction.nop".Translate();
     public override Color BgColor => Color.black;
 

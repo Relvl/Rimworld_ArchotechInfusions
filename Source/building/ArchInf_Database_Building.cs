@@ -58,6 +58,7 @@ public class ArchInf_Database_Building : AGridBuilding
         };
 
         if (DebugSettings.ShowDevGizmos)
+        {
             yield return new Command_Action
             {
                 defaultLabel = "Force make random",
@@ -70,6 +71,18 @@ public class ArchInf_Database_Building : AGridBuilding
                         ForceAddInstruction(StatProcessor.GenerateInstruction());
                 }
             };
+
+            yield return new Command_Action
+            {
+                defaultLabel = "Show all stats",
+                defaultDesc = "",
+                action = () =>
+                {
+                    Find.WindowStack.TryRemove(typeof(StatListWindow));
+                    Find.WindowStack.Add(new StatListWindow());
+                }
+            };
+        }
     }
 
     private void RecalcSpaceUsed()

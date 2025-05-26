@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Defs>
+    <ArchotechInfusions.ExternalUrlDef>
+        <defName>ArchInf_ExternalUrl_Integrity_Wiki</defName>
+        <label>'Integrity' on Archotech Infusions wiki</label>
+        <url>https://github.com/Relvl/Rimworld_ArchotechInfusions/wiki/Integrity</url>
+        <uiIconPath>ArchotechInfusions/UI/Github</uiIconPath>
+        <!-- Welp... Yea. It's a thing. I guess... At least, that's better than another Harmony patch. -->
+        <thingClass>Thing</thingClass>
+    </ArchotechInfusions.ExternalUrlDef>
+</Defs>

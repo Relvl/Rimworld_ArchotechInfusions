@@ -93,6 +93,13 @@
         <Compile Include="comps\Comp_Printer.cs"/>
         <Compile Include="comps\Comp_Transceiver.cs"/>
         <Compile Include="def\ArchInfSoundDefOf.cs"/>
+        <Compile Include="def\ArchInfStatCategoryDefOf.cs"/>
+        <Compile Include="def\ArchInfStatDefinitionDefOf.cs"/>
+        <Compile Include="def\ArchInfStatDefOf.cs"/>
+        <Compile Include="def\ArchInf_ExternalUrls.cs"/>
+        <Compile Include="def\ExternalUrlDef.cs"/>
+        <Compile Include="def\InstructionListStatWorker.cs"/>
+        <Compile Include="def\IntegrityStatWorker.cs"/>
         <Compile Include="def\JobDriverDefOf.cs"/>
         <Compile Include="def\StatDefinitionDef.cs"/>
         <Compile Include="Extensions.cs"/>
@@ -106,10 +113,12 @@
         <Compile Include="grid\Grid.cs"/>
         <Compile Include="grid\GridExtensions.cs"/>
         <Compile Include="grid\GridMapComponent.cs"/>
+        <Compile Include="harmony\Patch_DialogInfocard_Hyperlink.cs"/>
         <Compile Include="harmony\Patch_GenLabel.cs"/>
         <Compile Include="harmony\Patch_GraphicUtility_WrapLinked.cs"/>
         <Compile Include="harmony\Patch_StatReportUtility.cs"/>
         <Compile Include="harmony\Patch_Thing.cs"/>
+        <Compile Include="harmony\Patch_ThingDef.cs"/>
         <Compile Include="injected\Comp_ArchInfused.cs"/>
         <Compile Include="injected\ITab_ArchotechInfusion.cs"/>
         <Compile Include="injected\StatPart_ArchInfusion.cs"/>
@@ -145,6 +154,7 @@
         <Compile Include="ui\print\ThingSelectorWindow.cs"/>
         <Compile Include="ui\print\PrintWindowSelector.cs"/>
         <Compile Include="ui\ShowElementsWindow.cs"/>
+        <Compile Include="ui\StatListWindow.cs"/>
     </ItemGroup>
 
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>

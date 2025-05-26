@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Defs>
+    <!-- Maked thing unbreakable by damage, not a stat -->
+    <ArchotechInfusions.StatDefinitionDef>
+        <defName>Unbreakable</defName>
+        <Target>Any</Target>
+        <Worker>ArchotechInfusions.InstructionGeneratorUnbreakable</Worker>
+        <Complexity>200</Complexity>
+        <OperationSet>
+            <Weight>1</Weight>
+            <Default>0</Default>
+        </OperationSet>
+    </ArchotechInfusions.StatDefinitionDef>
+</Defs>

@@ -19,7 +19,6 @@ public static class Patch_StatReportUtility
     [HarmonyPatch("StatsToDraw", typeof(Thing))]
     public static void StatsToDraw(Thing thing, ref IEnumerable<StatDrawEntry> __result)
     {
-        Log.Warning($" --- StatsToDraw call for {thing.def.defName} --- ");
         if (thing.TryGetInfusedComp(out var comp) && comp.IsUnbreakable)
         {
             var result = new List<StatDrawEntry>();

@@ -1,0 +1,16 @@
+﻿ArmorRating_Blunt
+ArmorRating_Heat
+ArmorRating_Sharp
+
+EnergyShieldEnergyMax
+EnergyShieldRechargeRate
+
+Insulation_Cold
+Insulation_Heat
+
+PsychicEntropyMaxOffset
+PsychicEntropyRecoveryRateOffset
+PsychicSensitivityFactor
+PsychicSensitivityOffset
+
+SharpDamageMultiplier

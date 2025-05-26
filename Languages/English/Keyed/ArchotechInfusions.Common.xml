@@ -2,6 +2,11 @@
 
 <LanguageData>
     <JAI.Progress>Progress: {0}%</JAI.Progress>
+
+    <JAI.OpenUrl>Open in web browser</JAI.OpenUrl>
+    <JAI.OpenUrl.Question>Do you want to open this link in web browser?\n\n</JAI.OpenUrl.Question>
+    <JAI.OpenUrl.FailMessage>Unable to open link</JAI.OpenUrl.FailMessage>
+
     <JAI.KeyGenerator.KeysCount>Keys generated: {0}</JAI.KeyGenerator.KeysCount>
 
     <JAI.Decoder.StoredBackup>Stored a backup with progress: {0}%</JAI.Decoder.StoredBackup>
@@ -28,6 +33,7 @@
     <JAI.Printer.InspectString>Select your pawn and press right mouse button on this printer.</JAI.Printer.InspectString>
 
     <JAI.instruction.complexity>Complexity</JAI.instruction.complexity>
+    <JAI.instruction.complexity.value>Complexity: {0}</JAI.instruction.complexity.value>
     <JAI.instruction.integrity>Integrity</JAI.instruction.integrity>
     <JAI.instruction.integrity.value>Integrity: {0}</JAI.instruction.integrity.value>
     <JAI.instruction.unbreakable>Unbreakable!</JAI.instruction.unbreakable>
@@ -46,4 +52,7 @@ It can still be destroyed by recycling.
 
     <JAI.instruction.nop>Broken instruction</JAI.instruction.nop>
     <JAI.instruction.nop.Desc>This instruction has been corrupted or received incorrectly. You can delete it without hesitation.</JAI.instruction.nop.Desc>
+
+    <JAI.Stat.Integrity.InitialValue>Initial value: {0}</JAI.Stat.Integrity.InitialValue>
+
 </LanguageData>

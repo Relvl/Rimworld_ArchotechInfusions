@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Defs>
+    <StatCategoryDef>
+        <defName>JAI_Pawn_Affected</defName>
+        <label>Archotech infusions</label>
+        <displayOrder>60</displayOrder>
+    </StatCategoryDef>
+</Defs>

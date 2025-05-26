@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <Defs>
+    <!-- Broken instruction, does nothing, can't be applied -->
     <ArchotechInfusions.StatDefinitionDef>
         <defName>Nop</defName>
         <Target>Any</Target>

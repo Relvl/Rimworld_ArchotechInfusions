@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Defs>
+    <!-- Adds some integrity, not a stat -->
+    <ArchotechInfusions.StatDefinitionDef>
+        <defName>Integrity</defName>
+        <Target>Any</Target>
+        <Worker>ArchotechInfusions.InstructionGeneratorIntegrity</Worker>
+        <Complexity>0</Complexity>
+        <OperationAdd>
+            <Weight>1</Weight>
+            <Min>0</Min>
+            <Max>100</Max>
+        </OperationAdd>
+    </ArchotechInfusions.StatDefinitionDef>
+</Defs>

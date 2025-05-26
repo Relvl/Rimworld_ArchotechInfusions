@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Defs>
+    <ArchotechInfusions.StatDefinitionDef>
+        <defName>MeleeHitChance</defName>
+        <StatDef>MeleeHitChance</StatDef>
+        <Target>MeleeWeapon</Target>
+        <Complexity>100</Complexity>
+        <OperationAdd>
+            <Weight>10</Weight>
+            <Min>-0.8</Min>
+            <Max>0.8</Max>
+            <Default>0</Default>
+        </OperationAdd>
+        <OperationMul>
+            <Weight>10</Weight>
+            <Min>0.5</Min>
+            <Max>1.5</Max>
+            <Default>1</Default>
+        </OperationMul>
+        <OperationSet>
+            <Weight>1</Weight>
+            <Min>0</Min>
+            <Max>1.0</Max>
+            <Default>0.5</Default>
+        </OperationSet>
+    </ArchotechInfusions.StatDefinitionDef>
+</Defs>

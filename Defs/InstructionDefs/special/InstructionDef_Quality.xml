@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Defs>
+    <!-- Adds +1 to quality level, not a stat -->
+    <ArchotechInfusions.StatDefinitionDef>
+        <defName>Quality</defName>
+        <Target>Any</Target>
+        <Worker>ArchotechInfusions.InstructionGeneratorQuality</Worker>
+        <Complexity>100</Complexity>
+        <OperationAdd>
+            <Weight>5</Weight>
+            <Default>0</Default>
+        </OperationAdd>
+    </ArchotechInfusions.StatDefinitionDef>
+</Defs>

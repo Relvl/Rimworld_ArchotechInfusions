@@ -13,5 +13,8 @@ public static class ArchInfSoundDefOf
     public static SoundDef ArchInfTransceiverRecharge;
     public static SoundDef ArchInfDecoderStart;
 
-    static ArchInfSoundDefOf() => DefOfHelper.EnsureInitializedInCtor(typeof(ArchInfSoundDefOf));
+    static ArchInfSoundDefOf()
+    {
+        DefOfHelper.EnsureInitializedInCtor(typeof(ArchInfSoundDefOf));
+    }
 }
