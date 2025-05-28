@@ -36,7 +36,7 @@ public class InstructionUnbreakable(StatDefinitionDef definition, StatDefinition
         return Definition.Complexity;
     }
 
-    public override bool IsThingApplicable(Thing thing, Comp_ArchInfused comp)
+    public override bool IsThingApplicable(Thing thing, InstructionsComps comp)
     {
         return !comp.IsUnbreakable && base.IsThingApplicable(thing, comp);
     }

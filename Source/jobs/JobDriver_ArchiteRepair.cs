@@ -10,7 +10,7 @@ namespace ArchotechInfusions.jobs;
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public class JobDriver_ArchiteRepair : JobDriver
 {
-    private ArchInf_Repairer_Building Repairer => TargetA.Thing as ArchInf_Repairer_Building;
+    private ArchiteRepairer Repairer => TargetA.Thing as ArchiteRepairer;
 
 
     public override bool TryMakePreToilReservations(bool errorOnFailed)

@@ -53,14 +53,13 @@ public class GridInfoWindow : Window
         foreach (var member in grid.Members)
             RenderLine(ref inner, $"\t+ {member.Label} [{member.ThingID}] pos:({member.Position})");
 
-        // RenderLine(ref inner, $"");
         Widgets.EndScrollView();
 
         _lastFrameSize.x = inner.xMin;
         _lastFrameSize.y = inner.yMin;
     }
 
-    private void RenderLine(ref Rect inRect, string text)
+    private static void RenderLine(ref Rect inRect, string text)
     {
         Text.Font = GameFont.Small;
         GUI.color = Color.white;

@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 using Verse;
 
@@ -16,6 +17,7 @@ public class GraphicLinkedMoreLayers : Graphic_Linked
                                              LinkFlags.Custom9 |
                                              LinkFlags.Custom10;
 
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public GraphicLinkedMoreLayers()
     {
     }
@@ -38,12 +40,7 @@ public class GraphicLinkedMoreLayers : Graphic_Linked
     public override bool ShouldLinkWith(IntVec3 c, Thing parent)
     {
         if (!parent.Spawned) return false;
-        if (c.InBounds(parent.Map))
-        {
-            Log.Warning($"ShouldLinkWith {c} => {parent.Map.linkGrid.LinkFlagsAt(c) & AllCustomFlags} == {parent.def.graphicData.linkFlags}");
-            return parent.def.graphicData.linkFlags == (parent.Map.linkGrid.LinkFlagsAt(c) & AllCustomFlags);
-        }
-
-        return (parent.def.graphicData.linkFlags & LinkFlags.MapEdge) != 0;
+        if (!c.InBounds(parent.Map)) return (parent.def.graphicData.linkFlags & LinkFlags.MapEdge) != 0;
+        return parent.def.graphicData.linkFlags == (parent.Map.linkGrid.LinkFlagsAt(c) & AllCustomFlags);
     }
 }

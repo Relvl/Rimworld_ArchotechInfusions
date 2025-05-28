@@ -10,7 +10,7 @@ namespace ArchotechInfusions.jobs;
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public class JobDriver_Print : JobDriver
 {
-    private ArchInf_Printer_Building Printer => TargetA.Thing as ArchInf_Printer_Building;
+    private Printer Printer => TargetA.Thing as Printer;
 
     public override bool TryMakePreToilReservations(bool errorOnFailed)
     {
@@ -21,7 +21,7 @@ public class JobDriver_Print : JobDriver
 
     protected override IEnumerable<Toil> MakeNewToils()
     {
-        this.FailOn(() => TargetA.Thing is not ArchInf_Printer_Building || Printer is null);
+        this.FailOn(() => TargetA.Thing is not building.Printer || Printer is null);
         this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
         this.FailOnBurningImmobile(TargetIndex.A);
 

@@ -42,7 +42,7 @@ public class InstructionNop(StatDefinitionDef definition, StatDefinitionDef.Oper
     {
     }
 
-    public override bool IsThingApplicable(Thing thing, Comp_ArchInfused comp)
+    public override bool IsThingApplicable(Thing thing, InstructionsComps comp)
     {
         return false;
     }

@@ -10,7 +10,7 @@ namespace ArchotechInfusions.jobs;
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public class JobDriver_GenerateKey : JobDriver
 {
-    private ArchInf_KeyGenerator_Building KeyGen => TargetA.Thing as ArchInf_KeyGenerator_Building;
+    private KeyGenerator KeyGen => TargetA.Thing as KeyGenerator;
 
     public override bool TryMakePreToilReservations(bool errorOnFailed)
     {

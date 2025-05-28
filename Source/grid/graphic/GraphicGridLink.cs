@@ -1,5 +1,4 @@
 using ArchotechInfusions.building.proto;
-using ArchotechInfusions.grid.graphic;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -23,8 +22,7 @@ public class GraphicGridLink(Graphic subGraphic) : GraphicLinkedMoreLayers(subGr
 
     public void PrintLinkable(SectionLayer layer, AGridBuildingLinkable loom)
     {
-        if (loom.Visibility == GridVisibility.Never) return;
-        if (loom.Visibility == GridVisibility.HideUnderTiling && loom.Position.GetTerrain(loom.Map).layerable) return;
+        if (ArchotechInfusionsMod.Settings.HideLoomBelowFlooring && loom.Position.GetTerrain(loom.Map).layerable) return;
 
         Printer_Plane.PrintPlane(layer, loom.TrueCenter(), Size, LinkedDrawMatFrom(loom, loom.Position));
 
@@ -40,7 +38,7 @@ public class GraphicGridLink(Graphic subGraphic) : GraphicLinkedMoreLayers(subGr
     private static bool ShouldDrawTo(IntVec3 c, AGridBuildingLinkable loom)
     {
         if (!c.InBounds(loom.Map)) return false;
-        if (loom.Visibility == GridVisibility.HideUnderTiling && c.GetTerrain(loom.Map).layerable) return false;
+        if (ArchotechInfusionsMod.Settings.HideLoomBelowFlooring && c.GetTerrain(loom.Map).layerable) return false;
         if (!loom.Map.ArchInfGrid().ShouldConnect(c, loom)) return false;
         return true;
     }

@@ -1,11 +1,11 @@
+using System.Diagnostics.CodeAnalysis;
 using ArchotechInfusions.comps.comp_base;
-using ArchotechInfusions.grid;
 using RimWorld;
 using Verse;
 
 namespace ArchotechInfusions.graphic;
 
-// ReSharper disable once UnusedType.Global -- reflective: Verse.Section:ctor -- generates always with ctor(Section)
+[SuppressMessage("ReSharper", "UnusedType.Global")] // instantiates by Rimworld
 public class SectionLayerGridOverlay : SectionLayer
 {
     public SectionLayerGridOverlay(Section section) : base(section)
@@ -18,7 +18,7 @@ public class SectionLayerGridOverlay : SectionLayer
         if (Find.DesignatorManager.SelectedDesignator is Designator_Build designator)
         {
             if (designator.PlacingDef is not ThingDef thingDef) return;
-            if (!thingDef.comps.Any(cp => cp is CompPropertiesBase_Grid)) return;
+            if (!thingDef.comps.Any(c => typeof(IGridComp<CompProperties>).IsAssignableFrom(c.compClass))) return;
             base.DrawLayer();
             return;
         }
@@ -32,7 +32,8 @@ public class SectionLayerGridOverlay : SectionLayer
     public override void Regenerate()
     {
         ClearSubMeshes(MeshParts.All);
-        foreach (var c in section.CellRect) Map.ArchInfGrid().RenderOverlay(this, c);
+        foreach (var c in section.CellRect)
+            Map.ArchInfGrid().RenderOverlay(this, c);
         FinalizeMesh(MeshParts.All);
     }
 }

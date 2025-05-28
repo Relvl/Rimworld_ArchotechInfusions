@@ -5,6 +5,9 @@ using Verse;
 
 namespace ArchotechInfusions.injected;
 
+/// <summary>
+///     Common stat part that applies instructions
+/// </summary>
 [SuppressMessage("ReSharper", "InconsistentNaming")]
 public class StatPart_ArchInfusion : StatPart
 {
@@ -34,7 +37,7 @@ public class StatPart_ArchInfusion : StatPart
             TransformValueInner(compDirect, ref val, req.Thing);
     }
 
-    private void TransformValueInner(Comp_ArchInfused comp, ref float value, Thing requester)
+    private void TransformValueInner(InstructionsComps comp, ref float value, Thing requester)
     {
         foreach (var instruction in comp.Instructions)
             instruction.TransformStatValue(parentStat, ref value, requester);
@@ -71,7 +74,7 @@ public class StatPart_ArchInfusion : StatPart
         return sb.ToString();
     }
 
-    private bool ExplanationPartInner(Comp_ArchInfused comp, StringBuilder sb, Thing requester)
+    private bool ExplanationPartInner(InstructionsComps comp, StringBuilder sb, Thing requester)
     {
         var anyChanged = false;
         foreach (var instruction in comp.Instructions)

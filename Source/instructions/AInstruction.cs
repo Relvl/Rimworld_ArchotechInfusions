@@ -116,7 +116,7 @@ public abstract class AInstruction(StatDefinitionDef definition, StatDefinitionD
         archite *= Definition.ExtraArchite?.Factor ?? 1f;
     }
 
-    public virtual bool IsThingApplicable(Thing thing, Comp_ArchInfused comp)
+    public virtual bool IsThingApplicable(Thing thing, InstructionsComps comp)
     {
         if (!thing.def.useHitPoints) return false;
         if (thing.def.IsWeapon && (thing.def.IsDrug || thing.def.IsIngestible)) return false;

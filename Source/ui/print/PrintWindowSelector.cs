@@ -3,7 +3,7 @@ using Verse;
 
 namespace ArchotechInfusions.ui.print;
 
-public class PrintWindowSelector(ArchInf_Printer_Building printer)
+public class PrintWindowSelector(Printer printer)
 {
     private PrintWindow _printWindow;
     private ThingSelectorWindow _thingSelectorWindow;

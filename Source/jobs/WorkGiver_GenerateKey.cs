@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using ArchotechInfusions.building;
+using ArchotechInfusions.defOf;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -19,7 +20,7 @@ public class WorkGiver_GenerateKey : WorkGiver_Scanner
 
     public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn)
     {
-        foreach (var generator in pawn.Map.ArchInfGrid().Get<ArchInf_KeyGenerator_Building>())
+        foreach (var generator in pawn.Map.ArchInfGrid().Get<KeyGenerator>())
             if (generator.CanGenerateNewKey())
                 yield return generator;
     }

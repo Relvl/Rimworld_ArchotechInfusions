@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using ArchotechInfusions.building;
+using ArchotechInfusions.defOf;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -20,7 +21,7 @@ public class WorkGiver_ArchiteRepair : WorkGiver_Scanner
 
     public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn)
     {
-        foreach (var repairer in pawn.Map.ArchInfGrid().Get<ArchInf_Repairer_Building>())
+        foreach (var repairer in pawn.Map.ArchInfGrid().Get<ArchiteRepairer>())
         {
             if (!repairer.CanWork()) continue;
             yield return repairer;
@@ -38,7 +39,7 @@ public class WorkGiver_ArchiteRepair : WorkGiver_Scanner
         if (!pawn.CanReserveAndReach(t, PathEndMode.Touch, pawn.NormalMaxDanger(), ignoreOtherReservations: forced)) return false;
         if (!pawn.CanReserveSittableOrSpot(t.InteractionCell, forced)) return false;
 
-        if (t is not ArchInf_Repairer_Building repairer) return false;
+        if (t is not ArchiteRepairer repairer) return false;
         var item = repairer.GetAllRepairableThings(pawn).FirstOrDefault();
         if (item == null)
         {

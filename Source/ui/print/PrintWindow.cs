@@ -15,12 +15,12 @@ namespace ArchotechInfusions.ui.print;
 
 public class PrintWindow : Window
 {
-    private readonly Comp_ArchInfused _comp;
+    private readonly InstructionsComps _comp;
 
     private readonly InstructionView.ButtonData _dequeueButton;
     private readonly InstructionView.ButtonData _enqueueButton;
 
-    private readonly ArchInf_Printer_Building _printer;
+    private readonly Printer _printer;
     private readonly PrintWindowSelector _selector;
     private readonly Thing _thing;
     private float _architeLeft;
@@ -28,7 +28,7 @@ public class PrintWindow : Window
     private float _architeNeeded;
     private AInstruction _instruction;
 
-    public PrintWindow(PrintWindowSelector selector, ArchInf_Printer_Building printer, Thing thing)
+    public PrintWindow(PrintWindowSelector selector, Printer printer, Thing thing)
     {
         _selector = selector;
         _printer = printer;
@@ -100,7 +100,7 @@ public class PrintWindow : Window
         _thing.Draw(thingRect, false, $", HP: {_thing.HitPoints}/{_thing.MaxHitPoints}, Integrity: {_comp.Integrity:0.00}");
 
         var instructions = _printer.Grid
-            .Get<ArchInf_Database_Building>()
+            .Get<InstructionDatabase>()
             .SelectMany(database => database.Instructions)
             .Where(instruction => instruction.IsThingApplicable(_thing, _comp));
         instructions.Draw(inRect, i => _instruction == i, i => _instruction == i ? [_dequeueButton] : [_enqueueButton]);
@@ -123,7 +123,7 @@ public class PrintWindow : Window
 
         var confirmButtonRect = buttonsRect with { xMin = buttonsRect.width - 100 };
 
-        var (damageAmount, breakChance) = _comp.GetApplyDamageFor(_instruction);
+        var (damageAmount, breakChance) = _comp.GetDamageData(_instruction);
 
         if (breakChance > 0f)
             GUI.color = ArchotechInfusionsMod.ButtonWarningColor;

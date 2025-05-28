@@ -23,7 +23,7 @@ public class InstructionQuality(StatDefinitionDef definition, StatDefinitionDef.
         sb.Append("<color=green>+1</color>");
     }
 
-    public override bool IsThingApplicable(Thing thing, Comp_ArchInfused comp)
+    public override bool IsThingApplicable(Thing thing, InstructionsComps comp)
     {
         var result = base.IsThingApplicable(thing, comp);
         if (result && thing.TryGetQuality(out var ql))

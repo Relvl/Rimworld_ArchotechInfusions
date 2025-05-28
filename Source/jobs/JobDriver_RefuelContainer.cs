@@ -10,7 +10,7 @@ namespace ArchotechInfusions.jobs;
 public class JobDriver_RefuelContainer : JobDriver
 {
     private Thing FuelThing => job.GetTarget(TargetIndex.B).Thing;
-    private ArchInf_Container_Building Container => TargetA.Thing as ArchInf_Container_Building;
+    private ArchiteContainer Container => TargetA.Thing as ArchiteContainer;
 
     public override bool TryMakePreToilReservations(bool errorOnFailed)
     {

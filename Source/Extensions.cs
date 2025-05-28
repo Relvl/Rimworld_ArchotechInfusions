@@ -29,7 +29,7 @@ public static class Extensions
         return copy;
     }
 
-    public static void Draw(this Thing thing, Rect rowRect, bool highlight = false, string extraText = "", Comp_ArchInfused comp = null)
+    public static void Draw(this Thing thing, Rect rowRect, bool highlight = false, string extraText = "", InstructionsComps comp = null)
     {
         GUI.color = Color.white;
         Text.Font = GameFont.Small;
@@ -69,11 +69,8 @@ public static class Extensions
             sb.Append(thing.LabelNoParenthesisCap.AsTipTitle()).Append(GenLabel.LabelExtras(thing, true, true));
             sb.AppendLine().AppendLine();
             sb.AppendLine(thing.DescriptionDetailed);
-           
-            if (thing.def.useHitPoints)
-            {
-                sb.Append(thing.HitPoints).Append(" / ").Append(thing.MaxHitPoints).AppendLine();
-            }
+
+            if (thing.def.useHitPoints) sb.Append(thing.HitPoints).Append(" / ").Append(thing.MaxHitPoints).AppendLine();
 
             if (comp is not null)
             {
@@ -99,7 +96,7 @@ public static class Extensions
         return result;
     }
 
-    public static bool TryGetInfusedComp(this Thing thing, out Comp_ArchInfused comp)
+    public static bool TryGetInfusedComp(this Thing thing, out InstructionsComps comp)
     {
         if (thing is null)
         {
@@ -107,7 +104,7 @@ public static class Extensions
             return false;
         }
 
-        comp = thing.TryGetComp<Comp_ArchInfused>();
+        comp = thing.TryGetComp<InstructionsComps>();
         return comp is not null;
     }
 }

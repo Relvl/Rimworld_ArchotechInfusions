@@ -10,12 +10,12 @@ namespace ArchotechInfusions.ui.print;
 public class ThingSelectorWindow : Window
 {
     private readonly Pawn _pawn;
-    private readonly ArchInf_Printer_Building _printer;
+    private readonly Printer _printer;
     private readonly PrintWindowSelector _selector;
     private float listHeight;
     private Vector2 scrollPosition = Vector2.zero;
 
-    public ThingSelectorWindow(PrintWindowSelector selector, Pawn pawn, ArchInf_Printer_Building printer)
+    public ThingSelectorWindow(PrintWindowSelector selector, Pawn pawn, Printer printer)
     {
         _selector = selector;
         _pawn = pawn;

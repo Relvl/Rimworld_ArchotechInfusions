@@ -47,17 +47,17 @@ public class Grid
 
     public float GetTotalEnergy()
     {
-        return Get<ArchInf_Accumulator_Building>().Sum(a => a.Stored);
+        return Get<Accumulator>().Sum(a => a.Stored);
     }
 
     public float GetTotalArchite()
     {
-        return Get<ArchInf_Container_Building>().Sum(a => a.Stored);
+        return Get<ArchiteContainer>().Sum(a => a.Stored);
     }
 
     public void ConsumeEnergy(ref float wantedAmount)
     {
-        foreach (var accumulator in Get<ArchInf_Accumulator_Building>())
+        foreach (var accumulator in Get<Accumulator>())
         {
             accumulator.Consume(ref wantedAmount);
             if (wantedAmount <= 0) break;
@@ -66,7 +66,7 @@ public class Grid
 
     public void ConsumeArchite(ref float wantedAmount)
     {
-        foreach (var container in Get<ArchInf_Container_Building>().OrderBy(c => c.Stored))
+        foreach (var container in Get<ArchiteContainer>().OrderBy(c => c.Stored))
         {
             container.Consume(ref wantedAmount);
             if (wantedAmount <= 0) break;
@@ -76,7 +76,7 @@ public class Grid
     public bool TryPutInstruction(AInstruction instruction)
     {
         if (instruction == default) return false;
-        foreach (var database in Get<ArchInf_Database_Building>())
+        foreach (var database in Get<InstructionDatabase>())
             if (database.MakeDatabaseRecord(instruction))
                 return true;
         return false;
@@ -85,7 +85,7 @@ public class Grid
     public bool TryRemoveInstruction(AInstruction instruction)
     {
         if (instruction == default) return false;
-        foreach (var database in Get<ArchInf_Database_Building>())
+        foreach (var database in Get<InstructionDatabase>())
             if (database.TryRemoveInstruction(instruction))
                 return true;
         return false;
@@ -96,7 +96,7 @@ public class Grid
         if (--_skipAccumBalance > 0)
             return;
 
-        var accumulators = Get<ArchInf_Accumulator_Building>().ToList();
+        var accumulators = Get<Accumulator>().ToList();
         if (accumulators.Count <= 1)
         {
             _skipAccumBalance = 50;

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using ArchotechInfusions.building;
+using ArchotechInfusions.defOf;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -14,14 +15,14 @@ public class WorkGiver_RefuelContainer : WorkGiver_Scanner
 
     public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn)
     {
-        foreach (var container in pawn.Map.ArchInfGrid().Get<ArchInf_Container_Building>())
+        foreach (var container in pawn.Map.ArchInfGrid().Get<ArchiteContainer>())
             if (container.CanStoreMore())
                 yield return container;
     }
 
     public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
     {
-        if (t is not ArchInf_Container_Building container) return false;
+        if (t is not ArchiteContainer container) return false;
         if (pawn.Faction != Faction.OfPlayer) return false;
         if (t.Faction != pawn.Faction) return false;
         if (t.IsForbidden(pawn)) return false;
@@ -40,14 +41,14 @@ public class WorkGiver_RefuelContainer : WorkGiver_Scanner
 
     public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
     {
-        if (t is not ArchInf_Container_Building container) return null;
+        if (t is not ArchiteContainer container) return null;
         var targetB = FindFuel(pawn, container);
         if (targetB is null)
             return null;
         return JobMaker.MakeJob(JobDriverDefOf.ArchInf_RefuelContainer, t, targetB);
     }
 
-    private static Thing FindFuel(Pawn pawn, ArchInf_Container_Building architeContainer)
+    private static Thing FindFuel(Pawn pawn, ArchiteContainer architeContainer)
     {
         return GenClosest.ClosestThingReachable(
             pawn.Position,

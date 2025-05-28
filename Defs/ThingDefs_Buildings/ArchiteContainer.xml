@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Defs>
+
+    <ThingDef ParentName="ArchInf_HeavyBuilding_Base">
+        <defName>ArchInf_Building_ArchiteContainer</defName>
+        <label>archite container</label>
+        <description>Allow to store archite</description>
+        <thingClass>ArchotechInfusions.building.ArchiteContainer</thingClass>
+        <costStuffCount>115</costStuffCount>
+        <costList>
+            <ComponentIndustrial>20</ComponentIndustrial>
+            <Plasteel>50</Plasteel>
+        </costList>
+        <thingCategories>
+            <li>BuildingsMisc</li>
+        </thingCategories>
+        <statBases>
+            <MaxHitPoints>150</MaxHitPoints>
+            <WorkToBuild>1500</WorkToBuild>
+            <Mass>500</Mass>
+        </statBases>
+        <graphicData>
+            <texPath>ArchotechInfusions/Things/Buildings/ArchInf_Container</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <drawSize>(2,4)</drawSize>
+            <damageData>
+                <rect>(0.05,0.05,0.95,0.95)</rect>
+            </damageData>
+        </graphicData>
+        <drawerType>MapMeshAndRealTime</drawerType>
+
+        <fillPercent>0.8</fillPercent>
+        <size>(2,2)</size>
+        <castEdgeShadows>false</castEdgeShadows>
+        <rotatable>false</rotatable>
+        <comps>
+            <li Class="CompProperties_Breakdownable"/>
+            <li Class="ArchotechInfusions.comps.ArchiteContainerProps">
+                <MaxStored>10000</MaxStored>
+                <AvailableItems>
+                    <li>
+                        <ThingDef>ArchiteCapsule</ThingDef>
+                        <ArchiteCount>1000</ArchiteCount>
+                    </li>
+                </AvailableItems>
+            </li>
+        </comps>
+    </ThingDef>
+
+</Defs>
